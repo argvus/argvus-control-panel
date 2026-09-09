@@ -101,7 +101,7 @@ BaseCard {
             visible: unreadCount > 0
             implicitWidth: 70
             implicitHeight: 22
-            iconText: "\uf2ed"
+            iconText: ""
             label: Strings.notifClear
             active: false
             radius: 3
@@ -130,7 +130,7 @@ BaseCard {
                     spacing: 4
                     Text {
                         text: "\uf192"
-                        font.family: "Font Awesome 7 Free"
+                        font.family: Theme.fontIcon
                         font.pixelSize: Theme.scaledFont(16)
                         font.weight: Font.Black
                         color: Theme.accent
@@ -200,7 +200,7 @@ BaseCard {
             anchors.centerIn: parent
             text: parent.text
             color: parent.enabled ? (ma.containsMouse ? Theme.accent : Theme.fgSubtle) : Theme.borderSubtle
-            font.family: "Font Awesome 7 Free"
+            font.family: Theme.fontIcon
             font.pixelSize: Theme.scaledFont(16)
             font.weight: Font.Black
         }

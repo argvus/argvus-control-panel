@@ -77,13 +77,13 @@ BaseCard {
 
                     var code = parseInt(cur.weatherCode)
                     if      (code === 113)                          weatherIcon = "\uf185"
-                    else if (code === 116)                          weatherIcon = "\uf6c4"
-                    else if (code === 119 || code === 122)          weatherIcon = "\uf0c2"
-                    else if (code >= 176 && code <= 281)            weatherIcon = "\uf043"
-                    else if (code >= 293 && code <= 308)            weatherIcon = "\uf043"
-                    else if (code >= 311 && code <= 377)            weatherIcon = "\uf2dc"
-                    else if (code >= 386 && code <= 395)            weatherIcon = "\uf0e7"
-                    else                                            weatherIcon = "\uf185"
+                    else if (code === 116)                          weatherIcon = ""
+                    else if (code === 119 || code === 122)          weatherIcon = ""
+                    else if (code >= 176 && code <= 281)            weatherIcon = ""
+                    else if (code >= 293 && code <= 308)            weatherIcon = ""
+                    else if (code >= 311 && code <= 377)            weatherIcon = ""
+                    else if (code >= 386 && code <= 395)            weatherIcon = ""
+                    else                                            weatherIcon = ""
 
                     hasData = true
                     hasError = false
@@ -150,7 +150,7 @@ BaseCard {
 
             Text {
                 text: weatherIcon
-                font.family: "Font Awesome 7 Free"
+                font.family: Theme.fontIcon
                 font.weight: Font.Black
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(30)
@@ -221,7 +221,7 @@ BaseCard {
         GlassButton {
             implicitWidth: 100
             implicitHeight: 30
-            iconText: "\uf3c5"
+            iconText: ""
             label: Strings.weatherConfigure
             active: false
             onClicked: {
@@ -232,7 +232,7 @@ BaseCard {
         GlassButton {
             implicitWidth: 92
             implicitHeight: 30
-            iconText: "\uf021"
+            iconText: "󰑓"
             label: Strings.weatherRefresh
             active: false
             onClicked: root.refreshWeather()

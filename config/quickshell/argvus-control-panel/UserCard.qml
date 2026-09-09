@@ -44,7 +44,7 @@ BaseCard {
     property color  editStatusColor: Theme.ok
 
     // ── Tab labels ──
-    readonly property var tabIcons: ["\uf03e", "\uf406", "\uf084"]
+    readonly property var tabIcons: ["\uf03e", "", "\uf084"]
     readonly property var tabLabels: [Strings.userTabAvatar, Strings.userTabName, Strings.userTabPassword]
 
     function refreshUserData() {
@@ -296,7 +296,7 @@ BaseCard {
             Text {
                 anchors.centerIn: parent
                 text: userIcon
-                font.family: "Font Awesome 7 Free"
+                font.family: Theme.fontIcon
                 font.pixelSize: Theme.scaledFont(22)
                 font.weight: Font.Black
                 color: Theme.accent
@@ -337,8 +337,8 @@ BaseCard {
 
             Text {
                 anchors.centerIn: parent
-                text: editing ? "\uf00d" : "\uf303"
-                font.family: "Font Awesome 7 Free"
+                text: editing ? "󰅘" : "󰚼"
+                font.family: Theme.fontIcon
                 font.pixelSize: Theme.scaledFont(14)
                 font.weight: Font.Black
                 color: editing ? Theme.accent : Theme.fgSubtle
@@ -390,7 +390,7 @@ BaseCard {
 
                         Text {
                             text: tabIcons[index]
-                            font.family: "Font Awesome 7 Free"
+                            font.family: Theme.fontIcon
                             font.pixelSize: Theme.scaledFont(12)
                             font.weight: Font.Black
                             color: activeTab === index ? Theme.accent : Theme.fgSubtle
@@ -453,7 +453,7 @@ BaseCard {
                 Text {
                     anchors.centerIn: parent
                     text: "\uf007"
-                    font.family: "Font Awesome 7 Free"
+                    font.family: Theme.fontIcon
                     font.pixelSize: Theme.scaledFont(32)
                     font.weight: Font.Black
                     color: Theme.accent
@@ -484,7 +484,7 @@ BaseCard {
 
                 GlassButton {
                     Layout.fillWidth: true
-                    iconText: "\uf2ed"
+                    iconText: ""
                     label: Strings.userAvatarRemove
                     accentColor: Theme.danger
                     visible: avatarPath.length > 0

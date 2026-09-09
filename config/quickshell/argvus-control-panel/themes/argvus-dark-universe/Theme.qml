@@ -44,7 +44,7 @@ QtObject {
 
     // Tipography --------------------------------------------------------------
     readonly property string fontMono:       "IBM Plex Mono"
-    readonly property string fontIcon:       "Font Awesome 7 Free"
+    readonly property string fontIcon:       "Symbols Nerd Font Mono"
 
     // Form --------------------------------------------------------------------
     readonly property int radius:            0

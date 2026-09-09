@@ -43,7 +43,7 @@ QtObject {
     readonly property string displayBrightness:  isPortuguese ? "Brilho" : "Brightness"
     readonly property string displayPowerOn:     isPortuguese ? "Ligar monitor" : "Turn on"
     readonly property string displayPowerOff:    isPortuguese ? "Desligar monitor" : "Turn off"
-    readonly property string displayAdvanced:    isPortuguese ? "Abrir Gerenciador" : "Open Manager"
+    readonly property string displayAdvanced:    isPortuguese ? "Gerenciar" : "Open Manager"
 
     // ── SpacesCard ──
     readonly property string spacesWaybar:           isPortuguese ? "Waybar" : "Waybar"
@@ -140,14 +140,14 @@ QtObject {
 
     // ── PowerCard ──
     readonly property var _ptProfiles: [
-        { id: "power-saver",  label: "Economia",    icon: "\uf06c", desc: "Economia de energia" },
-        { id: "balanced",     label: "Balanceado",  icon: "\uf24e", desc: "Padrao" },
-        { id: "performance",  label: "Performance", icon: "\uf0e7", desc: "Max. desempenho" },
+        { id: "power-saver",  label: "Economia",    icon: "󰾆", desc: "Economia de energia" },
+        { id: "balanced",     label: "Balanceado",  icon: "󰾅", desc: "Padrao" },
+        { id: "performance",  label: "Performance", icon: "󰓅", desc: "Max. desempenho" },
     ]
     readonly property var _enProfiles: [
-        { id: "power-saver",  label: "Power Saver",  icon: "\uf06c", desc: "Power saving" },
-        { id: "balanced",     label: "Balanced",     icon: "\uf24e", desc: "Default" },
-        { id: "performance",  label: "Performance",  icon: "\uf0e7", desc: "Max performance" },
+        { id: "power-saver",  label: "Power Saver",  icon: "󰾆", desc: "Power saving" },
+        { id: "balanced",     label: "Balanced",     icon: "󰾅", desc: "Default" },
+        { id: "performance",  label: "Performance",  icon: "󰓅", desc: "Max performance" },
     ]
     readonly property var profiles: isPortuguese ? _ptProfiles : _enProfiles
 

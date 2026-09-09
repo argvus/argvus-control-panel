@@ -115,7 +115,7 @@ BaseCard {
             anchors.centerIn: parent
             text: parent.text
             color: ma.containsMouse ? Theme.accent : Theme.fgSubtle
-            font.family: "Font Awesome 7 Free"
+            font.family: Theme.fontIcon
             font.pixelSize: Theme.scaledFont(16)
             font.weight: Font.Black
         }

@@ -57,7 +57,7 @@ BaseCard {
 
         Text {
             text: "\uf11c"
-            font.family: "Font Awesome 7 Free"
+            font.family: Theme.fontIcon
             font.pixelSize: Theme.scaledFont(18)
             font.weight: Font.Black
             color: Theme.accent

@@ -35,7 +35,7 @@ Rectangle {
 
             Text {
                 text: "\uf054"
-                font.family: "Font Awesome 7 Free"
+                font.family: Theme.fontIcon
                 font.pixelSize: Theme.scaledFont(11)
                 font.weight: Font.Black
                 color: Theme.accent

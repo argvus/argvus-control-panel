@@ -158,7 +158,7 @@ BaseCard {
                     Text {
                         text: modelData.power === "off" ? "\uf06e" : "\uf070"
                         color: modelData.power === "off" ? Theme.danger : Theme.fgSubtle
-                        font.family: "Font Awesome 7 Free"
+                        font.family: Theme.fontIcon
                         font.pixelSize: Theme.scaledFont(13)
                     }
                 }
@@ -247,7 +247,7 @@ BaseCard {
             GlassButton {
                 Layout.fillWidth: true
                 implicitHeight: 36
-                iconText: "\uf2f1"
+                iconText: "󰑓"
                 label: Strings.btnApply
                 active: false
                 onClicked: applyProc.running = true

@@ -31,7 +31,7 @@ BaseCard {
         GlassButton {
             Layout.fillWidth: true
             implicitHeight: 52
-            iconText: "\uf53f"
+            iconText: ""
             label: Strings.btnTheme
             onClicked: themeProc.running = true
         }
@@ -42,7 +42,7 @@ BaseCard {
     GlassButton {
         Layout.fillWidth: true
         implicitHeight: 44
-        iconText: "\uf53f"
+        iconText: ""
         label: Strings.btnAccent
         accentColor: Theme.accent
         onClicked: {
