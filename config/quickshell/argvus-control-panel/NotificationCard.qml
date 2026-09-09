@@ -174,15 +174,25 @@ BaseCard {
     }
 
     // Empty state
-    Text {
+    RowLayout {
         visible: notifications.length === 0
         Layout.fillWidth: true
-        text: "\uf00d  " + Strings.notifAllClear
-        font.pixelSize: Theme.scaledFont(16)
-        font.family: Theme.fontFamily
-        color: Theme.accent
-        opacity: 1
-        horizontalAlignment: Text.AlignHCenter
+        spacing: 6
+
+        Item { Layout.fillWidth: true }
+        Text {
+            text: "\uf00d"
+            font.pixelSize: Theme.scaledFont(16)
+            font.family: Theme.fontIcon
+            color: Theme.accent
+        }
+        Text {
+            text: Strings.notifAllClear
+            font.pixelSize: Theme.scaledFont(16)
+            font.family: Theme.fontFamily
+            color: Theme.accent
+        }
+        Item { Layout.fillWidth: true }
     }
 
     component NavBtn: Rectangle {
