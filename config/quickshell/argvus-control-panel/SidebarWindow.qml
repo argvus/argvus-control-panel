@@ -47,6 +47,8 @@ PanelWindow {
             keyCatcher.forceActiveFocus()
     }
 
+    Component.onCompleted: stateProc.running = true
+
     Process {
         id: stateProc
         command: ["bash", "-c",
