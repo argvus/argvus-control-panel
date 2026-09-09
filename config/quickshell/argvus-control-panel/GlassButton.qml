@@ -1,0 +1,88 @@
+import QtQuick
+import QtQuick.Layouts
+
+Rectangle {
+    id: root
+
+    property string iconText: ""
+    property string label: ""
+    property bool   active: false
+    property bool   vertical: false
+    property color  accentColor: Theme.accent
+    signal clicked()
+
+    implicitHeight: 38
+    radius: Theme.radiusSmall
+
+    color: {
+        if (active) return Theme.bgCard
+        if (ma.containsMouse) return Theme.accentDim
+        return Theme.bgPanel
+    }
+    border.color: {
+        if (active) return accentColor
+        if (ma.containsMouse) return accentColor
+        return Theme.borderSubtle
+    }
+    border.width: 1
+
+    Behavior on color { ColorAnimation { duration: Theme.animFast } }
+
+    RowLayout {
+        anchors.centerIn: parent
+        spacing: 5
+        visible: !root.vertical
+
+        Text {
+            visible: iconText !== ""
+            text: iconText
+            color: active || ma.containsMouse ? accentColor : Theme.fgSubtle
+            font.family: "Font Awesome 7 Free"
+            font.pixelSize: Theme.scaledFont(15)
+            font.weight: Font.Black
+        }
+
+        Text {
+            visible: label !== ""
+            text: label
+            color: active ? accentColor : (ma.containsMouse ? accentColor : Theme.fgSubtle)
+            font.pixelSize: Theme.scaledFont(11)
+            font.family: Theme.fontFamily
+            font.weight: active ? Font.Medium : Font.Normal
+        }
+    }
+
+    ColumnLayout {
+        anchors.centerIn: parent
+        spacing: 2
+        visible: root.vertical
+
+        Text {
+            visible: iconText !== ""
+            text: iconText
+            color: active || ma.containsMouse ? accentColor : Theme.fgSubtle
+            font.family: "Font Awesome 7 Free"
+            font.pixelSize: Theme.scaledFont(15)
+            font.weight: Font.Black
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        Text {
+            visible: label !== ""
+            text: label
+            color: active ? accentColor : (ma.containsMouse ? accentColor : Theme.fgSubtle)
+            font.pixelSize: Theme.scaledFont(11)
+            font.family: Theme.fontFamily
+            font.weight: active ? Font.Medium : Font.Normal
+            Layout.alignment: Qt.AlignHCenter
+        }
+    }
+
+    MouseArea {
+        id: ma
+        anchors.fill: parent
+        hoverEnabled: true
+        cursorShape: Qt.PointingHandCursor
+        onClicked: root.clicked()
+    }
+}
