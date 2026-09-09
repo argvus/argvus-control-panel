@@ -58,10 +58,10 @@ BaseCard {
             implicitHeight: 32
             implicitWidth: 32
             iconText: {
-                if (muted) return "\uf6a9"
-                if (volume > 0.6) return "\uf028"
-                if (volume > 0.2) return "\uf027"
-                return "\uf026"
+                if (muted) return ""
+                if (volume > 0.6) return ""
+                if (volume > 0.2) return ""
+                return ""
             }
             label: ""
             active: !muted
