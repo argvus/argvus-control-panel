@@ -14,7 +14,7 @@ help:
 
 install:
 	install -dm755 "$(DESTDIR)$(PREFIX)/share/argvus"
-	cp -R --no-preserve=ownership config/. "$(DESTDIR)$(PREFIX)/share/argvus/"
+	cp -R --no-preserve=ownership src/. "$(DESTDIR)$(PREFIX)/share/argvus/"
 	find "$(DESTDIR)$(PREFIX)/share/argvus/scripts" -type f -name '*.sh' -exec chmod 755 {} \; 2>/dev/null || true
 	install -Dm644 LICENSE "$(DESTDIR)$(PREFIX)/share/licenses/argvus-control-panel/LICENSE"
 
@@ -25,13 +25,13 @@ uninstall:
 	rm -f "$(DESTDIR)$(PREFIX)/share/licenses/argvus-control-panel/LICENSE"
 
 validate:
-	@if find config -name '*.sh' | grep -q .; then \
-		for script in $$(find config -name '*.sh'); do sh -n "$$script"; done; \
-		if command -v shellcheck >/dev/null 2>&1; then for script in $$(find config -name '*.sh'); do shellcheck -e SC1090 -e SC2034 "$$script"; done; else echo "shellcheck not found; skipping shell lint"; fi; \
+	@if find src -name '*.sh' | grep -q .; then \
+		for script in $$(find src -name '*.sh'); do sh -n "$$script"; done; \
+		if command -v shellcheck >/dev/null 2>&1; then for script in $$(find src -name '*.sh'); do shellcheck -e SC1090 -e SC2034 "$$script"; done; else echo "shellcheck not found; skipping shell lint"; fi; \
 	fi
-	@if find config -name '*.qml' | grep -q .; then \
+	@if find src -name '*.qml' | grep -q .; then \
 		if command -v qmllint >/dev/null 2>&1; then \
-			if ! qmllint -I config/quickshell/argvus-control-panel $$(find config -name '*.qml'); then \
+			if ! qmllint -I src/quickshell/argvus-control-panel $$(find src -name '*.qml'); then \
 				echo "qmllint reported issues; Quickshell imports may require runtime context"; \
 			fi; \
 		else \
@@ -40,10 +40,10 @@ validate:
 	else \
 		echo "no QML files found"; \
 	fi
-	@test -f config/quickshell/argvus-control-panel/shell.qml
-	@test -x config/scripts/argvus/toggle-sidebar.sh
-	@test -x config/scripts/argvus/weather-location.sh
-	@test ! -e config/waybar
+	@test -f src/quickshell/argvus-control-panel/shell.qml
+	@test -x src/scripts/argvus/toggle-sidebar.sh
+	@test -x src/scripts/argvus/weather-location.sh
+	@test ! -e src/waybar
 	@echo "argvus-control-panel validation ok"
 
 .PHONY: build
