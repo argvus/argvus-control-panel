@@ -14,6 +14,7 @@ BaseCard {
         { seconds: 600, label: "10m" },
         { seconds: 900, label: "15m" },
         { seconds: 1800, label: "30m" },
+        { seconds: 0, label: Strings.idleLockNever },
     ]
 
     function applyIdleTimeout(seconds) {

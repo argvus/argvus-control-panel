@@ -100,6 +100,7 @@ QtObject {
     readonly property string effectsEnabled:    isPortuguese ? "Animações e blur ativos" : "Animations and blur active"
     readonly property string effectsDisabled:   isPortuguese ? "Animações e blur inativos" : "Animations and blur inactive"
     readonly property string idleLockTitle:     isPortuguese ? "BLOQUEIO" : "LOCK TIMER"
+    readonly property string idleLockNever:     isPortuguese ? "Nunca" : "Never"
     readonly property string lockDpmsTitle:     isPortuguese ? "DESLIGAR MONITOR" : "TURN OFF MONITOR"
     readonly property string lockDpmsEnabled:   isPortuguese ? "Monitor desliga ao bloquear" : "Monitor turns off on lock"
     readonly property string lockDpmsDisabled:  isPortuguese ? "Monitor permanece ligado" : "Monitor stays on"

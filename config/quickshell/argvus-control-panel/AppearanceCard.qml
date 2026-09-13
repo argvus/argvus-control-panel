@@ -219,7 +219,6 @@ BaseCard {
         interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
         onTriggered: {
             if (!checkProc.running) checkProc.running = true
-            if (!idleStatusProc.running) idleStatusProc.running = true
             if (!effectsStatusProc.running) effectsStatusProc.running = true
         }
     }
@@ -279,22 +278,6 @@ BaseCard {
                 effectsEnabled = data.trim() === "enabled"
                 Theme.effectsState = effectsEnabled ? "enabled" : "disabled"
             }
-        }
-    }
-
-    Process {
-        id: idleSetProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/idle-timeout.sh 300"]
-        stdout: SplitParser {
-            onRead: data => idleTimeout = Number(data.trim())
-        }
-    }
-
-    Process {
-        id: idleStatusProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/idle-timeout.sh status"]
-        stdout: SplitParser {
-            onRead: data => idleTimeout = Number(data.trim())
         }
     }
 }
