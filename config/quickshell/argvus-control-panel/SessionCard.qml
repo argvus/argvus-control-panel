@@ -9,12 +9,12 @@ BaseCard {
     property int idleTimeout: 300
     property bool lockDpms: false
     property var idleOptions: [
-        { seconds: 60, label: "1m" },
+        { seconds: 60,  label: "1m" },
         { seconds: 300, label: "5m" },
         { seconds: 600, label: "10m" },
         { seconds: 900, label: "15m" },
         { seconds: 1800, label: "30m" },
-        { seconds: 0, label: Strings.idleLockNever },
+        { seconds: 0,   label: Strings.idleLockNever },
     ]
 
     function applyIdleTimeout(seconds) {
@@ -25,17 +25,20 @@ BaseCard {
 
     ColumnLayout {
         Layout.fillWidth: true
-        spacing: 7
+        spacing: 8
 
         Text {
             text: Strings.idleLockTitle
             color: Theme.fgText
-            font.pixelSize: Theme.scaledFont(13)
+            font.pixelSize: Theme.scaledFont(11)
             font.family: Theme.fontFamily
             font.weight: Font.Medium
+            font.letterSpacing: 1
         }
 
-        RowLayout {
+        // Timeout pills that wrap instead of being squeezed, so "Nunca/Never"
+        // (a wider label) never overflows its box.
+        Flow {
             Layout.fillWidth: true
             spacing: 5
 
@@ -44,34 +47,40 @@ BaseCard {
 
                 Rectangle {
                     required property var modelData
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: 26
-                    radius: Theme.radiusSmall
+
+                    implicitWidth: pillText.implicitWidth + 20
+                    implicitHeight: 28
+                    radius: Theme.radiusPill
                     color: idleTimeout === modelData.seconds ? Theme.accentDim : Theme.bgPanel
                     border.width: 1
                     border.color: idleTimeout === modelData.seconds ? Theme.accent : Theme.borderSubtle
 
+                    Behavior on color { ColorAnimation { duration: Theme.animFast } }
+                    Behavior on border.color { ColorAnimation { duration: Theme.animFast } }
+
                     Text {
+                        id: pillText
                         anchors.centerIn: parent
-                        text: parent.modelData.label
-                        color: idleTimeout === parent.modelData.seconds ? Theme.accent : Theme.fgSubtle
+                        text: modelData.label
+                        color: idleTimeout === modelData.seconds ? Theme.accent : (pillMa.containsMouse ? Theme.accent : Theme.fgSubtle)
                         font.family: Theme.fontFamily
-                        font.pixelSize: Theme.scaledFont(16)
+                        font.pixelSize: Theme.scaledFont(11)
                         font.weight: Font.Bold
                     }
 
                     MouseArea {
+                        id: pillMa
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
-                        onClicked: applyIdleTimeout(parent.modelData.seconds)
+                        onClicked: applyIdleTimeout(modelData.seconds)
                     }
                 }
             }
         }
     }
 
-    Item { Layout.preferredHeight: 4 }
+    Item { Layout.preferredHeight: 2 }
 
     RowLayout {
         Layout.fillWidth: true
@@ -80,7 +89,7 @@ BaseCard {
         Rectangle {
             id: lockDpmsToggleBtn
             width: 44; height: 24
-            radius: Theme.radius
+            radius: Theme.radiusPill
 
             color: lockDpms ? Theme.accent : Theme.borderSubtle
             Layout.alignment: Qt.AlignVCenter
@@ -90,7 +99,7 @@ BaseCard {
             Rectangle {
                 id: lockDpmsKnob
                 width: 18; height: 18
-                radius: Math.max(2, Theme.radius)
+                radius: Math.max(2, Theme.radiusPill / 2)
                 x: lockDpms ? parent.width - width - 3 : 3
                 y: (parent.height - height) / 2
                 color: Theme.bgHeader

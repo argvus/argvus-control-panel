@@ -127,13 +127,11 @@ PanelWindow {
                 NetworkCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 BluetoothCard     { id: bluetoothCard; visible: bluetoothCard.available; pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 SystemCard        { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                KeyboardCard      { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 AppearanceCard    { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 SessionCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 DisplayCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 TaskbarCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 SpacesCard        { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                SettingsCard      { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 PowerCard         { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 AboutCard         { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
 

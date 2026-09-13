@@ -9,7 +9,6 @@ CalendarCard      1.0 CalendarCard.qml
 WeatherCard       1.0 WeatherCard.qml
 SystemCard        1.0 SystemCard.qml
 AboutCard         1.0 AboutCard.qml
-KeyboardCard      1.0 KeyboardCard.qml
 UserCard          1.0 UserCard.qml
 PowerCard         1.0 PowerCard.qml
 VolumeCard        1.0 VolumeCard.qml
@@ -21,5 +20,4 @@ AppearanceCard    1.0 AppearanceCard.qml
 SessionCard       1.0 SessionCard.qml
 DisplayCard       1.0 DisplayCard.qml
 TaskbarCard       1.0 TaskbarCard.qml
-SettingsCard      1.0 SettingsCard.qml
 SidebarWindow     1.0 SidebarWindow.qml

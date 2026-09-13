@@ -240,44 +240,19 @@ BaseCard {
             }
         }
 
-        RowLayout {
+        // Open the Displays page in argvus-control-center.
+        GlassButton {
             Layout.fillWidth: true
-            spacing: 8
-
-            GlassButton {
-                Layout.fillWidth: true
-                implicitHeight: 36
-                iconText: "󰑓"
-                label: Strings.btnApply
-                active: false
-                onClicked: applyProc.running = true
-            }
-
-            // Open advanced layout configuration through argvus-display.
-            GlassButton {
-                Layout.fillWidth: true
-                implicitHeight: 36
-                iconText: "\uf2d0"
-                label: Strings.displayAdvanced
-                active: true
-                onClicked: nwgProc.running = true
-            }
+            implicitHeight: 36
+            iconText: "\uf013"
+            label: Strings.displayOpenCenter
+            active: true
+            onClicked: if (!ccDisplayProc.running) ccDisplayProc.running = true
         }
     }
 
     Process {
-        id: applyProc
-        command: ["argvus-displayctl", "--apply"]
-        onExited: {
-            if (!statusProc.running) statusProc.running = true
-        }
-    }
-
-    Process {
-        id: nwgProc
-        command: ["argvus-displayctl", "--settings"]
-        onExited: {
-            if (!applyProc.running) applyProc.running = true
-        }
+        id: ccDisplayProc
+        command: ["argvus", "--displays"]
     }
 }

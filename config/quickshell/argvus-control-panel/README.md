@@ -1,6 +1,6 @@
 # argvus-control-panel — Quickshell sidebar for Hyprland
 
-Standalone right-hand sidebar with: Calendar, CPU/RAM/GPU, Keyboard, and Power Profile.
+Standalone right-hand sidebar with: Calendar, CPU/RAM/GPU, Network, and Power Profile.
 
 ## Installation
 
@@ -71,13 +71,6 @@ hl.exec("qs -c argvus-control-panel")
 | `hyprctl`         | switch keyboard layout |
 
 ## Tweaks
-
-### Keyboard layout switching
-
-`KeyboardCard.qml` switches the layout with `hyprctl switchxkblayout all next`,
-which cycles through the `br`/`us` groups on every keyboard — so it works on
-any machine without editing a device name. The card reads the current keymap
-from `hyprctl devices` only to show which layout is active.
 
 ### Colors
 

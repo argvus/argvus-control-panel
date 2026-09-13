@@ -14,14 +14,12 @@ QtObject {
     readonly property string cardTitleNetwork:       isPortuguese ? "REDE" : "NETWORK"
     readonly property string cardTitleBluetooth:     "BLUETOOTH"
     readonly property string cardTitleSystem:        isPortuguese ? "SISTEMA" : "SYSTEM"
-    readonly property string cardTitleKeyboard:      isPortuguese ? "TECLADO" : "KEYBOARD"
     readonly property string cardTitleAppearance:    isPortuguese ? "APARENCIA" : "APPEARANCE"
     readonly property string cardTitleSession:       isPortuguese ? "SESSÃO" : "SESSION"
     readonly property string cardTitleSpaces:        isPortuguese ? "ESPAÇOS" : "SPACES"
     readonly property string cardTitleTaskbar:       isPortuguese ? "BARRA DE TAREFAS" : "TASKBAR"
     readonly property string cardTitlePower:         isPortuguese ? "ENERGIA" : "POWER"
     readonly property string cardTitleDisplay:       isPortuguese ? "MONITOR" : "DISPLAY"
-    readonly property string cardTitleSettings:      isPortuguese ? "CENTRAL DE CONTROLE" : "CONTROL CENTER"
     readonly property string cardTitleAbout:         isPortuguese ? "SOBRE" : "ABOUT"
 
     // ── AboutCard ──
@@ -30,20 +28,13 @@ QtObject {
         : "View system information, modules, credits and license."
     readonly property string aboutOpen: isPortuguese ? "Abrir Sobre" : "Open About"
 
-    // ── SettingsCard ──
-    readonly property string settingsHint: isPortuguese
-        ? "Ajuste fontes e aplicativos padrão do ARGVUS."
-        : "Adjust ARGVUS fonts and default applications."
-    readonly property string settingsOpen:  isPortuguese ? "Abrir Central de Controle" : "Open Control Center"
-    readonly property string settingsFonts: isPortuguese ? "Fontes" : "Fonts"
-    readonly property string settingsApps:  isPortuguese ? "Aplicativos padrão" : "Default Apps"
     // ── DisplayCard ──
     readonly property string displayScale:       isPortuguese ? "Escala" : "Scale"
     readonly property string displayDpi:         "DPI"
     readonly property string displayBrightness:  isPortuguese ? "Brilho" : "Brightness"
     readonly property string displayPowerOn:     isPortuguese ? "Ligar monitor" : "Turn on"
     readonly property string displayPowerOff:    isPortuguese ? "Desligar monitor" : "Turn off"
-    readonly property string displayAdvanced:    isPortuguese ? "Gerenciar" : "Open Manager"
+    readonly property string displayOpenCenter:  isPortuguese ? "Abrir Displays" : "Open Displays"
 
     // ── SpacesCard ──
     readonly property string spacesWaybar:           isPortuguese ? "Waybar" : "Waybar"
