@@ -19,7 +19,7 @@ BaseCard {
 
     function applyIdleTimeout(seconds) {
         if (idleSetProc.running) return
-        idleSetProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/idle-timeout.sh " + seconds]
+        idleSetProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh " + seconds]
         idleSetProc.running = true
     }
 
@@ -159,7 +159,7 @@ BaseCard {
 
     Process {
         id: idleSetProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/idle-timeout.sh 300"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh 300"]
         stdout: SplitParser {
             onRead: data => idleTimeout = Number(data.trim())
         }
@@ -167,7 +167,7 @@ BaseCard {
 
     Process {
         id: idleStatusProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/idle-timeout.sh status"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh status"]
         stdout: SplitParser {
             onRead: data => idleTimeout = Number(data.trim())
         }
@@ -175,7 +175,7 @@ BaseCard {
 
     Process {
         id: lockDpmsToggleProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/lock-dpms-toggle.sh toggle"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/lock-dpms-toggle.sh toggle"]
         stdout: SplitParser {
             onRead: data => lockDpms = data.trim() === "enabled"
         }
@@ -183,7 +183,7 @@ BaseCard {
 
     Process {
         id: lockDpmsStatusProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/lock-dpms-toggle.sh status"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/lock-dpms-toggle.sh status"]
         stdout: SplitParser {
             onRead: data => lockDpms = data.trim() === "enabled"
         }

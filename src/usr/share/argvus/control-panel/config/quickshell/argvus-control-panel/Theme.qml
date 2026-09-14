@@ -91,7 +91,7 @@ Singleton {
         if (themeFile.text().trim() !== "") return
 
         // 3. System default
-        themeFile.path = "/usr/share/argvus/quickshell/argvus-control-panel/themes/" +
+        themeFile.path = "/usr/share/argvus/control-panel/config/quickshell/argvus-control-panel/themes/" +
             themeName + "/Theme.qml"
         themeFile.reload()
     }

@@ -60,7 +60,7 @@ BaseCard {
     }
 
     // ── Global brightness (backlight) reuse ──
-    readonly property string brightScript: "sh ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/brightness-switch.sh"
+    readonly property string brightScript: "sh ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/brightness-switch.sh"
     property bool brightSupported: false
     property real brightness: 0
 

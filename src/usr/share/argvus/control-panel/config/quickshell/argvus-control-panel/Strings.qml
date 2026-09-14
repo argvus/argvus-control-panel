@@ -71,7 +71,7 @@ QtObject {
 
     // ── WeatherCard ──
     readonly property string weatherLoading:   isPortuguese ? "Buscando dados..." : "Loading..."
-    readonly property string weatherError:     isPortuguese ? "Sem conexao com wttr.in" : "No connection to wttr.in"
+    readonly property string weatherError:     isPortuguese ? "Sem dados de clima" : "No weather data"
     readonly property string weatherFeelsLike: isPortuguese ? "Sensacao" : "Feels like"
     readonly property string weatherHumidity:  isPortuguese ? "Umidade" : "Humidity"
     readonly property string weatherWind:      isPortuguese ? "Vento" : "Wind"

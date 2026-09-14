@@ -58,7 +58,7 @@ BaseCard {
         property string url: root.location !== ""
             ? "https://wttr.in/" + encodeURIComponent(root.location) + "?format=j1"
             : "https://wttr.in/?format=j1"
-        command: ["curl", "-sf", "--max-time", "10", url]
+        command: ["sh", "-c", "\"${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/control-panel/sh/weather-fetch.sh\" \"$1\"", "argvus-weather", root.location]
         onStarted: { if (!hasData) loading = true; hasError = false }
         stdout: StdioCollector {
             onStreamFinished: {
@@ -104,7 +104,7 @@ BaseCard {
 
     Process {
         id: configureProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/weather-location.sh"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/control-panel/sh/weather-location.sh"]
         onExited: {
             locationFile.reload()
             root.refreshWeather()

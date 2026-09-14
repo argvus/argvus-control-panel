@@ -12,7 +12,7 @@ BaseCard {
 
     function applyAccent(color) {
         if (accentProc.running) return
-        accentProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/accent-switch.sh '" + color + "'"]
+        accentProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/accent-switch.sh '" + color + "'"]
         accentProc.running = true
     }
 
@@ -47,7 +47,7 @@ BaseCard {
         accentColor: Theme.accent
         onClicked: {
             if (accentProc.running) return
-            accentProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/accent-switch.sh"]
+            accentProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/accent-switch.sh"]
             accentProc.running = true
         }
     }
@@ -225,12 +225,12 @@ BaseCard {
 
     Process {
         id: wallpaperProc
-        command: ["bash", "-c", "sh ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/apps/hypr-wallpaper-pick.sh"]
+        command: ["bash", "-c", "sh ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/hypr-wallpaper-pick.sh"]
     }
 
     Process {
         id: themeProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/theme-switch.sh"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/theme-switch.sh"]
         onExited: {
             Theme.reloadActiveTheme()
             Theme.reloadAccent()
@@ -239,7 +239,7 @@ BaseCard {
 
     Process {
         id: accentProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/accent-switch.sh"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/accent-switch.sh"]
         onExited: Theme.reloadAccent()
     }
 
@@ -261,7 +261,7 @@ BaseCard {
 
     Process {
         id: effectsToggleProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/effects-toggle.sh toggle"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/session/sh/effects-toggle.sh toggle"]
         stdout: SplitParser {
             onRead: data => {
                 effectsEnabled = data.trim() === "enabled"
@@ -272,7 +272,7 @@ BaseCard {
 
     Process {
         id: effectsStatusProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/effects-toggle.sh status"]
+        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/session/sh/effects-toggle.sh status"]
         stdout: SplitParser {
             onRead: data => {
                 effectsEnabled = data.trim() === "enabled"

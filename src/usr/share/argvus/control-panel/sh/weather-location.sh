@@ -5,7 +5,7 @@
 
 set -eu
 
-ARGVUS_BOOTSTRAP="${ARGVUS_BOOTSTRAP:-${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/scripts/argvus/bootstrap.sh}"
+ARGVUS_BOOTSTRAP="${ARGVUS_BOOTSTRAP:-${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/session/sh/bootstrap.sh}"
 . "$ARGVUS_BOOTSTRAP"
 
 STATE_DIR="${ARGVUS_CONFIG_HOME}/argvus"
@@ -35,7 +35,7 @@ select_location() {
     _options=$(printf '%s\n' "$_auto")
   fi
 
-  if ! _selection=$(printf '%s' "$_options" | rofi -config "$(paths_config rofi/config.rasi)" -dmenu -i -p "$_prompt" -mesg "$_message"); then
+  if ! _selection=$(printf '%s' "$_options" | rofi -config "$(paths_config launcher/config/config.rasi)" -dmenu -i -p "$_prompt" -mesg "$_message"); then
     return 1
   fi
 
