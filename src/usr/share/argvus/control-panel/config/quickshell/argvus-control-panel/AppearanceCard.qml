@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 import Quickshell.Io
 
 BaseCard {
@@ -230,7 +231,12 @@ BaseCard {
 
     Process {
         id: themeProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/theme-switch.sh"]
+        // The theme switch restarts this panel. Run outside its service cgroup
+        // so stopping the panel cannot kill the transition before DPMS resumes.
+        command: ["systemd-run", "--user", "--collect", "--quiet",
+            "--setenv=ARGVUS_CONFIG_HOME=" + Theme.configHome,
+            "--setenv=ARGVUS_SYSTEM_CONFIG=" + Theme.systemConfig,
+            "--", "sh", Theme.systemConfig + "/appearance/sh/theme-switch.sh"]
         onExited: {
             Theme.reloadActiveTheme()
             Theme.reloadAccent()

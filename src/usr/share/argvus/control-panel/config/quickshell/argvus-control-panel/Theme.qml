@@ -14,7 +14,9 @@ Singleton {
     property string monoFontFamily: "IBM Plex Mono"
     property int fontSize: 14
     property int monoFontSize: 14
-    readonly property string configHome: StandardPaths.writableLocation(StandardPaths.GenericConfigLocation)
+    readonly property string configHome: Quickshell.env("ARGVUS_CONFIG_HOME") ||
+        StandardPaths.writableLocation(StandardPaths.GenericConfigLocation)
+    readonly property string systemConfig: Quickshell.env("ARGVUS_SYSTEM_CONFIG") || "/usr/share/argvus"
     readonly property string generatedConfig: configHome + "/argvus/generated"
     FileView {
         id: themeNameFile
@@ -84,14 +86,14 @@ Singleton {
         themeFile.reload()
         if (themeFile.text().trim() !== "") return
 
-        // 2. Generated config (~/.config/argvus/config)
+        // 2. Generated config (~/.config/argvus/generated)
         themeFile.path = root.generatedConfig + "/quickshell/argvus-control-panel/themes/" +
             themeName + "/Theme.qml"
         themeFile.reload()
         if (themeFile.text().trim() !== "") return
 
         // 3. System default
-        themeFile.path = "/usr/share/argvus/control-panel/config/quickshell/argvus-control-panel/themes/" +
+        themeFile.path = root.systemConfig + "/control-panel/config/quickshell/argvus-control-panel/themes/" +
             themeName + "/Theme.qml"
         themeFile.reload()
     }
