@@ -138,15 +138,6 @@ BaseCard {
             }
         }
 
-        Text {
-            text: lockDpms ? Strings.stateOn : Strings.stateOff
-            color: lockDpms ? Theme.accent : Theme.danger
-            font.pixelSize: Theme.scaledFont(16)
-            font.family: Theme.fontFamily
-            font.weight: Font.Bold
-            font.letterSpacing: 2
-            Layout.alignment: Qt.AlignVCenter
-        }
     }
 
     Timer {

@@ -77,6 +77,8 @@ QtObject {
     readonly property string widgetTelemetryTitle:    tr("appearance.widget.title")
     readonly property string widgetTelemetryEnabled:  tr("appearance.widget.enabled")
     readonly property string widgetTelemetryDisabled: tr("appearance.widget.disabled")
+    readonly property string widgetTelemetryStateEnabled:  I18n.tr("widget-telemetry", "state.enabled")
+    readonly property string widgetTelemetryStateDisabled: I18n.tr("widget-telemetry", "state.disabled")
     readonly property string effectsTitle:            tr("appearance.effects.title")
     readonly property string effectsEnabled:          tr("appearance.effects.enabled")
     readonly property string effectsDisabled:         tr("appearance.effects.disabled")

@@ -11,6 +11,15 @@ BaseCard {
     property bool effectsEnabled: true
     property var accentColors: ["#996548", "#3590bd", "#7391a5", "#17d174", "#cb17d1", "#d1174f", "#d1ce17", "#9617d1", "#595959"]
 
+    function telemetryStateFromOutput(data) {
+        const state = data.trim().toLowerCase()
+        if (state === "enabled" || state === Strings.widgetTelemetryStateEnabled.toLowerCase())
+            return true
+        if (state === "disabled" || state === Strings.widgetTelemetryStateDisabled.toLowerCase())
+            return false
+        return widgetTelemetryEnabled
+    }
+
     function applyAccent(color) {
         if (accentProc.running) return
         accentProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/accent-switch.sh '" + color + "'"]
@@ -137,15 +146,6 @@ BaseCard {
             }
         }
 
-        Text {
-            text: widgetTelemetryEnabled ? Strings.stateOn : Strings.stateOff
-            color: widgetTelemetryEnabled ? Theme.accent : Theme.danger
-            font.pixelSize: Theme.scaledFont(16)
-            font.family: Theme.fontFamily
-            font.weight: Font.Bold
-            font.letterSpacing: 2
-            Layout.alignment: Qt.AlignVCenter
-        }
     }
 
     Item { Layout.preferredHeight: 2 }
@@ -205,15 +205,6 @@ BaseCard {
             }
         }
 
-        Text {
-            text: effectsEnabled ? Strings.stateOn : Strings.stateOff
-            color: effectsEnabled ? Theme.accent : Theme.danger
-            font.pixelSize: Theme.scaledFont(16)
-            font.family: Theme.fontFamily
-            font.weight: Font.Bold
-            font.letterSpacing: 2
-            Layout.alignment: Qt.AlignVCenter
-        }
     }
 
     Timer {
@@ -253,7 +244,7 @@ BaseCard {
         id: toggleProc
         command: ["argvus-widget-telemetry-toggle", "toggle"]
         stdout: SplitParser {
-            onRead: data => widgetTelemetryEnabled = data.trim() === "enabled"
+            onRead: data => widgetTelemetryEnabled = telemetryStateFromOutput(data)
         }
     }
 
@@ -261,7 +252,7 @@ BaseCard {
         id: checkProc
         command: ["argvus-widget-telemetry-toggle", "status"]
         stdout: SplitParser {
-            onRead: data => widgetTelemetryEnabled = data.trim() === "enabled"
+            onRead: data => widgetTelemetryEnabled = telemetryStateFromOutput(data)
         }
     }
 
