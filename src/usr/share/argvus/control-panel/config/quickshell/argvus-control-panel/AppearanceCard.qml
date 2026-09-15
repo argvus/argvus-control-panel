@@ -13,10 +13,8 @@ BaseCard {
 
     function telemetryStateFromOutput(data) {
         const state = data.trim().toLowerCase()
-        if (state === "enabled" || state === Strings.widgetTelemetryStateEnabled.toLowerCase())
-            return true
-        if (state === "disabled" || state === Strings.widgetTelemetryStateDisabled.toLowerCase())
-            return false
+        if (state === "enabled") return true
+        if (state === "disabled") return false
         return widgetTelemetryEnabled
     }
 
@@ -120,7 +118,11 @@ BaseCard {
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
-                onClicked: toggleProc.running = true
+                onClicked: {
+                    if (toggleProc.running) return
+                    widgetTelemetryEnabled = !widgetTelemetryEnabled
+                    toggleProc.running = true
+                }
             }
         }
 
@@ -242,7 +244,7 @@ BaseCard {
 
     Process {
         id: toggleProc
-        command: ["argvus-widget-telemetry-toggle", "toggle"]
+        command: ["env", "ARGVUS_MACHINE_OUTPUT=1", "argvus-widget-telemetry-toggle", "toggle"]
         stdout: SplitParser {
             onRead: data => widgetTelemetryEnabled = telemetryStateFromOutput(data)
         }
@@ -250,7 +252,7 @@ BaseCard {
 
     Process {
         id: checkProc
-        command: ["argvus-widget-telemetry-toggle", "status"]
+        command: ["env", "ARGVUS_MACHINE_OUTPUT=1", "argvus-widget-telemetry-toggle", "status"]
         stdout: SplitParser {
             onRead: data => widgetTelemetryEnabled = telemetryStateFromOutput(data)
         }
