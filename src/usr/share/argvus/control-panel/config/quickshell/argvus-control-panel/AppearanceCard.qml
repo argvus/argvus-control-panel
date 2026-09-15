@@ -138,7 +138,7 @@ BaseCard {
         }
 
         Text {
-            text: widgetTelemetryEnabled ? "ON" : "OFF"
+            text: widgetTelemetryEnabled ? Strings.stateOn : Strings.stateOff
             color: widgetTelemetryEnabled ? Theme.accent : Theme.danger
             font.pixelSize: Theme.scaledFont(16)
             font.family: Theme.fontFamily
@@ -206,7 +206,7 @@ BaseCard {
         }
 
         Text {
-            text: effectsEnabled ? "ON" : "OFF"
+            text: effectsEnabled ? Strings.stateOn : Strings.stateOff
             color: effectsEnabled ? Theme.accent : Theme.danger
             font.pixelSize: Theme.scaledFont(16)
             font.family: Theme.fontFamily

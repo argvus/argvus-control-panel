@@ -29,7 +29,7 @@ validate:
 	fi
 	@if find src -name '*.qml' | grep -q .; then \
 		if command -v qmllint >/dev/null 2>&1; then \
-			if ! qmllint -I src/usr/share/argvus/control-panel/config/quickshell/argvus-control-panel $$(find src -name '*.qml'); then \
+			if ! qmllint -I /usr/share/argvus/qml -I src/usr/share/argvus/control-panel/config/quickshell/argvus-control-panel $$(find src -name '*.qml'); then \
 				echo "qmllint reported issues; Quickshell imports may require runtime context"; \
 			fi; \
 		else \

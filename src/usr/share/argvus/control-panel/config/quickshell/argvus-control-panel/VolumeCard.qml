@@ -107,7 +107,7 @@ BaseCard {
         }
 
         Text {
-            text: muted ? "mut" : Math.round(volume * 100) + "%"
+            text: muted ? Strings.volumeMuted : Math.round(volume * 100) + "%"
             color: muted ? Theme.danger : Theme.fgDim
             font.pixelSize: Theme.scaledFont(16)
             font.family: Theme.fontFamily

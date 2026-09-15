@@ -175,7 +175,7 @@ BaseCard {
         }
 
         Text {
-            text: networkingEnabled ? "ON" : "OFF"
+            text: networkingEnabled ? Strings.stateOn : Strings.stateOff
             color: networkingEnabled ? Theme.accent : Theme.danger
             font.pixelSize: Theme.scaledFont(16)
             font.family: Theme.fontFamily

@@ -1,157 +1,152 @@
 pragma Singleton
 import QtQuick
+import org.argvus.i18n 1.0
 
 QtObject {
-    readonly property bool isPortuguese: Qt.locale().name.startsWith("pt")
+    function tr(key, args) { return I18n.tr("control-panel", key, args) }
 
-    // ── Card Titles ──
-    readonly property string cardTitleUser:         isPortuguese ? "USUÁRIO" : "USER"
-    readonly property string cardTitleNotifications: isPortuguese ? "NOTIFICACOES" : "NOTIFICATIONS"
-    readonly property string cardTitleCalendar:      isPortuguese ? "CALENDÁRIO" : "CALENDAR"
-    readonly property string cardTitleWeather:       isPortuguese ? "CLIMA" : "WEATHER"
-    readonly property string cardTitleVolume:        "VOLUME"
-    readonly property string cardTitleBrightness:     isPortuguese ? "BRILHO" : "BRIGHTNESS"
-    readonly property string cardTitleNetwork:       isPortuguese ? "REDE" : "NETWORK"
-    readonly property string cardTitleBluetooth:     "BLUETOOTH"
-    readonly property string cardTitleSystem:        isPortuguese ? "SISTEMA" : "SYSTEM"
-    readonly property string cardTitleAppearance:    isPortuguese ? "APARENCIA" : "APPEARANCE"
-    readonly property string cardTitleSession:       isPortuguese ? "SESSÃO" : "SESSION"
-    readonly property string cardTitleSpaces:        isPortuguese ? "ESPAÇOS" : "SPACES"
-    readonly property string cardTitleTaskbar:       isPortuguese ? "BARRA DE TAREFAS" : "TASKBAR"
-    readonly property string cardTitlePower:         isPortuguese ? "ENERGIA" : "POWER"
-    readonly property string cardTitleDisplay:       isPortuguese ? "MONITOR" : "DISPLAY"
-    readonly property string cardTitleAbout:         isPortuguese ? "SOBRE" : "ABOUT"
+    readonly property string cardTitleUser:          tr("card.user.title")
+    readonly property string cardTitleNotifications: tr("card.notifications.title")
+    readonly property string cardTitleCalendar:      tr("card.calendar.title")
+    readonly property string cardTitleWeather:       tr("card.weather.title")
+    readonly property string cardTitleVolume:        tr("card.volume.title")
+    readonly property string cardTitleBrightness:    tr("card.brightness.title")
+    readonly property string cardTitleNetwork:       tr("card.network.title")
+    readonly property string cardTitleBluetooth:     tr("card.bluetooth.title")
+    readonly property string cardTitleSystem:        tr("card.system.title")
+    readonly property string cardTitleAppearance:    tr("card.appearance.title")
+    readonly property string cardTitleSession:       tr("card.session.title")
+    readonly property string cardTitleSpaces:        tr("card.spaces.title")
+    readonly property string cardTitleTaskbar:       tr("card.taskbar.title")
+    readonly property string cardTitlePower:         tr("card.power.title")
+    readonly property string cardTitleDisplay:       tr("card.display.title")
+    readonly property string cardTitleAbout:         tr("card.about.title")
 
-    // ── AboutCard ──
-    readonly property string aboutHint: isPortuguese
-        ? "Veja informações do sistema, módulos, créditos e licença."
-        : "View system information, modules, credits and license."
-    readonly property string aboutOpen: isPortuguese ? "Abrir Sobre" : "Open About"
+    readonly property string aboutHint: tr("about.hint")
+    readonly property string aboutOpen: tr("about.open")
 
-    // ── DisplayCard ──
-    readonly property string displayScale:       isPortuguese ? "Escala" : "Scale"
-    readonly property string displayDpi:         "DPI"
-    readonly property string displayBrightness:  isPortuguese ? "Brilho" : "Brightness"
-    readonly property string displayPowerOn:     isPortuguese ? "Ligar monitor" : "Turn on"
-    readonly property string displayPowerOff:    isPortuguese ? "Desligar monitor" : "Turn off"
-    readonly property string displayOpenCenter:  isPortuguese ? "Abrir Displays" : "Open Displays"
+    readonly property string displayScale:      tr("display.scale")
+    readonly property string displayDpi:        tr("display.dpi")
+    readonly property string displayBrightness: tr("display.brightness")
+    readonly property string displayPowerOn:    tr("display.power_on")
+    readonly property string displayPowerOff:   tr("display.power_off")
+    readonly property string displayOpenCenter: tr("display.open_center")
 
-    // ── SpacesCard ──
-    readonly property string spacesWaybar:           isPortuguese ? "Waybar" : "Waybar"
-    readonly property string spacesGapIn:            isPortuguese ? "Gap Interno" : "Inner Gap"
-    readonly property string spacesGapOut:           isPortuguese ? "Gap Externo" : "Outer Gap"
-    readonly property string btnApply:               isPortuguese ? "Aplicar" : "Apply"
+    readonly property string spacesWaybar: tr("spaces.waybar")
+    readonly property string spacesGapIn:  tr("spaces.gap_in")
+    readonly property string spacesGapOut: tr("spaces.gap_out")
+    readonly property string btnApply:     tr("action.apply")
 
-    // ── TaskbarCard ──
-    readonly property string taskbarPositionLabel:   isPortuguese ? "Posição da barra" : "Bar position"
-    readonly property string taskbarTop:             isPortuguese ? "Topo" : "Top"
-    readonly property string taskbarBottom:          isPortuguese ? "Inferior" : "Bottom"
+    readonly property string taskbarPositionLabel: tr("taskbar.position")
+    readonly property string taskbarTop:           tr("taskbar.top")
+    readonly property string taskbarBottom:        tr("taskbar.bottom")
 
-    // ── NotificationCard ──
-    readonly property string notifNone:     isPortuguese ? "Nenhuma notificacao" : "No notifications"
-    readonly property string notifRecent:   isPortuguese ? "recente(s)" : "recent"
-    readonly property string notifClear:    isPortuguese ? "Limpar" : "Clear"
-    readonly property string notifAllClear: isPortuguese ? "Tudo limpo" : "All clear"
+    readonly property string notifNone:        tr("notifications.none")
+    readonly property string notifRecent:      tr("notifications.recent")
+    readonly property string notifClear:       tr("notifications.clear")
+    readonly property string notifAllClear:    tr("notifications.all_clear")
+    readonly property string notifAppUnknown:  tr("notifications.app_unknown")
 
-    // ── NetworkCard ──
-    readonly property string netTitle:        "Internet"
-    readonly property string netDisabled:     isPortuguese ? "Rede desativada" : "Network disabled"
-    readonly property string netConnected:    isPortuguese ? "Conectado" : "Connected"
-    readonly property string netNoConnection: isPortuguese ? "Sem conexao" : "No connection"
+    readonly property string netTitle:        tr("network.title")
+    readonly property string netDisabled:     tr("network.disabled")
+    readonly property string netConnected:    tr("network.connected")
+    readonly property string netNoConnection: tr("network.no_connection")
 
-    // ── BluetoothCard ──
-    readonly property string btTitle:           "Bluetooth"
-    readonly property string btEnabled:         isPortuguese ? "Bluetooth ativo" : "Bluetooth active"
-    readonly property string btDisabled:        isPortuguese ? "Bluetooth desligado" : "Bluetooth off"
-    readonly property string btConnected:       isPortuguese ? "dispositivo(s)" : "device(s)"
-    readonly property string btNoController:    isPortuguese ? "Sem controlador" : "No controller"
-    readonly property string btUnavailable:     isPortuguese ? "bluez-utils ausente" : "bluez-utils missing"
-    readonly property string btOpenManager:     isPortuguese ? "Abrir Blueman" : "Open Blueman"
-    readonly property string btManagerOptional: isPortuguese ? "Blueman opcional" : "Blueman optional"
+    readonly property string btTitle:           tr("bluetooth.title")
+    readonly property string btEnabled:         tr("bluetooth.enabled")
+    readonly property string btDisabled:        tr("bluetooth.disabled")
+    readonly property string btConnected:       tr("bluetooth.connected")
+    readonly property string btNoController:    tr("bluetooth.no_controller")
+    readonly property string btUnavailable:     tr("bluetooth.unavailable")
+    readonly property string btOpenManager:     tr("bluetooth.open_manager")
+    readonly property string btManagerOptional: tr("bluetooth.manager_optional")
+    readonly property string btController:      tr("bluetooth.controller")
 
-    // ── WeatherCard ──
-    readonly property string weatherLoading:   isPortuguese ? "Buscando dados..." : "Loading..."
-    readonly property string weatherError:     isPortuguese ? "Sem dados de clima" : "No weather data"
-    readonly property string weatherFeelsLike: isPortuguese ? "Sensacao" : "Feels like"
-    readonly property string weatherHumidity:  isPortuguese ? "Umidade" : "Humidity"
-    readonly property string weatherWind:      isPortuguese ? "Vento" : "Wind"
-    readonly property string weatherConfigure: isPortuguese ? "Configurar" : "Configure"
-    readonly property string weatherRefresh:   isPortuguese ? "Atualizar" : "Refresh"
+    readonly property string weatherLoading:   tr("weather.loading")
+    readonly property string weatherError:     tr("weather.error")
+    readonly property string weatherFeelsLike: tr("weather.feels_like")
+    readonly property string weatherHumidity:  tr("weather.humidity")
+    readonly property string weatherWind:      tr("weather.wind")
+    readonly property string weatherConfigure: tr("weather.configure")
+    readonly property string weatherRefresh:   tr("weather.refresh")
+    readonly property string volumeMuted:       tr("volume.muted")
 
-    // ── AppearanceCard ──
-    readonly property string btnWallpaper:      isPortuguese ? "Papel de Parede" : "Wallpaper"
-    readonly property string btnTheme:          isPortuguese ? "Tema" : "Theme"
-    readonly property string btnAccent:         isPortuguese
-        ? "Cores (SUPER + SHIFT + A)"
-        : "Colors (SUPER + SHIFT + A)"
-    readonly property string widgetTelemetryTitle:      isPortuguese ? "WIDGET TELEMETRIA" : "TELEMETRY WIDGET"
-    readonly property string widgetTelemetryEnabled:    isPortuguese ? "Widget esquerdo ativo" : "Left widget active"
-    readonly property string widgetTelemetryDisabled:   isPortuguese ? "Widget esquerdo inativo" : "Left widget inactive"
-    readonly property string effectsTitle:      isPortuguese ? "EFEITOS" : "EFFECTS"
-    readonly property string effectsEnabled:    isPortuguese ? "Animações e blur ativos" : "Animations and blur active"
-    readonly property string effectsDisabled:   isPortuguese ? "Animações e blur inativos" : "Animations and blur inactive"
-    readonly property string idleLockTitle:     isPortuguese ? "BLOQUEIO" : "LOCK TIMER"
-    readonly property string idleLockNever:     isPortuguese ? "Nunca" : "Never"
-    readonly property string lockDpmsTitle:     isPortuguese ? "DESLIGAR MONITOR" : "TURN OFF MONITOR"
-    readonly property string lockDpmsEnabled:   isPortuguese ? "Monitor desliga ao bloquear" : "Monitor turns off on lock"
-    readonly property string lockDpmsDisabled:  isPortuguese ? "Monitor permanece ligado" : "Monitor stays on"
+    readonly property string btnWallpaper:            tr("appearance.wallpaper")
+    readonly property string btnTheme:                tr("appearance.theme")
+    readonly property string btnAccent:               tr("appearance.accent")
+    readonly property string widgetTelemetryTitle:    tr("appearance.widget.title")
+    readonly property string widgetTelemetryEnabled:  tr("appearance.widget.enabled")
+    readonly property string widgetTelemetryDisabled: tr("appearance.widget.disabled")
+    readonly property string effectsTitle:            tr("appearance.effects.title")
+    readonly property string effectsEnabled:          tr("appearance.effects.enabled")
+    readonly property string effectsDisabled:         tr("appearance.effects.disabled")
+    readonly property string idleLockTitle:           tr("appearance.lock.title")
+    readonly property string idleLockNever:           tr("appearance.lock.never")
+    readonly property string lockDpmsTitle:           tr("appearance.dpms.title")
+    readonly property string lockDpmsEnabled:         tr("appearance.dpms.enabled")
+    readonly property string lockDpmsDisabled:        tr("appearance.dpms.disabled")
 
-    // ── UserCard ──
-    readonly property string userTabAvatar:         isPortuguese ? "Avatar" : "Avatar"
-    readonly property string userTabName:           isPortuguese ? "Nome" : "Name"
-    readonly property string userTabPassword:       isPortuguese ? "Senha" : "Password"
-    readonly property string userAvatarActive:      isPortuguese ? "Avatar definido" : "Avatar set"
-    readonly property string userAvatarNone:        isPortuguese ? "Sem avatar" : "No avatar"
-    readonly property string userAvatarChange:      isPortuguese ? "Alterar" : "Change"
-    readonly property string userAvatarRemove:      isPortuguese ? "Remover" : "Remove"
-    readonly property string userAvatarOk:          isPortuguese ? "Avatar atualizado" : "Avatar updated"
-    readonly property string userAvatarRemoved:     isPortuguese ? "Avatar removido" : "Avatar removed"
-    readonly property string userAvatarError:       isPortuguese ? "Erro ao alterar avatar" : "Failed to change avatar"
-    readonly property string user_name_label:       isPortuguese ? "Nome de exibicao:" : "Display name:"
-    readonly property string user_name_hint:        isPortuguese
-        ? "Nome exibido no login e no sistema."
-        : "Name shown on login and across the system."
-    readonly property string user_name_save:        isPortuguese ? "Salvar" : "Save"
-    readonly property string user_name_ok:          isPortuguese ? "Nome atualizado" : "Name updated"
-    readonly property string user_name_error:       isPortuguese ? "Erro ao alterar nome" : "Failed to change name"
-    readonly property string userPasswordDesc:      isPortuguese
-        ? "Altere sua senha do sistema."
-        : "Change your system password."
-    readonly property string userPasswordCurrent:   isPortuguese ? "Senha atual:" : "Current password:"
-    readonly property string userPasswordNew:       isPortuguese ? "Nova senha:" : "New password:"
-    readonly property string userPasswordConfirm:   isPortuguese ? "Confirmar senha:" : "Confirm password:"
-    readonly property string userPasswordMismatch:  isPortuguese
-        ? "As senhas nao coincidem."
-        : "Passwords do not match."
-    readonly property string userPasswordChange:    isPortuguese ? "Alterar senha" : "Change password"
-    readonly property string userPasswordOk:        isPortuguese ? "Senha alterada" : "Password changed"
-    readonly property string userPasswordError:     isPortuguese ? "Erro ao alterar senha" : "Failed to change password"
-    readonly property string userPasswordHint:      isPortuguese
-        ? "Será solicitada a senha do polkit."
-        : "Polkit password will be requested."
+    readonly property string userTabAvatar:        tr("user.tab.avatar")
+    readonly property string userTabName:          tr("user.tab.name")
+    readonly property string userTabPassword:      tr("user.tab.password")
+    readonly property string userAvatarActive:     tr("user.avatar.set")
+    readonly property string userAvatarNone:       tr("user.avatar.none")
+    readonly property string userAvatarChange:     tr("user.avatar.change")
+    readonly property string userAvatarRemove:     tr("user.avatar.remove")
+    readonly property string userAvatarOk:         tr("user.avatar.updated")
+    readonly property string userAvatarRemoved:    tr("user.avatar.removed")
+    readonly property string userAvatarError:      tr("user.avatar.error")
+    readonly property string user_name_label:      tr("user.name.label")
+    readonly property string user_name_hint:       tr("user.name.hint")
+    readonly property string user_name_save:       tr("user.name.save")
+    readonly property string user_name_ok:         tr("user.name.updated")
+    readonly property string user_name_error:      tr("user.name.error")
+    readonly property string userPasswordDesc:     tr("user.password.description")
+    readonly property string userPasswordCurrent:  tr("user.password.current")
+    readonly property string userPasswordNew:      tr("user.password.new")
+    readonly property string userPasswordConfirm:  tr("user.password.confirm")
+    readonly property string userPasswordMismatch: tr("user.password.mismatch")
+    readonly property string userPasswordChange:   tr("user.password.change")
+    readonly property string userPasswordOk:       tr("user.password.changed")
+    readonly property string userPasswordError:    tr("user.password.error")
+    readonly property string userPasswordHint:     tr("user.password.hint")
 
-    // ── PowerCard ──
-    readonly property var _ptProfiles: [
-        { id: "power-saver",  label: "Economia",    icon: "󰾆", desc: "Economia de energia" },
-        { id: "balanced",     label: "Balanceado",  icon: "󰾅", desc: "Padrao" },
-        { id: "performance",  label: "Performance", icon: "󰓅", desc: "Max. desempenho" },
+    readonly property var profiles: [
+        { id: "power-saver", label: tr("power.profile.power_saver"), icon: "󰾆", desc: tr("power.profile.power_saver.description") },
+        { id: "balanced", label: tr("power.profile.balanced"), icon: "󰾅", desc: tr("power.profile.balanced.description") },
+        { id: "performance", label: tr("power.profile.performance"), icon: "󰓅", desc: tr("power.profile.performance.description") }
     ]
-    readonly property var _enProfiles: [
-        { id: "power-saver",  label: "Power Saver",  icon: "󰾆", desc: "Power saving" },
-        { id: "balanced",     label: "Balanced",     icon: "󰾅", desc: "Default" },
-        { id: "performance",  label: "Performance",  icon: "󰓅", desc: "Max performance" },
+    readonly property string powerSaverActive:     tr("power.active.power_saver")
+    readonly property string powerPerfActive:      tr("power.active.performance")
+    readonly property string powerBalancedActive:  tr("power.active.balanced")
+
+    readonly property var monthNames: [
+        tr("calendar.month.1"), tr("calendar.month.2"), tr("calendar.month.3"),
+        tr("calendar.month.4"), tr("calendar.month.5"), tr("calendar.month.6"),
+        tr("calendar.month.7"), tr("calendar.month.8"), tr("calendar.month.9"),
+        tr("calendar.month.10"), tr("calendar.month.11"), tr("calendar.month.12")
     ]
-    readonly property var profiles: isPortuguese ? _ptProfiles : _enProfiles
-
-    readonly property string powerSaverActive:    isPortuguese ? "Economia de bateria ativa" : "Battery saver active"
-    readonly property string powerPerfActive:     isPortuguese ? "Maximo desempenho ativo" : "Maximum performance active"
-    readonly property string powerBalancedActive: isPortuguese ? "Perfil balanceado ativo" : "Balanced profile active"
-
-    // ── CalendarCard ──
-    readonly property var monthNames: isPortuguese
-        ? ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
-        : ["January","February","March","April","May","June","July","August","September","October","November","December"]
-    readonly property var dayNames: isPortuguese
-        ? ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"]
-        : ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+    readonly property var dayNames: [
+        tr("calendar.day.1"), tr("calendar.day.2"), tr("calendar.day.3"),
+        tr("calendar.day.4"), tr("calendar.day.5"), tr("calendar.day.6"),
+        tr("calendar.day.7")
+    ]
+    readonly property string stateOn:                 tr("state.on")
+    readonly property string stateOff:                tr("state.off")
+    readonly property string weatherLocationAuto:     tr("weather.location.auto")
+    readonly property string weatherLocationTitle:    tr("weather.location.title")
+    readonly property string weatherLocationPrompt:   tr("weather.location.prompt")
+    readonly property string weatherLocationTooLong:  tr("weather.location.too_long")
+    readonly property string weatherNotificationTitle: tr("weather.notification.title")
+    readonly property string weatherNotificationAuto:  tr("weather.notification.auto")
+    readonly property string weatherConditionClearSky:   tr("weather.condition.clear_sky")
+    readonly property string weatherConditionPartlyCloudy: tr("weather.condition.partly_cloudy")
+    readonly property string weatherConditionFog:        tr("weather.condition.fog")
+    readonly property string weatherConditionDrizzle:    tr("weather.condition.drizzle")
+    readonly property string weatherConditionRain:       tr("weather.condition.rain")
+    readonly property string weatherConditionSnow:       tr("weather.condition.snow")
+    readonly property string weatherConditionRainShowers: tr("weather.condition.rain_showers")
+    readonly property string weatherConditionSnowShowers: tr("weather.condition.snow_showers")
+    readonly property string weatherConditionThunderstorm: tr("weather.condition.thunderstorm")
+    readonly property string weatherConditionUnknown:   tr("weather.condition.unknown")
 }

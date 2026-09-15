@@ -33,7 +33,7 @@ BaseCard {
                     for (var i = 0; i < entries.length && i < 9; i++) {
                         var n = entries[i]
                         items.push({
-                            app:     n.appname  ? n.appname.data  : "sistema",
+                            app:     n.appname  ? n.appname.data  : Strings.notifAppUnknown,
                             summary: n.summary  ? n.summary.data  : "",
                             body:    n.body     ? n.body.data     : ""
                         })

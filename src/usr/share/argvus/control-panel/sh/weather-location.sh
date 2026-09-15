@@ -19,15 +19,9 @@ read_location() {
 
 select_location() {
   _current="$(read_location)"
-  if locale_is_pt; then
-    _auto="Automatico (por IP)"
-    _prompt="Local do clima"
-    _message="Digite uma cidade, por exemplo: Sao Paulo, SP"
-  else
-    _auto="Automatic (by IP)"
-    _prompt="Weather location"
-    _message="Type a city, for example: London, UK"
-  fi
+  _auto="$(argvus_tr control-panel weather.location.auto)"
+  _prompt="$(argvus_tr control-panel weather.location.title)"
+  _message="$(argvus_tr control-panel weather.location.prompt)"
 
   if [ -n "$_current" ]; then
     _options=$(printf '%s\n%s\n' "$_auto" "$_current")
@@ -63,7 +57,7 @@ esac
 
 LOCATION=$(printf '%s' "$REQUESTED" | tr -d '\r\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
 if [ "${#LOCATION}" -gt 120 ]; then
-  printf 'Weather location is too long.\n' >&2
+  argvus_tr control-panel weather.location.too_long >&2
   exit 1
 fi
 
@@ -75,12 +69,8 @@ if [ -n "$LOCATION" ]; then
 else
   MESSAGE="Automatic (IP)"
 fi
-if locale_is_pt; then
-  SUMMARY="Clima"
-  [ -n "$LOCATION" ] || MESSAGE="Automatico (IP)"
-else
-  SUMMARY="Weather"
-fi
+SUMMARY="$(argvus_tr control-panel weather.notification.title)"
+[ -n "$LOCATION" ] || MESSAGE="$(argvus_tr control-panel weather.notification.auto)"
 
 notify-send "$SUMMARY" "$MESSAGE" 2>/dev/null || true
 printf '%s\n' "$LOCATION"

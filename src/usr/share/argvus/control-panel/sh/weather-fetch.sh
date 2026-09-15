@@ -4,6 +4,21 @@
 
 set -eu
 
+ARGVUS_BOOTSTRAP="${ARGVUS_BOOTSTRAP:-${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/session/sh/bootstrap.sh}"
+# shellcheck disable=SC1091
+. "$ARGVUS_BOOTSTRAP"
+
+WEATHER_CLEAR_SKY="$(argvus_tr control-panel weather.condition.clear_sky)"
+WEATHER_PARTLY_CLOUDY="$(argvus_tr control-panel weather.condition.partly_cloudy)"
+WEATHER_FOG="$(argvus_tr control-panel weather.condition.fog)"
+WEATHER_DRIZZLE="$(argvus_tr control-panel weather.condition.drizzle)"
+WEATHER_RAIN="$(argvus_tr control-panel weather.condition.rain)"
+WEATHER_SNOW="$(argvus_tr control-panel weather.condition.snow)"
+WEATHER_RAIN_SHOWERS="$(argvus_tr control-panel weather.condition.rain_showers)"
+WEATHER_SNOW_SHOWERS="$(argvus_tr control-panel weather.condition.snow_showers)"
+WEATHER_THUNDERSTORM="$(argvus_tr control-panel weather.condition.thunderstorm)"
+WEATHER_UNKNOWN="$(argvus_tr control-panel weather.condition.unknown)"
+
 LOCATION="${1:-}"
 TMP_DIR="${TMPDIR:-/tmp}/argvus-weather.$$"
 mkdir -p "$TMP_DIR"
@@ -63,18 +78,28 @@ EOF
     -o "$TMP_DIR/forecast.json" 2>/dev/null || return 1
 
   jq -e '.current' "$TMP_DIR/forecast.json" >/dev/null 2>&1 || return 1
-  jq --arg city "$_city" --arg country "$_country" '
+  jq --arg city "$_city" --arg country "$_country" \
+    --arg clear_sky "$WEATHER_CLEAR_SKY" \
+    --arg partly_cloudy "$WEATHER_PARTLY_CLOUDY" \
+    --arg fog "$WEATHER_FOG" \
+    --arg drizzle "$WEATHER_DRIZZLE" \
+    --arg rain "$WEATHER_RAIN" \
+    --arg snow "$WEATHER_SNOW" \
+    --arg rain_showers "$WEATHER_RAIN_SHOWERS" \
+    --arg snow_showers "$WEATHER_SNOW_SHOWERS" \
+    --arg thunderstorm "$WEATHER_THUNDERSTORM" \
+    --arg unknown "$WEATHER_UNKNOWN" '
     def description:
-      if . == 0 then "Clear sky"
-      elif . <= 3 then "Partly cloudy"
-      elif . <= 48 then "Fog"
-      elif . <= 57 then "Drizzle"
-      elif . <= 67 then "Rain"
-      elif . <= 77 then "Snow"
-      elif . <= 82 then "Rain showers"
-      elif . <= 86 then "Snow showers"
-      elif . <= 99 then "Thunderstorm"
-      else "Unknown"
+      if . == 0 then $clear_sky
+      elif . <= 3 then $partly_cloudy
+      elif . <= 48 then $fog
+      elif . <= 57 then $drizzle
+      elif . <= 67 then $rain
+      elif . <= 77 then $snow
+      elif . <= 82 then $rain_showers
+      elif . <= 86 then $snow_showers
+      elif . <= 99 then $thunderstorm
+      else $unknown
       end;
     {
       current_condition: [{

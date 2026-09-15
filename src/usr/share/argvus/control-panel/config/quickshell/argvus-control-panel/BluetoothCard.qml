@@ -128,7 +128,7 @@ BaseCard {
         }
 
         Text {
-            text: adapter !== "" ? adapter : "Controller"
+                text: adapter !== "" ? adapter : Strings.btController
             color: Theme.fgText
             font.pixelSize: Theme.scaledFont(13)
             font.family: Theme.fontMono

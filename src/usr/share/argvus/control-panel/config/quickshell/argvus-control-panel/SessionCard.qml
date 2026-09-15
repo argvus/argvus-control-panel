@@ -139,7 +139,7 @@ BaseCard {
         }
 
         Text {
-            text: lockDpms ? "ON" : "OFF"
+            text: lockDpms ? Strings.stateOn : Strings.stateOff
             color: lockDpms ? Theme.accent : Theme.danger
             font.pixelSize: Theme.scaledFont(16)
             font.family: Theme.fontFamily
