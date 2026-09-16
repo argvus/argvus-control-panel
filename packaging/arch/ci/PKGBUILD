@@ -1,0 +1,21 @@
+# Maintainer: William C. Canin
+pkgname=argvus-control-panel
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Quickshell control panel for the ARGVUS desktop"
+arch=('any')
+url="https://github.com/argvus/argvus-control-panel"
+license=('GPL-3.0-only')
+depends=('argvus-accounts' 'argvus-appearance' 'argvus-control-center' 'argvus-display' 'argvus-fonts' 'argvus-hyprland' 'argvus-i18n' 'argvus-launcher' 'argvus-network' 'argvus-notifications' 'argvus-power' 'argvus-session' 'bash' 'curl' 'fastfetch' 'gpu-screen-recorder' 'hyprland' 'jq' 'libnotify' 'libqalculate' 'power-profiles-daemon' 'procps-ng' 'qt6-declarative' 'quickshell' 'wireplumber' 'xdg-user-dirs')
+optdepends=('argvus: dispatcher used by control panel actions in a full desktop install' 'argvus-taskbar: Waybar top panel aligned with the control panel' 'argvus-widget-telemetry: optional widget telemetry panel' 'kdialog: avatar image picker from the user card' 'nvidia-utils: NVIDIA GPU readout in the system card')
+options=('!debug')
+source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=()
+
+# shellcheck disable=SC1091
+_functions_file="${startdir:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)}/../common/functions.sh"
+. "$_functions_file"
+
+prepare() { arch_normalize_source_tree; }
+check() { arch_check_control_panel; }
+package() { arch_package_control_panel; }
