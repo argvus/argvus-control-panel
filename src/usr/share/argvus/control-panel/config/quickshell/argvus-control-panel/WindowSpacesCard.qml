@@ -4,21 +4,17 @@ import Quickshell.Io
 
 BaseCard {
     id: card
-    cardTitle: Strings.cardTitleSpaces
+    cardTitle: Strings.cardTitleWindowSpaces
     cardIcon: "»"
 
-    property int taskbarTop: 0
-    property int taskbarLeft: 0
-    property int taskbarRight: 0
-    property int taskbarBottom: 0
+    property int gapsIn: 3
+    property int gapsOut: 1
 
     readonly property string script: "sh ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/hyprland/sh/spaces-switch.sh"
     readonly property string reloadScript: "argvus-sessionctl reload"
     readonly property var controls: [
-        { key: "waybar_top", label: Strings.spacesTaskbarTop, valueProp: "taskbarTop" },
-        { key: "waybar_left", label: Strings.spacesTaskbarLeft, valueProp: "taskbarLeft" },
-        { key: "waybar_right", label: Strings.spacesTaskbarRight, valueProp: "taskbarRight" },
-        { key: "waybar_bottom", label: Strings.spacesTaskbarBottom, valueProp: "taskbarBottom" }
+        { key: "gaps_in", label: Strings.spacesGapIn, valueProp: "gapsIn" },
+        { key: "gaps_out", label: Strings.spacesGapOut, valueProp: "gapsOut" }
     ]
 
     Timer {
@@ -35,12 +31,8 @@ BaseCard {
                 for (var i = 0; i < lines.length; i++) {
                     var parts = lines[i].split("=")
                     if (parts.length !== 2) continue
-                    for (var j = 0; j < controls.length; j++) {
-                        if (controls[j].key === parts[0]) {
-                            card[controls[j].valueProp] = parseInt(parts[1])
-                            break
-                        }
-                    }
+                    if (parts[0] === "gaps_in") card.gapsIn = parseInt(parts[1])
+                    if (parts[0] === "gaps_out") card.gapsOut = parseInt(parts[1])
                 }
             }
         }
@@ -60,10 +52,6 @@ BaseCard {
     function setValue(key, value) {
         setProc.cmd = card.script + " --set " + key + " " + Math.round(value)
         setProc.running = true
-    }
-
-    function applyChanges() {
-        if (!applyProc.running) applyProc.running = true
     }
 
     ColumnLayout {
@@ -149,7 +137,7 @@ BaseCard {
             iconText: "\uf00c"
             label: Strings.btnApply
             active: true
-            onClicked: applyChanges()
+            onClicked: if (!applyProc.running) applyProc.running = true
         }
     }
 }

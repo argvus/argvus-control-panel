@@ -13,7 +13,9 @@ UserCard          1.0 UserCard.qml
 PowerCard         1.0 PowerCard.qml
 VolumeCard        1.0 VolumeCard.qml
     BrightnessCard    1.0 BrightnessCard.qml
-    SpacesCard        1.0 SpacesCard.qml
+SpacesCard        1.0 SpacesCard.qml
+WindowSpacesCard  1.0 WindowSpacesCard.qml
+BordersCard       1.0 BordersCard.qml
     NetworkCard       1.0 NetworkCard.qml
 BluetoothCard     1.0 BluetoothCard.qml
 AppearanceCard    1.0 AppearanceCard.qml
