@@ -42,6 +42,8 @@ QtObject {
     readonly property string spacesGapOutBottom:  tr("spaces.gap_out_bottom")
     readonly property string spacesRounded:       tr("spaces.rounded")
     readonly property string spacesRounding:      tr("spaces.rounding")
+    readonly property string spacesEdgeThickness: tr("spaces.edge_thickness")
+    readonly property string spacesThickness:     tr("spaces.thickness")
     readonly property string btnApply:            tr("action.apply")
 
     readonly property string taskbarPositionLabel: tr("spaces.taskbar_position")

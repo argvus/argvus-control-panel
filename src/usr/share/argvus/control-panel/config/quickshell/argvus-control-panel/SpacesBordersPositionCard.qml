@@ -22,6 +22,7 @@ BaseCard {
     property int gapsOutBottom: 1
     property bool rounded: false
     property int rounding: 0
+    property int thickness: 1
 
     readonly property string spacesScript: "sh ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/hyprland/sh/spaces-switch.sh"
     readonly property string bordersScript: "sh ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/hyprland/sh/borders-switch.sh"
@@ -94,6 +95,7 @@ BaseCard {
                     if (parts.length !== 2) continue
                     if (parts[0] === "rounded") card.rounded = parts[1] === "1"
                     if (parts[0] === "rounding") card.rounding = parseInt(parts[1])
+                    if (parts[0] === "thickness") card.thickness = parseInt(parts[1])
                 }
             }
         }
@@ -129,7 +131,8 @@ BaseCard {
             card.spacesScript + " --set-persist gaps_out_left " + card.gapsOutLeft,
             card.spacesScript + " --set-persist gaps_out_right " + card.gapsOutRight,
             card.spacesScript + " --set-persist gaps_out_bottom " + card.gapsOutBottom,
-            card.bordersScript + " --set-persist rounded " + (card.rounded ? 1 : 0)
+            card.bordersScript + " --set-persist rounded " + (card.rounded ? 1 : 0),
+            card.bordersScript + " --set-persist thickness " + card.thickness
         ]
         if (card.rounded) commands.push(card.bordersScript + " --set-persist rounding " + card.rounding)
 
@@ -347,6 +350,36 @@ BaseCard {
                 opacity: card.rounded ? 1 : 0.4
                 iconText: "+"; label: ""
                 onClicked: card.adjustValue("rounding", 1, 2, 10)
+            }
+        }
+
+        Text {
+            text: Strings.spacesEdgeThickness
+            color: Theme.accent
+            font.pixelSize: Theme.scaledFont(11)
+            font.family: Theme.fontFamily
+            font.bold: true
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 6
+            Text { text: Strings.spacesThickness; color: Theme.fgText; font.pixelSize: Theme.scaledFont(11); font.family: Theme.fontFamily }
+            Item { Layout.fillWidth: true }
+            GlassButton {
+                implicitWidth: 28; implicitHeight: 28
+                iconText: "−"; label: ""
+                onClicked: card.adjustValue("thickness", -1, 0, 10)
+            }
+            Rectangle {
+                Layout.preferredWidth: 48; Layout.preferredHeight: 28
+                radius: Theme.radiusSmall; color: Theme.bgCard; border.color: Theme.borderSubtle; border.width: 1
+                Text { anchors.fill: parent; anchors.margins: 2; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter; color: Theme.fgText; font.pixelSize: Theme.scaledFont(11); font.family: Theme.fontFamily; font.bold: true; text: card.thickness }
+            }
+            GlassButton {
+                implicitWidth: 28; implicitHeight: 28
+                iconText: "+"; label: ""
+                onClicked: card.adjustValue("thickness", 1, 0, 10)
             }
         }
 

@@ -156,11 +156,10 @@ Singleton {
 
     function loadEffectiveSpaces(contents) {
         var isFloat = root.themeName.endsWith("-float")
-        var fallback = isFloat ? 8 : 1
-        root._effectiveTop = fallback
-        root._effectiveRight = fallback
-        root._effectiveBottom = fallback
-        root._effectiveLeft = fallback
+        root._effectiveTop = 0
+        root._effectiveRight = isFloat ? 18 : 0
+        root._effectiveBottom = isFloat ? 18 : 0
+        root._effectiveLeft = isFloat ? 18 : 0
         var lines = contents.split("\n")
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i].trim()
