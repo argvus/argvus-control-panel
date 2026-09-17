@@ -28,10 +28,10 @@ BaseCard {
     readonly property string bordersScript: "sh ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/hyprland/sh/borders-switch.sh"
     readonly property string reloadScript: "argvus-sessionctl reload"
     readonly property var taskbarControls: [
-        { key: "waybar_top", label: Strings.spacesTaskbarTop, valueProp: "taskbarTop" },
-        { key: "waybar_left", label: Strings.spacesTaskbarLeft, valueProp: "taskbarLeft" },
-        { key: "waybar_right", label: Strings.spacesTaskbarRight, valueProp: "taskbarRight" },
-        { key: "waybar_bottom", label: Strings.spacesTaskbarBottom, valueProp: "taskbarBottom" }
+        { key: "waybar_top", label: Strings.spacesOuterGapTop, valueProp: "taskbarTop" },
+        { key: "waybar_left", label: Strings.spacesOuterGapLeft, valueProp: "taskbarLeft" },
+        { key: "waybar_right", label: Strings.spacesOuterGapRight, valueProp: "taskbarRight" },
+        { key: "waybar_bottom", label: Strings.spacesOuterGapBottom, valueProp: "taskbarBottom" }
     ]
     readonly property var windowControls: [
         { key: "gaps_in", label: Strings.spacesGapIn, valueProp: "gapsIn" },
