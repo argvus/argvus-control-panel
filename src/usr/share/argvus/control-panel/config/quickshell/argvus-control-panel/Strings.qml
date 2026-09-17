@@ -56,7 +56,6 @@ QtObject {
     readonly property string notifNone:        tr("notifications.none")
     readonly property string notifRecent:      tr("notifications.recent")
     readonly property string notifClear:       tr("notifications.clear")
-    readonly property string notifAllClear:    tr("notifications.all_clear")
     readonly property string notifAppUnknown:  tr("notifications.app_unknown")
     readonly property string notifDnd:          tr("notifications.do_not_disturb")
     readonly property string notifDndOn:        tr("notifications.dnd_enabled")
@@ -68,6 +67,7 @@ QtObject {
     readonly property string netTitle:        tr("network.title")
     readonly property string netDisabled:     tr("network.disabled")
     readonly property string netConnected:    tr("network.connected")
+    readonly property string netLimited:      tr("network.limited")
     readonly property string netNoConnection: tr("network.no_connection")
 
     readonly property string btTitle:           tr("bluetooth.title")

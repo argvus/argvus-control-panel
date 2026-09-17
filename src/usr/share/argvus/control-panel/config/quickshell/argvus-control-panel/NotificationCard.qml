@@ -277,22 +277,13 @@ BaseCard {
     RowLayout {
         visible: notifications.length === 0
         Layout.fillWidth: true
-        spacing: 6
-
-        Item { Layout.fillWidth: true }
+        spacing: 0
         Text {
-            text: "\uf00d"
-            font.pixelSize: Theme.scaledFont(16)
-            font.family: Theme.fontIcon
-            color: Theme.accent
-        }
-        Text {
-            text: Strings.notifAllClear
-            font.pixelSize: Theme.scaledFont(16)
+            text: Strings.notifNone
+            font.pixelSize: Theme.scaledFont(13)
             font.family: Theme.fontFamily
-            color: Theme.accent
+            color: Theme.fgSubtle
         }
-        Item { Layout.fillWidth: true }
     }
 
     component NavBtn: Rectangle {

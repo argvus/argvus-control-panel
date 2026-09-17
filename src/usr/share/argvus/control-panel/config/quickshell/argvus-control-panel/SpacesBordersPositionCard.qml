@@ -144,6 +144,7 @@ BaseCard {
             "systemd-run", "--user", "--collect", "--quiet",
             "--setenv=ARGVUS_CONFIG_HOME=" + Theme.configHome,
             "--setenv=ARGVUS_SYSTEM_CONFIG=" + Theme.systemConfig,
+            "--setenv=PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/bin",
             "--", "sh", "-c", applyCommand
         ]
         applyProc.running = true

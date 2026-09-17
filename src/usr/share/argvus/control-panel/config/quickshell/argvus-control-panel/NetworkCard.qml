@@ -12,6 +12,7 @@ BaseCard {
     property string upSpeed:   "0 B/s"
     property string ssid:      ""
     property bool   connected: false
+    property string networkStatus: "disconnected"
     property bool   networkingEnabled: true
 
     property var _prevRx: ({})
@@ -68,14 +69,13 @@ BaseCard {
                 })
 
                 networkingEnabled = obj.networking === "enabled"
-                if (!obj.iface || obj.iface === "" || obj.connected !== "yes") {
-                    connected = false; return
-                }
+                networkStatus = obj.status || "disconnected"
+                connected = obj.connected === "yes"
+                if (!connected) { iface = "—"; ip = "—"; ssid = ""; return }
 
                 iface     = obj.iface
                 ip        = obj.ip ? obj.ip : "—"
                 ssid      = obj.ssid || ""
-                connected = obj.connected === "yes"
 
                 var now = Date.now()
                 var rx  = parseFloat(obj.rx) || 0
@@ -160,11 +160,13 @@ BaseCard {
             Text {
                 text: {
                     if (!networkingEnabled) return Strings.netDisabled
+                    if (networkStatus === "limited") return Strings.netLimited
                     if (connected) return ssid !== "" ? ssid : Strings.netConnected
                     return Strings.netNoConnection
                 }
                 color: {
                     if (!networkingEnabled) return Theme.danger
+                    if (networkStatus === "limited") return Theme.danger
                     if (connected) return Theme.accent
                     return Theme.danger
                 }
