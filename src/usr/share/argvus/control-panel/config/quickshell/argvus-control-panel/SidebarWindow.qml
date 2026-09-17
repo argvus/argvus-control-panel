@@ -13,9 +13,9 @@ PanelWindow {
     screen: Quickshell.screens[0]
 
     WlrLayershell.margins {
-        top: Theme.marginTop
-        right: Theme.waybarMarginRight
-        bottom: Theme.marginBottom
+        top: Theme.sidebarMarginTop
+        right: Theme.sidebarMarginRight
+        bottom: Theme.sidebarMarginBottom
         left: 0
     }
 

@@ -102,7 +102,13 @@ BaseCard {
     Process {
         id: applyProc
         command: ["true"]
-        onExited: card.dirty = false
+        onExited: function(exitCode, exitStatus) {
+            if (exitCode === 0) {
+                card.dirty = false
+            } else {
+                console.warn("Failed to apply spaces, borders and position (exit " + exitCode + ")")
+            }
+        }
     }
 
     function adjustValue(valueProp, delta, minimum, maximum) {
@@ -123,10 +129,20 @@ BaseCard {
             card.spacesScript + " --set-persist gaps_out_left " + card.gapsOutLeft,
             card.spacesScript + " --set-persist gaps_out_right " + card.gapsOutRight,
             card.spacesScript + " --set-persist gaps_out_bottom " + card.gapsOutBottom,
-            card.bordersScript + " --set rounded " + (card.rounded ? 1 : 0)
+            card.bordersScript + " --set-persist rounded " + (card.rounded ? 1 : 0)
         ]
-        if (card.rounded) commands.push(card.bordersScript + " --set rounding " + card.rounding)
-        applyProc.command = ["sh", "-c", commands.join(" && ") + " && " + card.reloadScript]
+        if (card.rounded) commands.push(card.bordersScript + " --set-persist rounding " + card.rounding)
+
+        // The control-panel service is restarted by argvus-sessionctl reload.
+        // Run the whole transaction in a transient user unit so the process
+        // doing Apply cannot kill its own reload or leave a stale focus owner.
+        var applyCommand = commands.join(" && ") + " && " + card.reloadScript
+        applyProc.command = [
+            "systemd-run", "--user", "--collect", "--quiet",
+            "--setenv=ARGVUS_CONFIG_HOME=" + Theme.configHome,
+            "--setenv=ARGVUS_SYSTEM_CONFIG=" + Theme.systemConfig,
+            "--", "sh", "-c", applyCommand
+        ]
         applyProc.running = true
     }
 
