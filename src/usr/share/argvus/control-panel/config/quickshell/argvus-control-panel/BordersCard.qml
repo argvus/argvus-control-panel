@@ -134,6 +134,8 @@ BaseCard {
             GlassButton {
                 implicitWidth: 28
                 implicitHeight: 28
+                enabled: card.rounded
+                opacity: card.rounded ? 1 : 0.4
                 iconText: "−"
                 label: ""
                 onClicked: {
@@ -167,6 +169,8 @@ BaseCard {
             GlassButton {
                 implicitWidth: 28
                 implicitHeight: 28
+                enabled: card.rounded
+                opacity: card.rounded ? 1 : 0.4
                 iconText: "+"
                 label: ""
                 onClicked: {

@@ -14,6 +14,8 @@ Singleton {
     property string monoFontFamily: "IBM Plex Mono"
     property int fontSize: 14
     property int monoFontSize: 14
+    property bool bordersRounded: false
+    property int bordersRounding: 0
     readonly property string configHome: Quickshell.env("ARGVUS_CONFIG_HOME") ||
         StandardPaths.writableLocation(StandardPaths.GenericConfigLocation)
     readonly property string systemConfig: Quickshell.env("ARGVUS_SYSTEM_CONFIG") || "/usr/share/argvus"
@@ -43,6 +45,12 @@ Singleton {
             var s = text().trim()
             root.effectsState = s === "disabled" ? "disabled" : "enabled"
         }
+    }
+
+    FileView {
+        id: bordersFile
+        path: root.configHome + "/argvus/.borders"
+        onTextChanged: root.loadBorders(text())
     }
 
     FileView {
@@ -128,6 +136,27 @@ Singleton {
         if (isNaN(root.monoFontSize) || root.monoFontSize < 8) root.monoFontSize = root.fontSize
     }
 
+    function loadBorders(contents) {
+        var defaultRounded = root.themeName.endsWith("-float")
+        var rounded = defaultRounded ? 1 : 0
+        var rounding = defaultRounded ? 4 : 0
+        var lines = contents.split("\n")
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim()
+            var eq = line.indexOf("=")
+            if (eq <= 0) continue
+            var key = line.substring(0, eq).trim()
+            var value = line.substring(eq + 1).trim()
+            if (key === "rounded" && (value === "0" || value === "1")) rounded = parseInt(value, 10)
+            if (key === "rounding") {
+                var parsed = parseInt(value, 10)
+                if (!isNaN(parsed)) rounding = parsed
+            }
+        }
+        root.bordersRounded = rounded === 1
+        root.bordersRounding = Math.min(Math.max(rounding, 0), 10)
+    }
+
     function scaledFont(baseSize) {
         var scale = Math.max(0.7, Math.min(1.8, root.fontSize / 13.0))
         return Math.max(8, Math.round(baseSize * scale))
@@ -142,14 +171,19 @@ Singleton {
             gtkModeFile.reload()
             effectsStateFile.reload()
             fontsFile.reload()
+            bordersFile.reload()
             waybarMarginFile.reload()
         }
     }
 
-    onThemeNameChanged: loadTheme()
+    onThemeNameChanged: {
+        loadTheme()
+        loadBorders(bordersFile.text())
+    }
     Component.onCompleted: {
         loadTheme()
         fontsFile.reload()
+        bordersFile.reload()
     }
 
     // modeColors — non-null when theme declares a `light` QtObject and gtkMode is "light"
@@ -187,9 +221,10 @@ Singleton {
     readonly property color ok:              modeColors ? modeColors.ok              : (themeObj ? themeObj.ok             : "#a6e3a1")
     readonly property string fontMono:       monoFontFamily
     readonly property string fontIcon:       "Symbols Nerd Font Mono"
-    readonly property int radius:            modeColors ? modeColors.radius          : (themeObj ? themeObj.radius         : 8)
-    readonly property int radiusPill:        modeColors ? modeColors.radiusPill      : (themeObj ? themeObj.radiusPill     : 18)
-    readonly property int radiusSmall:       modeColors ? modeColors.radiusSmall     : (themeObj ? themeObj.radiusSmall    : 4)
+    readonly property int borderRadius:      bordersRounded ? Math.min(Math.max(bordersRounding, 2), 10) : 0
+    readonly property int radius:            borderRadius
+    readonly property int radiusPill:        borderRadius
+    readonly property int radiusSmall:       borderRadius
     readonly property bool effectsEnabled:   effectsState !== "disabled"
     readonly property int animFast:          effectsEnabled ? (modeColors ? modeColors.animFast        : (themeObj ? themeObj.animFast       : 150)) : 0
     readonly property int animNormal:        effectsEnabled ? (modeColors ? modeColors.animNormal      : (themeObj ? themeObj.animNormal     : 220)) : 0
