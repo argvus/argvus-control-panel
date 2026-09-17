@@ -58,6 +58,12 @@ QtObject {
     readonly property string notifClear:       tr("notifications.clear")
     readonly property string notifAllClear:    tr("notifications.all_clear")
     readonly property string notifAppUnknown:  tr("notifications.app_unknown")
+    readonly property string notifDnd:          tr("notifications.do_not_disturb")
+    readonly property string notifDndOn:        tr("notifications.dnd_enabled")
+    readonly property string notifDndOff:       tr("notifications.dnd_disabled")
+    readonly property string notifUnavailable:  tr("notifications.unavailable")
+    readonly property string notifReadFailed:   tr("notifications.read_failed")
+    readonly property string notifChangeFailed: tr("notifications.change_failed")
 
     readonly property string netTitle:        tr("network.title")
     readonly property string netDisabled:     tr("network.disabled")

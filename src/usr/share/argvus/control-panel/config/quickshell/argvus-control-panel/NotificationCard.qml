@@ -9,6 +9,10 @@ BaseCard {
     property var notifications: []
     property int unreadCount: 0
     property int currentPage: 0
+    property bool dndEnabled: false
+    property bool dndAvailable: false
+    property bool dndBusy: false
+    property string dndError: ""
 
     readonly property int pageSize: 3
     readonly property int pageCount: Math.ceil(notifications.length / pageSize)
@@ -19,6 +23,102 @@ BaseCard {
     Timer {
         interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
         onTriggered: if (!historyProc.running) historyProc.running = true
+    }
+
+    Timer {
+        interval: 2000; running: pollingActive; repeat: true; triggeredOnStart: true
+        onTriggered: if (!dndStatusProc.running && !dndToggleProc.running) dndStatusProc.running = true
+    }
+
+    Process {
+        id: dndStatusProc
+        command: ["argvus-notifications", "dnd", "status"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                var value = this.text.trim()
+                if (value.indexOf("dnd=true") === 0) {
+                    dndAvailable = true
+                    dndEnabled = true
+                    dndError = ""
+                } else if (value.indexOf("dnd=false") === 0) {
+                    dndAvailable = true
+                    dndEnabled = false
+                    dndError = ""
+                } else {
+                    dndAvailable = false
+                    dndError = Strings.notifReadFailed
+                }
+            }
+        }
+    }
+
+    Process {
+        id: dndToggleProc
+        command: ["argvus-notifications", "dnd", "toggle"]
+        onStarted: dndBusy = true
+        onExited: {
+            dndBusy = false
+            if (exitCode === 0) dndStatusProc.running = true
+            else {
+                dndAvailable = false
+                dndError = Strings.notifChangeFailed
+            }
+        }
+
+    }
+
+    // Master notification switch. Its state is always refreshed from Dunst.
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: 10
+
+        Text {
+            text: Strings.notifDnd
+            color: Theme.fgText
+            font.pixelSize: Theme.scaledFont(14)
+            font.family: Theme.fontFamily
+            Layout.fillWidth: true
+        }
+
+        Text {
+            text: dndAvailable ? (dndEnabled ? Strings.notifDndOn : Strings.notifDndOff) : Strings.notifUnavailable
+            color: dndAvailable ? (dndEnabled ? Theme.danger : Theme.accent) : Theme.fgSubtle
+            font.pixelSize: Theme.scaledFont(11)
+            font.family: Theme.fontFamily
+        }
+
+        Rectangle {
+            width: 44; height: 24; radius: Theme.radius
+            color: dndEnabled ? Theme.danger : Theme.borderSubtle
+            opacity: dndBusy || !dndAvailable ? 0.55 : 1
+            Layout.alignment: Qt.AlignVCenter
+
+            Rectangle {
+                width: 18; height: 18; radius: Math.max(2, Theme.radius)
+                x: dndEnabled ? parent.width - width - 3 : 3
+                y: (parent.height - height) / 2
+                color: Theme.bgHeader
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                enabled: dndAvailable && !dndBusy
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    dndToggleProc.running = true
+                }
+            }
+        }
+    }
+
+    Text {
+        visible: dndError !== ""
+        text: dndError
+        color: Theme.danger
+        font.pixelSize: Theme.scaledFont(10)
+        font.family: Theme.fontFamily
+        Layout.fillWidth: true
+        wrapMode: Text.WordWrap
     }
 
     Process {
