@@ -59,13 +59,13 @@ Singleton {
         onTextChanged: root.loadFonts(text())
     }
 
-    // The persisted spaces file is the source of truth for every surface that
-    // participates in the desktop geometry. Reading the generated Waybar JSON
-    // here made the sidebar keep stale/theme-only margins after Apply.
+    // spaces-switch.sh is the sole owner of the requested -> effective
+    // geometry transformation. This generated file is runtime state, not a
+    // user preference, and is atomically regenerated before services restart.
     FileView {
-        id: spacesFile
-        path: root.configHome + "/argvus/.spaces"
-        onTextChanged: root.loadSpaces(text())
+        id: effectiveSpacesFile
+        path: root.configHome + "/argvus/generated/spaces-effective.conf"
+        onTextChanged: root.loadEffectiveSpaces(text())
     }
 
     property var themeObj: null
@@ -154,18 +154,13 @@ Singleton {
         root.bordersRounding = Math.min(Math.max(rounding, 0), 10)
     }
 
-    function loadSpaces(contents) {
+    function loadEffectiveSpaces(contents) {
         var isFloat = root.themeName.endsWith("-float")
-        root._taskbarTop = isFloat ? 16 : 0
-        root._taskbarLeft = isFloat ? 16 : 0
-        root._taskbarRight = isFloat ? 16 : 0
-        root._taskbarBottom = 0
-        root._windowGapTop = isFloat ? 8 : 1
-        root._windowGapLeft = root._windowGapTop
-        root._windowGapRight = root._windowGapTop
-        root._windowGapBottom = root._windowGapTop
-        root._taskbarPosition = "top"
-
+        var fallback = isFloat ? 8 : 1
+        root._effectiveTop = fallback
+        root._effectiveRight = fallback
+        root._effectiveBottom = fallback
+        root._effectiveLeft = fallback
         var lines = contents.split("\n")
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i].trim()
@@ -174,15 +169,10 @@ Singleton {
             var key = line.substring(0, eq).trim()
             var value = line.substring(eq + 1).trim()
             var parsed = parseInt(value, 10)
-            if (key === "waybar_top" && !isNaN(parsed)) root._taskbarTop = parsed
-            if (key === "waybar_left" && !isNaN(parsed)) root._taskbarLeft = parsed
-            if (key === "waybar_right" && !isNaN(parsed)) root._taskbarRight = parsed
-            if (key === "waybar_bottom" && !isNaN(parsed)) root._taskbarBottom = parsed
-            if (key === "gaps_out_top" && !isNaN(parsed)) root._windowGapTop = parsed
-            if (key === "gaps_out_left" && !isNaN(parsed)) root._windowGapLeft = parsed
-            if (key === "gaps_out_right" && !isNaN(parsed)) root._windowGapRight = parsed
-            if (key === "gaps_out_bottom" && !isNaN(parsed)) root._windowGapBottom = parsed
-            if (key === "waybar_pos" && (value === "top" || value === "bottom")) root._taskbarPosition = value
+            if (key === "effective_top" && !isNaN(parsed)) root._effectiveTop = parsed
+            if (key === "effective_right" && !isNaN(parsed)) root._effectiveRight = parsed
+            if (key === "effective_bottom" && !isNaN(parsed)) root._effectiveBottom = parsed
+            if (key === "effective_left" && !isNaN(parsed)) root._effectiveLeft = parsed
         }
     }
 
@@ -201,7 +191,7 @@ Singleton {
             effectsStateFile.reload()
             fontsFile.reload()
             bordersFile.reload()
-            spacesFile.reload()
+            effectiveSpacesFile.reload()
         }
     }
 
@@ -213,7 +203,7 @@ Singleton {
         loadTheme()
         fontsFile.reload()
         bordersFile.reload()
-        spacesFile.reload()
+        effectiveSpacesFile.reload()
     }
 
     // modeColors — non-null when theme declares a `light` QtObject and gtkMode is "light"
@@ -258,20 +248,13 @@ Singleton {
     readonly property bool effectsEnabled:   effectsState !== "disabled"
     readonly property int animFast:          effectsEnabled ? (modeColors ? modeColors.animFast        : (themeObj ? themeObj.animFast       : 150)) : 0
     readonly property int animNormal:        effectsEnabled ? (modeColors ? modeColors.animNormal      : (themeObj ? themeObj.animNormal     : 220)) : 0
-    property string _taskbarPosition: "top"
-    property int _taskbarTop: 0
-    property int _taskbarLeft: 0
-    property int _taskbarRight: 0
-    property int _taskbarBottom: 0
-    property int _windowGapTop: 1
-    property int _windowGapLeft: 1
-    property int _windowGapRight: 1
-    property int _windowGapBottom: 1
-    // The taskbar owns the edge it occupies. The other edges use the same
-    // outer gaps as Hyprland, keeping Quickshell aligned with tiled windows.
-    readonly property int sidebarMarginTop: _taskbarPosition === "top" ? _taskbarBottom : _windowGapTop
-    readonly property int sidebarMarginRight: _windowGapRight
-    readonly property int sidebarMarginBottom: _taskbarPosition === "bottom" ? _taskbarTop : _windowGapBottom
+    property int _effectiveTop: 1
+    property int _effectiveRight: 1
+    property int _effectiveBottom: 1
+    property int _effectiveLeft: 1
+    readonly property int sidebarMarginTop: _effectiveTop
+    readonly property int sidebarMarginRight: _effectiveRight
+    readonly property int sidebarMarginBottom: _effectiveBottom
     readonly property int marginTop:         modeColors ? modeColors.marginTop       : (themeObj ? themeObj.marginTop      : 15)
     readonly property int marginBottom:      modeColors ? modeColors.marginBottom    : (themeObj ? themeObj.marginBottom   : 15)
     readonly property int marginRight:       modeColors ? modeColors.marginRight     : (themeObj ? themeObj.marginRight    : 15)
