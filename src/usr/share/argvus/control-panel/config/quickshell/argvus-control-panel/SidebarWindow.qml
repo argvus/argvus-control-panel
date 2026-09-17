@@ -130,10 +130,7 @@ PanelWindow {
                 AppearanceCard    { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 SessionCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 DisplayCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                TaskbarCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                SpacesCard        { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                WindowSpacesCard  { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                BordersCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
+                SpacesBordersPositionCard { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 PowerCard         { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
                 AboutCard         { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
 
