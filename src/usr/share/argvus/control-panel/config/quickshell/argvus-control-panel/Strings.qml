@@ -103,6 +103,9 @@ QtObject {
     readonly property string lockDpmsTitle:           tr("appearance.dpms.title")
     readonly property string lockDpmsEnabled:         tr("appearance.dpms.enabled")
     readonly property string lockDpmsDisabled:        tr("appearance.dpms.disabled")
+    readonly property string keepAwakeTitle:           tr("session.keep_awake.title")
+    readonly property string keepAwakeEnabled:         tr("session.keep_awake.enabled")
+    readonly property string keepAwakeDisabled:        tr("session.keep_awake.disabled")
 
     readonly property string userTabAvatar:        tr("user.tab.avatar")
     readonly property string userTabName:          tr("user.tab.name")

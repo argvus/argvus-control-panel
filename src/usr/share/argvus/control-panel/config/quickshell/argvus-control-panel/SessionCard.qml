@@ -8,6 +8,7 @@ BaseCard {
 
     property int idleTimeout: 300
     property bool lockDpms: false
+    property bool keepAwake: false
     property var idleOptions: [
         { seconds: 60,  label: "1m" },
         { seconds: 300, label: "5m" },
@@ -18,7 +19,7 @@ BaseCard {
     ]
 
     function applyIdleTimeout(seconds) {
-        if (idleSetProc.running) return
+        if (keepAwake || idleSetProc.running) return
         idleSetProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh " + seconds]
         idleSetProc.running = true
     }
@@ -26,6 +27,7 @@ BaseCard {
     ColumnLayout {
         Layout.fillWidth: true
         spacing: 8
+        opacity: keepAwake ? 0.45 : 1
 
         Text {
             text: Strings.idleLockTitle
@@ -72,6 +74,8 @@ BaseCard {
                         id: pillMa
                         anchors.fill: parent
                         hoverEnabled: true
+                        enabled: !keepAwake
+                        opacity: keepAwake ? 0.45 : 1
                         cursorShape: Qt.PointingHandCursor
                         onClicked: applyIdleTimeout(modelData.seconds)
                     }
@@ -85,6 +89,7 @@ BaseCard {
     RowLayout {
         Layout.fillWidth: true
         spacing: 10
+        opacity: keepAwake ? 0.45 : 1
 
         Rectangle {
             id: lockDpmsToggleBtn
@@ -111,6 +116,8 @@ BaseCard {
                 id: lockDpmsToggleArea
                 anchors.fill: parent
                 hoverEnabled: true
+                enabled: !keepAwake
+                opacity: keepAwake ? 0.45 : 1
                 cursorShape: Qt.PointingHandCursor
                 onClicked: lockDpmsToggleProc.running = true
             }
@@ -140,11 +147,52 @@ BaseCard {
 
     }
 
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: 10
+        opacity: keepAwake ? 0.45 : 1
+
+        Rectangle {
+            width: 44; height: 24; radius: Theme.radiusPill
+            color: keepAwake ? Theme.accent : Theme.borderSubtle
+            Layout.alignment: Qt.AlignVCenter
+            Rectangle {
+                width: 18; height: 18; radius: Math.max(2, Theme.radiusPill / 2)
+                x: keepAwake ? parent.width - width - 3 : 3
+                y: (parent.height - height) / 2
+                color: Theme.bgHeader
+            }
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: keepAwakeToggleProc.running = true
+            }
+        }
+        ColumnLayout {
+            spacing: 1
+            Layout.fillWidth: true
+            Text {
+                text: Strings.keepAwakeTitle
+                color: Theme.fgText
+                font.pixelSize: Theme.scaledFont(13)
+                font.family: Theme.fontFamily
+                font.weight: Font.Medium
+            }
+            Text {
+                text: keepAwake ? Strings.keepAwakeEnabled : Strings.keepAwakeDisabled
+                color: keepAwake ? Theme.accent : Theme.fgSubtle
+                font.pixelSize: Theme.scaledFont(13)
+                font.family: Theme.fontFamily
+            }
+        }
+    }
+
     Timer {
         interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
         onTriggered: {
             if (!idleStatusProc.running) idleStatusProc.running = true
             if (!lockDpmsStatusProc.running) lockDpmsStatusProc.running = true
+            if (!keepAwakeStatusProc.running) keepAwakeStatusProc.running = true
         }
     }
 
@@ -177,6 +225,22 @@ BaseCard {
         command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/lock-dpms-toggle.sh status"]
         stdout: SplitParser {
             onRead: data => lockDpms = data.trim() === "enabled"
+        }
+    }
+
+    Process {
+        id: keepAwakeToggleProc
+        command: ["sh", "-c", "/usr/share/argvus/power/sh/keep-awake.sh toggle"]
+        stdout: SplitParser {
+            onRead: data => keepAwake = data.trim() === "enabled"
+        }
+    }
+
+    Process {
+        id: keepAwakeStatusProc
+        command: ["sh", "-c", "/usr/share/argvus/power/sh/keep-awake.sh status"]
+        stdout: SplitParser {
+            onRead: data => keepAwake = data.trim() === "enabled"
         }
     }
 }
