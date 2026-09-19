@@ -163,15 +163,8 @@ BaseCard {
     RowLayout {
         Layout.fillWidth: true
 
-        Text {
-            text: unreadCount > 0 ? unreadCount + " " + Strings.notifRecent : Strings.notifNone
-            color: Theme.fgText
-            font.pixelSize: Theme.scaledFont(16)
-            font.family: Theme.fontFamily
-            Layout.fillWidth: true
-        }
-
         RowLayout {
+            Layout.fillWidth: true
             visible: pageCount > 1
             spacing: 2
 

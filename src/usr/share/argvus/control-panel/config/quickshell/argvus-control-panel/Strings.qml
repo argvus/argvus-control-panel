@@ -54,7 +54,6 @@ QtObject {
     readonly property string taskbarBottom:        tr("taskbar.bottom")
 
     readonly property string notifNone:        tr("notifications.none")
-    readonly property string notifRecent:      tr("notifications.recent")
     readonly property string notifClear:       tr("notifications.clear")
     readonly property string notifAppUnknown:  tr("notifications.app_unknown")
     readonly property string notifDnd:          tr("notifications.do_not_disturb")
