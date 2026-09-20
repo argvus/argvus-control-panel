@@ -12,6 +12,7 @@ cd "$ROOT_DIR"
 
 shellcheck -e SC1090 -e SC2034 tools/sh/*.sh packaging/arch/common/*.sh src/usr/share/argvus/control-panel/sh/*.sh
 bash -n tools/sh/*.sh packaging/arch/common/*.sh src/usr/share/argvus/control-panel/sh/*.sh
+bash tools/test-cards-config.sh
 
 metadata() {
 	bash -c 'source "$1"; printf "%s\n" "$pkgname" "$pkgver" "$pkgrel" "$pkgdesc"; printf "%s\n" "${arch[*]}" "${license[*]}" "${depends[*]}"; printf "%s\n" "${makedepends[*]}" "${options[*]}"' bash "$1"

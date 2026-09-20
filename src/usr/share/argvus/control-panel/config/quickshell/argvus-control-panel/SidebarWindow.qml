@@ -9,6 +9,131 @@ PanelWindow {
     id: root
 
     property bool sidebarVisible: false
+    readonly property string cardsConfigScript: Theme.systemConfig + "/control-panel/sh/cards-config.sh"
+    property var cards: []
+    property var allCards: []
+    ListModel { id: cardsModel }
+    property var cardDefinitions: ({
+        "user": "UserCard.qml",
+        "notifications": "NotificationCard.qml",
+        "calendar": "CalendarCard.qml",
+        "weather": "WeatherCard.qml",
+        "volume": "VolumeCard.qml",
+        "brightness": "BrightnessCard.qml",
+        "network": "NetworkCard.qml",
+        "bluetooth": "BluetoothCard.qml",
+        "system": "SystemCard.qml",
+        "appearance": "AppearanceCard.qml",
+        "session": "SessionCard.qml",
+        "display": "DisplayCard.qml",
+        "spaces-borders-position": "SpacesBordersPositionCard.qml",
+        "power": "PowerCard.qml"
+    })
+
+    // The helper is the sole owner of defaults, persisted preferences, and
+    // normalization for future cards added by package updates.
+    function loadCards() {
+        if (!cardsStatusProcess.running)
+            cardsStatusProcess.running = true
+    }
+
+    function persistMove(card, sceneY) {
+        previewMove(card, sceneY)
+        var sourceIndex = -1
+        var targetIndex = allCards.length
+        for (var j = 0; j < allCards.length; j++) {
+            if (allCards[j].id === card.cardId) {
+                sourceIndex = j
+                break
+            }
+        }
+        var visibleSourceIndex = cards.findIndex(function(entry) { return entry.id === card.cardId })
+        if (visibleSourceIndex >= 0 && visibleSourceIndex + 1 < cards.length) {
+            var nextId = cards[visibleSourceIndex + 1].id
+            for (var nextIndex = 0; nextIndex < allCards.length; nextIndex++) {
+                if (allCards[nextIndex].id === nextId) {
+                    targetIndex = nextIndex
+                    break
+                }
+            }
+        }
+        if (sourceIndex >= 0 && sourceIndex < targetIndex)
+            targetIndex -= 1
+        if (sourceIndex < 0 || sourceIndex === targetIndex)
+            return
+
+        var nextAllCards = allCards.slice()
+        var movedAll = nextAllCards.splice(sourceIndex, 1)[0]
+        nextAllCards.splice(targetIndex, 0, movedAll)
+        allCards = nextAllCards
+
+        if (cardsMoveProcess.running)
+            cardsMoveProcess.running = false
+        cardsMoveProcess.command = ["sh", cardsConfigScript, "move", card.cardId, String(targetIndex)]
+        cardsMoveProcess.running = true
+    }
+
+    // Reorder the in-memory model while the pointer crosses card centers. The
+    // layout animation then acts as a live insertion preview instead of waiting
+    // for release, which also makes the valid drop location unambiguous.
+    function previewMove(card, sceneY) {
+        var sourceIndex = cards.findIndex(function(entry) { return entry.id === card.cardId })
+        if (sourceIndex < 0)
+            return
+        var targetIndex = cards.length
+        for (var i = 0; i < cards.length; i++) {
+            if (i === sourceIndex)
+                continue
+            var loader = cardsRepeater.itemAt(i)
+            if (loader && loader.item && loader.item.mapToItem(null, 0, loader.item.height / 2).y > sceneY) {
+                targetIndex = i
+                if (sourceIndex < targetIndex)
+                    targetIndex -= 1
+                break
+            }
+        }
+        if (sourceIndex === targetIndex)
+            return
+        var nextCards = cards.slice()
+        var moved = nextCards.splice(sourceIndex, 1)[0]
+        nextCards.splice(targetIndex, 0, moved)
+        cards = nextCards
+        cardsModel.move(sourceIndex, targetIndex, 1)
+    }
+
+    Process {
+        id: cardsStatusProcess
+        command: ["sh", root.cardsConfigScript, "status"]
+        running: true
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try {
+                    var parsed = JSON.parse(this.text)
+                    // QML may expose JSON arrays as QJSValue objects rather
+                    // than JavaScript Array instances. Check the indexed
+                    // shape instead of using instanceof Array.
+                    if (parsed && parsed.cards && typeof parsed.cards.length === "number") {
+                        root.allCards = parsed.cards
+                        var enabledCards = []
+                        for (var index = 0; index < parsed.cards.length; index++) {
+                            var card = parsed.cards[index]
+                            if (!card || card.enabled !== true || root.cardDefinitions[card.id] === undefined)
+                                continue
+                            enabledCards.push({ id: card.id, source: root.cardDefinitions[card.id] })
+                        }
+                        root.cards = enabledCards
+                        cardsModel.clear()
+                        for (var enabledIndex = 0; enabledIndex < enabledCards.length; enabledIndex++)
+                            cardsModel.append(enabledCards[enabledIndex])
+                    }
+                } catch (error) {
+                    console.warn("Could not load Control Panel card preferences")
+                }
+            }
+        }
+    }
+
+    Process { id: cardsMoveProcess }
 
     screen: Quickshell.screens[0]
 
@@ -127,21 +252,46 @@ PanelWindow {
 
                 Item { Layout.preferredHeight: 2 }
 
-                UserCard          { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                NotificationCard  { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                CalendarCard      { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                WeatherCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                VolumeCard        { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                BrightnessCard    { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                NetworkCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                BluetoothCard     { id: bluetoothCard; visible: bluetoothCard.available; pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                SystemCard        { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                AppearanceCard    { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                SessionCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                DisplayCard       { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                SpacesBordersPositionCard { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                PowerCard         { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
-                AboutCard         { pollingActive: root.sidebarVisible; Layout.fillWidth: true; Layout.leftMargin: 10; Layout.rightMargin: 10 }
+                Repeater {
+                    id: cardsRepeater
+                    model: cardsModel
+                    delegate: Loader {
+                        id: cardLoader
+                        required property var modelData
+                        source: modelData.source
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 10
+                        Layout.rightMargin: 10
+                        Layout.preferredHeight: item ? item.implicitHeight : 0
+                        Behavior on y {
+                            NumberAnimation { duration: Theme.animNormal; easing.type: Easing.OutCubic }
+                        }
+
+                        onLoaded: {
+                            item.cardId = modelData.id
+                            item.reorderEnabled = true
+                            item.pollingActive = Qt.binding(function() { return root.sidebarVisible })
+                        }
+
+                        Connections {
+                            target: cardLoader.item
+                            function onReorderDropped(card, sceneY) {
+                                root.persistMove(card, sceneY)
+                            }
+                            function onReorderMoved(card, sceneY) {
+                                root.previewMove(card, sceneY)
+                            }
+                        }
+                    }
+                }
+
+                AboutCard {
+                    pollingActive: root.sidebarVisible
+                    reorderEnabled: false
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 10
+                    Layout.rightMargin: 10
+                }
 
                 Item { Layout.preferredHeight: 10 }
             }
