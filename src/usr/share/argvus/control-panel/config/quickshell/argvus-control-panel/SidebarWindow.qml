@@ -12,6 +12,11 @@ PanelWindow {
     readonly property string cardsConfigScript: Theme.systemConfig + "/control-panel/sh/cards-config.sh"
     property var cards: []
     property var allCards: []
+    property bool bluetoothAvailable: false
+    property bool brightnessAvailable: false
+    property bool bluetoothCapabilityReady: false
+    property bool brightnessCapabilityReady: false
+    property bool hardwareCapabilitiesReady: false
     ListModel { id: cardsModel }
     property var cardDefinitions: ({
         "user": "UserCard.qml",
@@ -29,6 +34,30 @@ PanelWindow {
         "spaces-borders-position": "SpacesBordersPositionCard.qml",
         "power": "PowerCard.qml"
     })
+
+    function cardCapabilityAvailable(id) {
+        if (id === "bluetooth") return bluetoothAvailable
+        if (id === "brightness") return brightnessAvailable
+        return true
+    }
+
+    function rebuildCards() {
+        if (!hardwareCapabilitiesReady)
+            return
+        var enabledCards = []
+        for (var index = 0; index < allCards.length; index++) {
+            var card = allCards[index]
+            if (!card || card.enabled !== true || cardDefinitions[card.id] === undefined)
+                continue
+            if (!cardCapabilityAvailable(card.id))
+                continue
+            enabledCards.push({ id: card.id, source: cardDefinitions[card.id] })
+        }
+        cards = enabledCards
+        cardsModel.clear()
+        for (var enabledIndex = 0; enabledIndex < enabledCards.length; enabledIndex++)
+            cardsModel.append(enabledCards[enabledIndex])
+    }
 
     // The helper is the sole owner of defaults, persisted preferences, and
     // normalization for future cards added by package updates.
@@ -114,21 +143,43 @@ PanelWindow {
                     // shape instead of using instanceof Array.
                     if (parsed && parsed.cards && typeof parsed.cards.length === "number") {
                         root.allCards = parsed.cards
-                        var enabledCards = []
-                        for (var index = 0; index < parsed.cards.length; index++) {
-                            var card = parsed.cards[index]
-                            if (!card || card.enabled !== true || root.cardDefinitions[card.id] === undefined)
-                                continue
-                            enabledCards.push({ id: card.id, source: root.cardDefinitions[card.id] })
-                        }
-                        root.cards = enabledCards
-                        cardsModel.clear()
-                        for (var enabledIndex = 0; enabledIndex < enabledCards.length; enabledIndex++)
-                            cardsModel.append(enabledCards[enabledIndex])
+                        root.rebuildCards()
                     }
                 } catch (error) {
                     console.warn("Could not load Control Panel card preferences")
                 }
+            }
+        }
+    }
+
+    Process {
+        id: bluetoothCapabilityProcess
+        command: ["bash", "-c", Theme.systemConfig + "/network/sh/bluetooth-control.sh status"]
+        running: true
+        stdout: StdioCollector {
+            onStreamFinished: {
+                var lines = this.text.trim().split("\n")
+                root.bluetoothAvailable = lines.some(function(line) {
+                    return line.trim() === "available=yes"
+                })
+                root.bluetoothCapabilityReady = true
+                root.hardwareCapabilitiesReady = root.bluetoothCapabilityReady && root.brightnessCapabilityReady
+                root.rebuildCards()
+            }
+        }
+    }
+
+    Process {
+        id: brightnessCapabilityProcess
+        command: ["bash", "-c", Theme.systemConfig + "/appearance/sh/brightness-switch.sh --status"]
+        running: true
+        stdout: StdioCollector {
+            onStreamFinished: {
+                var backend = this.text.trim()
+                root.brightnessAvailable = backend === "brightnessctl" || backend === "ddcutil"
+                root.brightnessCapabilityReady = true
+                root.hardwareCapabilitiesReady = root.bluetoothCapabilityReady && root.brightnessCapabilityReady
+                root.rebuildCards()
             }
         }
     }
