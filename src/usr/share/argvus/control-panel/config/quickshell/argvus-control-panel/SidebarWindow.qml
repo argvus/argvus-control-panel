@@ -17,6 +17,8 @@ PanelWindow {
     property bool bluetoothCapabilityReady: false
     property bool brightnessCapabilityReady: false
     property bool hardwareCapabilitiesReady: false
+    property bool cardsStatusReady: false
+    readonly property bool cardsLoading: !cardsStatusReady || !hardwareCapabilitiesReady
     ListModel { id: cardsModel }
     property var cardDefinitions: ({
         "user": "UserCard.qml",
@@ -136,6 +138,7 @@ PanelWindow {
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
+                root.cardsStatusReady = true
                 try {
                     var parsed = JSON.parse(this.text)
                     // QML may expose JSON arrays as QJSValue objects rather
@@ -143,9 +146,13 @@ PanelWindow {
                     // shape instead of using instanceof Array.
                     if (parsed && parsed.cards && typeof parsed.cards.length === "number") {
                         root.allCards = parsed.cards
-                        root.rebuildCards()
+                    } else {
+                        root.allCards = []
                     }
+                    root.rebuildCards()
                 } catch (error) {
+                    root.allCards = []
+                    root.rebuildCards()
                     console.warn("Could not load Control Panel card preferences")
                 }
             }
@@ -410,6 +417,41 @@ PanelWindow {
                                      flick.contentHeight - flick.height))
                     }
                 }
+            }
+        }
+
+        Rectangle {
+            id: cardsLoadingOverlay
+            anchors.fill: parent
+            color: Theme.bgPanel
+            radius: Theme.radius
+            visible: root.sidebarVisible && root.cardsLoading
+            z: 3
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 12
+
+                BusyIndicator {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    running: cardsLoadingOverlay.visible
+                    implicitWidth: 42
+                    implicitHeight: 42
+                }
+
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: Strings.loadingCards
+                    color: Theme.fgText
+                    font.pixelSize: Theme.scaledFont(13)
+                    font.family: Theme.fontFamily
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                enabled: cardsLoadingOverlay.visible
+                onClicked: {}
             }
         }
     }

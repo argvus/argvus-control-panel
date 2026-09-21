@@ -20,6 +20,7 @@ QtObject {
     readonly property string cardTitlePower:         tr("card.power.title")
     readonly property string cardTitleDisplay:       tr("card.display.title")
     readonly property string cardTitleAbout:         tr("card.about.title")
+    readonly property string loadingCards:            tr("loading.cards")
 
     readonly property string aboutHint: tr("about.hint")
     readonly property string aboutOpen: tr("about.open")
