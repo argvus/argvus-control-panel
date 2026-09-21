@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Dialogs
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
@@ -9,7 +10,7 @@ BaseCard {
 
     property bool widgetTelemetryEnabled: false
     property bool effectsEnabled: true
-    property var accentColors: ["#996548", "#3590bd", "#7391a5", "#17d174", "#cb17d1", "#d1174f", "#d1ce17", "#9617d1", "#595959"]
+    property string draftHex: ""
 
     function telemetryStateFromOutput(data) {
         const state = data.trim().toLowerCase()
@@ -18,11 +19,34 @@ BaseCard {
         return widgetTelemetryEnabled
     }
 
-    function applyAccent(color) {
-        if (accentProc.running) return
-        accentProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/accent-switch.sh '" + color + "'"]
+    function validHex(value) {
+        return /^#?[0-9a-fA-F]{6}$/.test(value)
+    }
+
+    function normalizeHex(value) {
+        var raw = value.charAt(0) === "#" ? value.substring(1) : value
+        return "#" + raw.toUpperCase()
+    }
+
+    function colorToHex(color) {
+        return "#" + [color.r, color.g, color.b].map(function (channel) {
+            return Math.round(channel * 255).toString(16).padStart(2, "0")
+        }).join("").toUpperCase()
+    }
+
+    function applyAccent() {
+        if (accentProc.running || !validHex(draftHex)) return
+        accentProc.command = [Theme.systemConfig + "/appearance/sh/accent-switch.sh", normalizeHex(draftHex)]
         accentProc.running = true
     }
+
+    function resetAccent() {
+        if (accentProc.running) return
+        accentProc.command = [Theme.systemConfig + "/appearance/sh/accent-switch.sh", "--theme-default"]
+        accentProc.running = true
+    }
+
+    Component.onCompleted: draftHex = colorToHex(Theme.accent)
 
     RowLayout {
         Layout.fillWidth: true
@@ -54,36 +78,34 @@ BaseCard {
         label: Strings.btnAccent
         accentColor: Theme.accent
         onClicked: {
-            if (accentProc.running) return
-            accentProc.command = ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/accent-switch.sh"]
-            accentProc.running = true
+            accentDialog.selectedColor = Qt.color(draftHex)
+            accentDialog.open()
+        }
+    }
+
+    ColorDialog {
+        id: accentDialog
+        title: Strings.btnAccent
+        selectedColor: Qt.color(Theme.accent)
+
+        onAccepted: {
+            draftHex = colorToHex(selectedColor)
+            applyAccent()
+        }
+    }
+
+    Connections {
+        target: Theme
+        function onThemeObjChanged() {
+            draftHex = colorToHex(Theme.accent)
         }
     }
 
     RowLayout {
         Layout.fillWidth: true
-        spacing: 5
+        spacing: 6
 
-        Repeater {
-            model: accentColors
-
-            Rectangle {
-                required property string modelData
-                Layout.fillWidth: true
-                Layout.preferredHeight: 20
-                radius: 3
-                color: modelData
-                border.width: Theme.accent.toString().toLowerCase() === modelData ? 2 : 1
-                border.color: Theme.accent.toString().toLowerCase() === modelData ? Theme.fgText : Theme.borderSubtle
-
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked: applyAccent(parent.modelData)
-                }
-            }
-        }
+        GlassButton { Layout.fillWidth: true; label: Strings.resetAccent; onClicked: resetAccent() }
     }
 
     Item { Layout.preferredHeight: 4 }
@@ -238,7 +260,7 @@ BaseCard {
 
     Process {
         id: accentProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/appearance/sh/accent-switch.sh"]
+        command: [Theme.systemConfig + "/appearance/sh/accent-switch.sh"]
         onExited: Theme.reloadAccent()
     }
 
