@@ -221,10 +221,13 @@ Singleton {
     readonly property color fgFaint:         modeColors ? modeColors.fgFaint         : (themeObj ? themeObj.fgFaint        : "#6c7086")
     readonly property color fgOnAccent:      themeObj ? themeObj.fgOnAccent      : "#111316"
     readonly property color bg:              modeColors ? modeColors.bg              : (themeObj ? themeObj.bg             : "#1e1e2e")
-    readonly property color bgPanel:         modeColors ? modeColors.bgPanel         : (themeObj ? themeObj.bgPanel        : "#b01e1e2e")
-    readonly property color bgCard:          modeColors ? modeColors.bgCard          : (themeObj ? themeObj.bgCard         : "#b0313244")
-    readonly property color bgCardAlt:       modeColors ? modeColors.bgCardAlt       : (themeObj ? themeObj.bgCardAlt      : "#b045475a")
-    readonly property color bgHeader:        modeColors ? modeColors.bgHeader        : (themeObj ? themeObj.bgHeader       : "#b011111b")
+    function solidWhenEffectsDisabled(c) {
+        return effectsEnabled ? c : Qt.rgba(c.r, c.g, c.b, 1)
+    }
+    readonly property color bgPanel:         solidWhenEffectsDisabled(modeColors ? modeColors.bgPanel : (themeObj ? themeObj.bgPanel   : "#b01e1e2e"))
+    readonly property color bgCard:          solidWhenEffectsDisabled(modeColors ? modeColors.bgCard  : (themeObj ? themeObj.bgCard    : "#b0313244"))
+    readonly property color bgCardAlt:       solidWhenEffectsDisabled(modeColors ? modeColors.bgCardAlt : (themeObj ? themeObj.bgCardAlt : "#b045475a"))
+    readonly property color bgHeader:        solidWhenEffectsDisabled(modeColors ? modeColors.bgHeader : (themeObj ? themeObj.bgHeader  : "#b011111b"))
     readonly property color bgItem:          modeColors ? modeColors.bgItem          : (themeObj ? themeObj.bgItem         : "#0acdd6f4")
     readonly property color bgItemHover:     modeColors ? modeColors.bgItemHover     : (themeObj ? themeObj.bgItemHover    : "#14cdd6f4")
     readonly property color bgActive:        themeObj ? themeObj.bgActive        : "#223590bd"
