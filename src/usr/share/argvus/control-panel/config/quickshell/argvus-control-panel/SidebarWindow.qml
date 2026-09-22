@@ -219,7 +219,7 @@ PanelWindow {
     implicitWidth: sidebarVisible ? Theme.sidebarWidth : 0
 
     Behavior on implicitWidth {
-        NumberAnimation { duration: Theme.effectsEnabled ? 70 : 0; easing.type: Easing.OutBounce }
+        NumberAnimation { duration: Theme.animationsEnabled ? 70 : 0; easing.type: Easing.OutBounce }
     }
 
     color: "transparent"

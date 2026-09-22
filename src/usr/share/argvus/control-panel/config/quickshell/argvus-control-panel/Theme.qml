@@ -9,7 +9,8 @@ Singleton {
 
     property string themeName: "argvus-dark-aether"
     property string gtkMode: "dark"
-    property string effectsState: "enabled"
+    property string animationsState: "enabled"
+    property string transparencyState: "enabled"
     property string fontFamily: "IBM Plex Mono"
     property string monoFontFamily: "IBM Plex Mono"
     property int fontSize: 14
@@ -20,6 +21,19 @@ Singleton {
         StandardPaths.writableLocation(StandardPaths.GenericConfigLocation)
     readonly property string systemConfig: Quickshell.env("ARGVUS_SYSTEM_CONFIG") || "/usr/share/argvus"
     readonly property string generatedConfig: configHome + "/argvus/generated"
+
+    function stateWithLegacyFallback(value) {
+        var state = value.trim()
+        if (state === "enabled" || state === "disabled") return state
+        var legacy = legacyEffectsStateFile.text().trim()
+        return legacy === "disabled" ? "disabled" : "enabled"
+    }
+
+    FileView {
+        id: legacyEffectsStateFile
+        path: root.configHome + "/argvus/state/effects"
+    }
+
     FileView {
         id: themeNameFile
         path: root.configHome + "/argvus/.active-theme"
@@ -39,11 +53,18 @@ Singleton {
     }
 
     FileView {
-        id: effectsStateFile
-        path: root.configHome + "/argvus/state/effects"
+        id: animationsStateFile
+        path: root.configHome + "/argvus/state/animations"
         onTextChanged: {
-            var s = text().trim()
-            root.effectsState = s === "disabled" ? "disabled" : "enabled"
+            root.animationsState = root.stateWithLegacyFallback(text())
+        }
+    }
+
+    FileView {
+        id: transparencyStateFile
+        path: root.configHome + "/argvus/state/transparency"
+        onTextChanged: {
+            root.transparencyState = root.stateWithLegacyFallback(text())
         }
     }
 
@@ -187,7 +208,9 @@ Singleton {
         onTriggered: {
             themeNameFile.reload()
             gtkModeFile.reload()
-            effectsStateFile.reload()
+            animationsStateFile.reload()
+            transparencyStateFile.reload()
+            legacyEffectsStateFile.reload()
             fontsFile.reload()
             bordersFile.reload()
             effectiveSpacesFile.reload()
@@ -203,6 +226,9 @@ Singleton {
         fontsFile.reload()
         bordersFile.reload()
         effectiveSpacesFile.reload()
+        animationsStateFile.reload()
+        transparencyStateFile.reload()
+        legacyEffectsStateFile.reload()
     }
 
     // modeColors — non-null when theme declares a `light` QtObject and gtkMode is "light"
@@ -221,13 +247,13 @@ Singleton {
     readonly property color fgFaint:         modeColors ? modeColors.fgFaint         : (themeObj ? themeObj.fgFaint        : "#6c7086")
     readonly property color fgOnAccent:      themeObj ? themeObj.fgOnAccent      : "#111316"
     readonly property color bg:              modeColors ? modeColors.bg              : (themeObj ? themeObj.bg             : "#1e1e2e")
-    function solidWhenEffectsDisabled(c) {
-        return effectsEnabled ? c : Qt.rgba(c.r, c.g, c.b, 1)
+    function solidWhenTransparencyDisabled(c) {
+        return transparencyEnabled ? c : Qt.rgba(c.r, c.g, c.b, 1)
     }
-    readonly property color bgPanel:         solidWhenEffectsDisabled(modeColors ? modeColors.bgPanel : (themeObj ? themeObj.bgPanel   : "#b01e1e2e"))
-    readonly property color bgCard:          solidWhenEffectsDisabled(modeColors ? modeColors.bgCard  : (themeObj ? themeObj.bgCard    : "#b0313244"))
-    readonly property color bgCardAlt:       solidWhenEffectsDisabled(modeColors ? modeColors.bgCardAlt : (themeObj ? themeObj.bgCardAlt : "#b045475a"))
-    readonly property color bgHeader:        solidWhenEffectsDisabled(modeColors ? modeColors.bgHeader : (themeObj ? themeObj.bgHeader  : "#b011111b"))
+    readonly property color bgPanel:         solidWhenTransparencyDisabled(modeColors ? modeColors.bgPanel : (themeObj ? themeObj.bgPanel   : "#b01e1e2e"))
+    readonly property color bgCard:          solidWhenTransparencyDisabled(modeColors ? modeColors.bgCard  : (themeObj ? themeObj.bgCard    : "#b0313244"))
+    readonly property color bgCardAlt:       solidWhenTransparencyDisabled(modeColors ? modeColors.bgCardAlt : (themeObj ? themeObj.bgCardAlt : "#b045475a"))
+    readonly property color bgHeader:        solidWhenTransparencyDisabled(modeColors ? modeColors.bgHeader : (themeObj ? themeObj.bgHeader  : "#b011111b"))
     readonly property color bgItem:          modeColors ? modeColors.bgItem          : (themeObj ? themeObj.bgItem         : "#0acdd6f4")
     readonly property color bgItemHover:     modeColors ? modeColors.bgItemHover     : (themeObj ? themeObj.bgItemHover    : "#14cdd6f4")
     readonly property color bgActive:        themeObj ? themeObj.bgActive        : "#223590bd"
@@ -247,9 +273,10 @@ Singleton {
     readonly property int radius:            borderRadius
     readonly property int radiusPill:        borderRadius
     readonly property int radiusSmall:       borderRadius
-    readonly property bool effectsEnabled:   effectsState !== "disabled"
-    readonly property int animFast:          effectsEnabled ? (modeColors ? modeColors.animFast        : (themeObj ? themeObj.animFast       : 150)) : 0
-    readonly property int animNormal:        effectsEnabled ? (modeColors ? modeColors.animNormal      : (themeObj ? themeObj.animNormal     : 220)) : 0
+    readonly property bool animationsEnabled: animationsState !== "disabled"
+    readonly property bool transparencyEnabled: transparencyState !== "disabled"
+    readonly property int animFast:          animationsEnabled ? (modeColors ? modeColors.animFast        : (themeObj ? themeObj.animFast       : 150)) : 0
+    readonly property int animNormal:        animationsEnabled ? (modeColors ? modeColors.animNormal      : (themeObj ? themeObj.animNormal     : 220)) : 0
     property int _effectiveTop: 1
     property int _effectiveRight: 1
     property int _effectiveBottom: 1

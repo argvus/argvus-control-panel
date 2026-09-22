@@ -124,7 +124,7 @@ BaseCard {
                     width: parent.width * pct
                     height: 3; radius: 1
                     color: barColor
-                    Behavior on width { NumberAnimation { duration: Theme.effectsEnabled ? 400 : 0 } }
+                    Behavior on width { NumberAnimation { duration: Theme.animationsEnabled ? 400 : 0 } }
                 }
             }
         }
