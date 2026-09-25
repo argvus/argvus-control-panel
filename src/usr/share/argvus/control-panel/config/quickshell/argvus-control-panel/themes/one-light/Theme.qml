@@ -18,7 +18,7 @@ QtObject {
 
     // Background --------------------------------------------------------------
     readonly property color bg:              "#FAFAFA"
-    readonly property color bgPanel:         "#F0F0F1"
+    readonly property color bgPanel:         "#D9F0F0F1"   // panel with blur
     readonly property color bgCard:          "#FFFFFF"
     readonly property color bgCardAlt:       "#F4F4F5"
     readonly property color bgHeader:        "#F4F4F5"

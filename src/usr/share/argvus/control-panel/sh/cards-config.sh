@@ -7,13 +7,14 @@ set -euo pipefail
 
 CONFIG_HOME="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
 CONFIG_FILE="$CONFIG_HOME/argvus/control-panel/cards.json"
+MASTER_FILE="$CONFIG_HOME/argvus/state/control-panel"
 CARD_IDS=(
   user notifications calendar weather volume brightness network bluetooth
   system appearance session display spaces-borders-position power
 )
 
 usage() {
-  printf 'usage: %s status | set <card> enabled|disabled | move <card> <index>\n' "${0##*/}" >&2
+  printf 'usage: %s status | master status|set enabled|disabled | set <card> enabled|disabled | move <card> <index>\n' "${0##*/}" >&2
   exit 64
 }
 
@@ -60,6 +61,33 @@ write_state() {
 }
 
 case "${1:-}" in
+  master)
+    [[ "$#" -ge 2 ]] || usage
+    case "$2" in
+      status)
+        if [[ -r "$MASTER_FILE" ]] && [[ "$(sed -n '1p' "$MASTER_FILE")" == disabled ]]; then
+          printf '%s\n' disabled
+        else
+          printf '%s\n' enabled
+        fi
+        ;;
+      set)
+        [[ "$#" -eq 3 ]] || usage
+        case "$3" in enabled|disabled) ;; *) usage ;; esac
+        mkdir -p "$(dirname -- "$MASTER_FILE")"
+        printf '%s\n' "$3" > "$MASTER_FILE"
+        if command -v systemctl >/dev/null 2>&1; then
+          if [[ "$3" == enabled ]]; then
+            systemctl --user restart argvus-control-panel.service >/dev/null 2>&1 || true
+          else
+            systemctl --user stop argvus-control-panel.service >/dev/null 2>&1 || true
+          fi
+        fi
+        printf '%s\n' "$3"
+        ;;
+      *) usage ;;
+    esac
+    ;;
     status)
     [[ $# -eq 1 ]] || usage
     normalized_state | jq '

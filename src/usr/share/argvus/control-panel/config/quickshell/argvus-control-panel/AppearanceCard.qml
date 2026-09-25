@@ -10,7 +10,6 @@ BaseCard {
 
     property bool widgetTelemetryEnabled: false
     property bool animationsEnabled: true
-    property bool transparencyEnabled: true
     property string draftHex: ""
 
     function telemetryStateFromOutput(data) {
@@ -225,64 +224,11 @@ BaseCard {
         }
     }
 
-    Item { Layout.preferredHeight: 2 }
-
-    RowLayout {
-        Layout.fillWidth: true
-        spacing: 10
-
-        Rectangle {
-            id: transparencyToggleBtn
-            width: 44; height: 24
-            radius: Theme.radius
-            color: transparencyEnabled ? Theme.accent : Theme.borderSubtle
-            Layout.alignment: Qt.AlignVCenter
-
-            Behavior on color { ColorAnimation { duration: Theme.animFast } }
-
-            Rectangle {
-                width: 18; height: 18
-                radius: Math.max(2, Theme.radius)
-                x: transparencyEnabled ? parent.width - width - 3 : 3
-                y: (parent.height - height) / 2
-                color: Theme.bgHeader
-                Behavior on x { NumberAnimation { duration: Theme.animNormal; easing.type: Easing.OutCubic } }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                cursorShape: Qt.PointingHandCursor
-                onClicked: transparencyToggleProc.running = true
-            }
-        }
-
-        ColumnLayout {
-            spacing: 1
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignVCenter
-            Text {
-                text: Strings.transparencyTitle
-                color: Theme.fgText
-                font.pixelSize: Theme.scaledFont(13)
-                font.family: Theme.fontFamily
-                font.weight: Font.Medium
-            }
-            Text {
-                text: transparencyEnabled ? Strings.transparencyEnabled : Strings.transparencyDisabled
-                color: transparencyEnabled ? Theme.accent : Theme.danger
-                font.pixelSize: Theme.scaledFont(13)
-                font.family: Theme.fontFamily
-            }
-        }
-    }
-
     Timer {
         interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
         onTriggered: {
             if (!checkProc.running) checkProc.running = true
             if (!animationsStatusProc.running) animationsStatusProc.running = true
-            if (!transparencyStatusProc.running) transparencyStatusProc.running = true
         }
     }
 
@@ -349,25 +295,4 @@ BaseCard {
         }
     }
 
-    Process {
-        id: transparencyToggleProc
-        command: ["sh", Theme.systemConfig + "/session/sh/effects-toggle.sh", "transparency", "toggle"]
-        stdout: SplitParser {
-            onRead: data => {
-                transparencyEnabled = data.trim() === "enabled"
-                Theme.transparencyState = transparencyEnabled ? "enabled" : "disabled"
-            }
-        }
-    }
-
-    Process {
-        id: transparencyStatusProc
-        command: ["sh", Theme.systemConfig + "/session/sh/effects-toggle.sh", "transparency", "status"]
-        stdout: SplitParser {
-            onRead: data => {
-                transparencyEnabled = data.trim() === "enabled"
-                Theme.transparencyState = transparencyEnabled ? "enabled" : "disabled"
-            }
-        }
-    }
 }

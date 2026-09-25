@@ -10,7 +10,8 @@ Singleton {
     property string themeName: "argvus-dark"
     property string gtkMode: "dark"
     property string animationsState: "enabled"
-    property string transparencyState: "enabled"
+    property string controlPanelTransparencyState: "enabled"
+    property int controlPanelTransparency: 50
     property string fontFamily: "IBM Plex Mono"
     property string monoFontFamily: "IBM Plex Mono"
     property int fontSize: 14
@@ -61,11 +62,9 @@ Singleton {
     }
 
     FileView {
-        id: transparencyStateFile
-        path: root.configHome + "/argvus/state/transparency"
-        onTextChanged: {
-            root.transparencyState = root.stateWithLegacyFallback(text())
-        }
+        id: transparencyValueFile
+        path: root.configHome + "/argvus/state/effects/" + root.themeName + ".conf"
+        onTextChanged: root.loadEffectSettings(text())
     }
 
     FileView {
@@ -154,6 +153,35 @@ Singleton {
         if (isNaN(root.monoFontSize) || root.monoFontSize < 8) root.monoFontSize = root.fontSize
     }
 
+    function effectValue(contents, key, fallback) {
+        var lines = contents.split("\n")
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim()
+            if (line.indexOf(key + "=") !== 0) continue
+            var parsed = parseInt(line.substring(key.length + 1), 10)
+            if (!isNaN(parsed)) return Math.min(Math.max(parsed, 0), 100)
+        }
+        return fallback
+    }
+
+    function loadEffectSettings(contents) {
+        root.controlPanelTransparency = root.effectValue(
+            contents, "control-panel.transparency", 50)
+        root.controlPanelTransparencyState = root.effectState(
+            contents, "control-panel.transparency.enabled", "enabled")
+    }
+
+    function effectState(contents, key, fallback) {
+        var lines = contents.split("\n")
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].trim()
+            if (line.indexOf(key + "=") !== 0) continue
+            var value = line.substring(key.length + 1).trim()
+            if (value === "enabled" || value === "disabled") return value
+        }
+        return fallback
+    }
+
     function loadBorders(contents) {
         var defaultRounded = root.themeName.endsWith("-float")
         var rounded = defaultRounded ? 1 : 0
@@ -209,7 +237,7 @@ Singleton {
             themeNameFile.reload()
             gtkModeFile.reload()
             animationsStateFile.reload()
-            transparencyStateFile.reload()
+            transparencyValueFile.reload()
             legacyEffectsStateFile.reload()
             fontsFile.reload()
             bordersFile.reload()
@@ -220,6 +248,7 @@ Singleton {
     onThemeNameChanged: {
         loadTheme()
         loadBorders(bordersFile.text())
+        transparencyValueFile.reload()
     }
     Component.onCompleted: {
         loadTheme()
@@ -227,7 +256,7 @@ Singleton {
         bordersFile.reload()
         effectiveSpacesFile.reload()
         animationsStateFile.reload()
-        transparencyStateFile.reload()
+        transparencyValueFile.reload()
         legacyEffectsStateFile.reload()
     }
 
@@ -248,7 +277,10 @@ Singleton {
     readonly property color fgOnAccent:      themeObj ? themeObj.fgOnAccent      : "#111316"
     readonly property color bg:              modeColors ? modeColors.bg              : (themeObj ? themeObj.bg             : "#1e1e2e")
     function solidWhenTransparencyDisabled(c) {
-        return transparencyEnabled ? c : Qt.rgba(c.r, c.g, c.b, 1)
+        if (controlPanelTransparencyState === "disabled")
+            return Qt.rgba(c.r, c.g, c.b, 1)
+        var factor = Math.max(0, Math.min(1, (100 - controlPanelTransparency) / 100.0))
+        return Qt.rgba(c.r, c.g, c.b, c.a * factor)
     }
     readonly property color bgPanel:         solidWhenTransparencyDisabled(modeColors ? modeColors.bgPanel : (themeObj ? themeObj.bgPanel   : "#b01e1e2e"))
     readonly property color bgCard:          solidWhenTransparencyDisabled(modeColors ? modeColors.bgCard  : (themeObj ? themeObj.bgCard    : "#b0313244"))
@@ -274,7 +306,6 @@ Singleton {
     readonly property int radiusPill:        borderRadius
     readonly property int radiusSmall:       borderRadius
     readonly property bool animationsEnabled: animationsState !== "disabled"
-    readonly property bool transparencyEnabled: transparencyState !== "disabled"
     readonly property int animFast:          animationsEnabled ? (modeColors ? modeColors.animFast        : (themeObj ? themeObj.animFast       : 150)) : 0
     readonly property int animNormal:        animationsEnabled ? (modeColors ? modeColors.animNormal      : (themeObj ? themeObj.animNormal     : 220)) : 0
     property int _effectiveTop: 1
