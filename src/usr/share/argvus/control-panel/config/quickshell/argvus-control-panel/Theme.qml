@@ -7,7 +7,7 @@ import Quickshell.Io
 Singleton {
     id: root
 
-    property string themeName: "argvus-dark-aether"
+    property string themeName: "argvus-dark"
     property string gtkMode: "dark"
     property string animationsState: "enabled"
     property string transparencyState: "enabled"
