@@ -19,7 +19,7 @@ Singleton {
     property bool bordersRounded: false
     property int bordersRounding: 0
     property bool widgetTelemetryEnabled: true
-    property int sessionLockMinutes: 15
+    property int sessionLockMinutes: 30
     property bool keepAwake: false
     property real audioVolume: 0.5
     property bool audioMuted: false
@@ -28,11 +28,11 @@ Singleton {
     readonly property string systemConfig: Quickshell.env("ARGVUS_SYSTEM_CONFIG") || "/usr/share/argvus"
     readonly property string generatedConfig: configHome + "/argvus/data/generated"
 
-    FileView {
-        id: canonicalConfigFile
-        path: root.configHome + "/argvus/config.json"
-        onTextChanged: root.loadCanonicalConfig(text())
-    }
+    FileView { id: appearanceConfigFile; path: root.configHome + "/argvus/config/appearance.json"; onTextChanged: root.loadAppearance(text()) }
+    FileView { id: effectsConfigFile; path: root.configHome + "/argvus/config/effects.json"; onTextChanged: root.loadEffects(text()) }
+    FileView { id: layoutConfigFile; path: root.configHome + "/argvus/config/layout.json"; onTextChanged: root.loadLayout(text()) }
+    FileView { id: powerConfigFile; path: root.configHome + "/argvus/config/power.json"; onTextChanged: root.loadPower(text()) }
+    FileView { id: audioConfigFile; path: root.configHome + "/argvus/config/audio.json"; onTextChanged: root.loadAudio(text()) }
 
     FileView {
         id: themeNameFile
@@ -98,7 +98,11 @@ Singleton {
     }
 
     function reloadCanonicalConfig() {
-        canonicalConfigFile.reload()
+        appearanceConfigFile.reload()
+        effectsConfigFile.reload()
+        layoutConfigFile.reload()
+        powerConfigFile.reload()
+        audioConfigFile.reload()
     }
 
     function reloadAccent() { themeFile.reload() }
@@ -145,27 +149,34 @@ Singleton {
             contents, "control-panel.transparency.enabled", "enabled")
     }
 
-    function loadCanonicalConfig(contents) {
+    function parseSection(contents) {
         if (!contents || contents.trim() === "") return
-        var document
-        try { document = JSON.parse(contents) } catch (error) { return }
-        var appearance = document.appearance || {}
-        var effects = document.effects || {}
-        var layout = document.layout || {}
-        var windowLayout = layout.window || {}
-        var taskbar = layout.taskbar || {}
-        var power = document.power || {}
-        var audio = document.audio || {}
+        try { return JSON.parse(contents) } catch (error) { return null }
+    }
 
+    function loadAppearance(contents) {
+        var appearance = parseSection(contents)
+        if (!appearance) return
         if (typeof appearance.theme === "string" && appearance.theme !== "") root.themeName = appearance.theme
         if (appearance.gtk_mode === "light" || appearance.gtk_mode === "dark") root.gtkMode = appearance.gtk_mode
+    }
+
+    function loadEffects(contents) {
+        var effects = parseSection(contents)
+        if (!effects) return
         if (typeof effects.animations === "boolean") root.animationsState = effects.animations ? "enabled" : "disabled"
         if (typeof effects.widget_telemetry_enabled === "boolean") root.widgetTelemetryEnabled = effects.widget_telemetry_enabled
         if (typeof effects["transparency_control-panel_value"] === "number")
             root.controlPanelTransparency = Math.min(Math.max(effects["transparency_control-panel_value"], 0), 100)
         if (typeof effects["transparency_control-panel_enabled"] === "boolean")
             root.controlPanelTransparencyState = effects["transparency_control-panel_enabled"] ? "enabled" : "disabled"
+    }
 
+    function loadLayout(contents) {
+        var layout = parseSection(contents)
+        if (!layout) return
+        var windowLayout = layout.window || {}
+        var taskbar = layout.taskbar || {}
         if (typeof windowLayout.rounded === "boolean") root.bordersRounded = windowLayout.rounded
         if (typeof windowLayout.rounding === "number") root.bordersRounding = Math.min(Math.max(windowLayout.rounding, 0), 10)
 
@@ -187,9 +198,18 @@ Singleton {
         root._effectiveRight = right
         root._effectiveBottom = bottom
         root._effectiveLeft = left
+    }
 
+    function loadPower(contents) {
+        var power = parseSection(contents)
+        if (!power) return
         if (typeof power.lock_minutes === "number") root.sessionLockMinutes = Math.max(0, power.lock_minutes)
         if (typeof power.keep_awake === "boolean") root.keepAwake = power.keep_awake
+    }
+
+    function loadAudio(contents) {
+        var audio = parseSection(contents)
+        if (!audio) return
         if (typeof audio.output_volume === "number") root.audioVolume = Math.min(Math.max(audio.output_volume / 100.0, 0), 1)
         if (typeof audio.output_muted === "boolean") root.audioMuted = audio.output_muted
     }
@@ -217,19 +237,19 @@ Singleton {
         onTriggered: {
             themeNameFile.reload()
             gtkModeFile.reload()
-            canonicalConfigFile.reload()
+            root.reloadCanonicalConfig()
             fontsFile.reload()
         }
     }
 
     onThemeNameChanged: {
         loadTheme()
-        canonicalConfigFile.reload()
+        root.reloadCanonicalConfig()
     }
     Component.onCompleted: {
         loadTheme()
         fontsFile.reload()
-        canonicalConfigFile.reload()
+        root.reloadCanonicalConfig()
     }
 
     // modeColors — non-null when theme declares a `light` QtObject and gtkMode is "light"
