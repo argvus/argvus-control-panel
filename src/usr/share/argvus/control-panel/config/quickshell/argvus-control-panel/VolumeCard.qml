@@ -9,6 +9,7 @@ BaseCard {
     property real volume: Theme.audioVolume
     property bool muted:  Theme.audioMuted
     property bool dragging: false
+    property bool applyAfterSet: false
 
     Connections {
         target: Theme
@@ -49,7 +50,18 @@ BaseCard {
         id: setProc
         property string cmd: ""
         command: ["bash", "-c", cmd]
-        onExited: Theme.reloadCanonicalConfig()
+        onExited: {
+            Theme.reloadCanonicalConfig()
+            if (applyAfterSet && !dragging) {
+                applyAfterSet = false
+                if (!applyConfigProc.running) applyConfigProc.running = true
+            }
+        }
+    }
+
+    Process {
+        id: applyConfigProc
+        command: ["systemctl", "--user", "reload", "argvus-config.service"]
     }
 
     function setVolume(v) {
@@ -63,7 +75,8 @@ BaseCard {
     function toggleMute() {
         muted = !muted
         Theme.audioMuted = muted
-        setProc.cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && argvus-config set /audio/output_muted " + (muted ? "true" : "false")
+        setProc.cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && argvus-config set /audio/output_muted " + (muted ? "true" : "false") +
+            " && systemctl --user reload argvus-config.service"
         setProc.running = true
     }
 
@@ -120,6 +133,11 @@ BaseCard {
                 }
                 onReleased: {
                     dragging = false
+                    applyAfterSet = true
+                    if (!setProc.running) {
+                        applyAfterSet = false
+                        if (!applyConfigProc.running) applyConfigProc.running = true
+                    }
                 }
             }
         }
