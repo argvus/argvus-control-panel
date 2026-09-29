@@ -280,7 +280,7 @@ Singleton {
         if (controlPanelTransparencyState === "disabled")
             return Qt.rgba(c.r, c.g, c.b, 1)
         var factor = Math.max(0, Math.min(1, (100 - controlPanelTransparency) / 100.0))
-        return Qt.rgba(c.r, c.g, c.b, c.a * factor)
+        return Qt.rgba(c.r, c.g, c.b, factor)
     }
     readonly property color bgPanel:         solidWhenTransparencyDisabled(modeColors ? modeColors.bgPanel : (themeObj ? themeObj.bgPanel   : "#b01e1e2e"))
     readonly property color bgCard:          solidWhenTransparencyDisabled(modeColors ? modeColors.bgCard  : (themeObj ? themeObj.bgCard    : "#b0313244"))
