@@ -33,7 +33,6 @@ PanelWindow {
         "appearance": "AppearanceCard.qml",
         "session": "SessionCard.qml",
         "display": "DisplayCard.qml",
-        "spaces-borders-position": "SpacesBordersPositionCard.qml",
         "power": "PowerCard.qml"
     })
 

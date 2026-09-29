@@ -8,8 +8,8 @@ BaseCard {
     cardTitle: Strings.cardTitleAppearance
     cardIcon:  "»"
 
-    property bool widgetTelemetryEnabled: false
-    property bool animationsEnabled: true
+    property bool widgetTelemetryEnabled: Theme.widgetTelemetryEnabled
+    property bool animationsEnabled: Theme.animationsEnabled
     property string draftHex: ""
 
     function telemetryStateFromOutput(data) {
@@ -98,6 +98,12 @@ BaseCard {
         target: Theme
         function onThemeObjChanged() {
             draftHex = colorToHex(Theme.accent)
+        }
+        function onWidgetTelemetryEnabledChanged() {
+            widgetTelemetryEnabled = Theme.widgetTelemetryEnabled
+        }
+        function onAnimationsStateChanged() {
+            animationsEnabled = Theme.animationsEnabled
         }
     }
 
