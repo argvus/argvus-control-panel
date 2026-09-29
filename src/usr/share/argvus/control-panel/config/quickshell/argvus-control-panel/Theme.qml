@@ -21,7 +21,7 @@ Singleton {
     readonly property string configHome: Quickshell.env("ARGVUS_CONFIG_HOME") ||
         StandardPaths.writableLocation(StandardPaths.GenericConfigLocation)
     readonly property string systemConfig: Quickshell.env("ARGVUS_SYSTEM_CONFIG") || "/usr/share/argvus"
-    readonly property string generatedConfig: configHome + "/argvus/generated"
+    readonly property string generatedConfig: configHome + "/argvus/data/generated"
 
     function stateWithLegacyFallback(value) {
         var state = value.trim()
@@ -84,7 +84,7 @@ Singleton {
     // user preference, and is atomically regenerated before services restart.
     FileView {
         id: effectiveSpacesFile
-        path: root.configHome + "/argvus/generated/spaces-effective.conf"
+        path: root.generatedConfig + "/spaces-effective.conf"
         onTextChanged: root.loadEffectiveSpaces(text())
     }
 
@@ -111,7 +111,7 @@ Singleton {
         themeFile.reload()
         if (themeFile.text().trim() !== "") return
 
-        // 2. Generated config (~/.config/argvus/generated)
+        // 2. Generated config (~/.config/argvus/data/generated)
         themeFile.path = root.generatedConfig + "/quickshell/argvus-control-panel/themes/" +
             themeName + "/Theme.qml"
         themeFile.reload()
