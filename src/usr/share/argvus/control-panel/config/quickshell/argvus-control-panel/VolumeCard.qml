@@ -67,8 +67,10 @@ BaseCard {
     function setVolume(v) {
         volume = Math.min(Math.max(v, 0), 1.0)
         Theme.audioVolume = volume
+        var reload = dragging ? "" : " && systemctl --user reload argvus-config.service"
         setProc.cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + volume.toFixed(2) +
-            " && argvus-config set /audio/output_volume " + Math.round(volume * 100)
+            " && argvus-config set /audio/output_volume " + Math.round(volume * 100) +
+            reload
         setProc.running = true
     }
 
