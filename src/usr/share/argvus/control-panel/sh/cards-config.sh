@@ -6,8 +6,8 @@
 set -euo pipefail
 
 CONFIG_HOME="${ARGVUS_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}}"
-CONFIG_FILE="$CONFIG_HOME/argvus/control-panel/cards.json"
-MASTER_FILE="$CONFIG_HOME/argvus/state/control-panel"
+CONFIG_FILE="$CONFIG_HOME/argvus/data/control-panel/cards.json"
+MASTER_FILE="$CONFIG_HOME/argvus/data/state/control-panel"
 CARD_IDS=(
   user notifications calendar weather volume brightness network bluetooth
   system appearance session display power

@@ -8,7 +8,7 @@ set -eu
 ARGVUS_BOOTSTRAP="${ARGVUS_BOOTSTRAP:-${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/session/sh/bootstrap.sh}"
 . "$ARGVUS_BOOTSTRAP"
 
-STATE_DIR="${ARGVUS_CONFIG_HOME}/argvus"
+STATE_DIR="${ARGVUS_CONFIG_HOME}/argvus/data"
 LOCATION_FILE="${STATE_DIR}/.weather-location"
 
 read_location() {

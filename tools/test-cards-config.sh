@@ -21,8 +21,8 @@ bash "$SCRIPT" set weather disabled
 bash "$SCRIPT" move power 0
 [[ "$(status | jq -r '.cards[0].id')" == 'power' ]]
 
-mkdir -p "$ARGVUS_CONFIG_HOME/argvus/control-panel"
-printf '{ invalid json' > "$ARGVUS_CONFIG_HOME/argvus/control-panel/cards.json"
+mkdir -p "$ARGVUS_CONFIG_HOME/argvus/data/control-panel"
+printf '{ invalid json' > "$ARGVUS_CONFIG_HOME/argvus/data/control-panel/cards.json"
 [[ "$(status | jq -r '.cards[0].id')" == 'user' ]]
 
 if bash "$SCRIPT" set about disabled >/dev/null 2>&1; then

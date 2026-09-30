@@ -36,7 +36,7 @@ Singleton {
 
     FileView {
         id: themeNameFile
-        path: root.configHome + "/argvus/.active-theme"
+        path: root.configHome + "/argvus/data/.active-theme"
         onTextChanged: {
             var n = text().trim()
             if (n !== "") root.themeName = n
@@ -45,7 +45,7 @@ Singleton {
 
     FileView {
         id: gtkModeFile
-        path: root.configHome + "/argvus/.gtk-mode"
+        path: root.configHome + "/argvus/data/.gtk-mode"
         onTextChanged: {
             var m = text().trim()
             if (m === "light" || m === "dark") root.gtkMode = m
@@ -54,7 +54,7 @@ Singleton {
 
     FileView {
         id: fontsFile
-        path: root.configHome + "/argvus/fonts.conf"
+        path: root.configHome + "/argvus/data/generated/fonts.conf"
         onTextChanged: root.loadFonts(text())
     }
 
