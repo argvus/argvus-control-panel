@@ -33,7 +33,6 @@ PanelWindow {
         "appearance": "AppearanceCard.qml",
         "session": "SessionCard.qml",
         "display": "DisplayCard.qml",
-        "spaces-borders-position": "SpacesBordersPositionCard.qml",
         "power": "PowerCard.qml"
     })
 
@@ -194,6 +193,11 @@ PanelWindow {
     Process { id: cardsMoveProcess }
 
     screen: Quickshell.screens[0]
+
+    // Quickshell defaults this to the shell directory name, which the compositor
+    // layer rules cannot rely on. Pin it so argvus-hyprland can target the
+    // sidebar when it opts the surface into blur.
+    WlrLayershell.namespace: "argvus-control-panel"
 
     WlrLayershell.margins {
         top: Theme.sidebarMarginTop
