@@ -33,7 +33,7 @@ BaseCard {
     FileView {
         id: locationFile
         path: StandardPaths.writableLocation(StandardPaths.HomeLocation) +
-              "/.config/argvus/.weather-location"
+              "/.config/argvus/data/.weather-location"
         onTextChanged: {
             root.location = text().trim()
             root.refreshWeather()

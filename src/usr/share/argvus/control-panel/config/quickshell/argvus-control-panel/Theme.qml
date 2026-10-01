@@ -18,26 +18,27 @@ Singleton {
     property int monoFontSize: 14
     property bool bordersRounded: false
     property int bordersRounding: 0
+    property bool widgetTelemetryEnabled: true
+    property int sessionLockMinutes: 30
+    property bool keepAwake: false
+    property real audioVolume: 0.5
+    property bool audioMuted: false
     readonly property string configHome: Quickshell.env("ARGVUS_CONFIG_HOME") ||
         StandardPaths.writableLocation(StandardPaths.GenericConfigLocation)
     readonly property string systemConfig: Quickshell.env("ARGVUS_SYSTEM_CONFIG") || "/usr/share/argvus"
-    readonly property string generatedConfig: configHome + "/argvus/generated"
+    readonly property string generatedConfig: configHome + "/argvus/data/generated"
+    // Runtime data root. Managed user copies and state markers live here.
+    readonly property string dataConfig: configHome + "/argvus/data"
 
-    function stateWithLegacyFallback(value) {
-        var state = value.trim()
-        if (state === "enabled" || state === "disabled") return state
-        var legacy = legacyEffectsStateFile.text().trim()
-        return legacy === "disabled" ? "disabled" : "enabled"
-    }
-
-    FileView {
-        id: legacyEffectsStateFile
-        path: root.configHome + "/argvus/state/effects"
-    }
+    FileView { id: appearanceConfigFile; path: root.configHome + "/argvus/config/appearance.json"; onTextChanged: root.loadAppearance(text()) }
+    FileView { id: effectsConfigFile; path: root.configHome + "/argvus/config/effects.json"; onTextChanged: root.loadEffects(text()) }
+    FileView { id: layoutConfigFile; path: root.configHome + "/argvus/config/layout.json"; onTextChanged: root.loadLayout(text()) }
+    FileView { id: powerConfigFile; path: root.configHome + "/argvus/config/power.json"; onTextChanged: root.loadPower(text()) }
+    FileView { id: audioConfigFile; path: root.configHome + "/argvus/config/audio.json"; onTextChanged: root.loadAudio(text()) }
 
     FileView {
         id: themeNameFile
-        path: root.configHome + "/argvus/.active-theme"
+        path: root.configHome + "/argvus/data/.active-theme"
         onTextChanged: {
             var n = text().trim()
             if (n !== "") root.themeName = n
@@ -46,7 +47,7 @@ Singleton {
 
     FileView {
         id: gtkModeFile
-        path: root.configHome + "/argvus/.gtk-mode"
+        path: root.configHome + "/argvus/data/.gtk-mode"
         onTextChanged: {
             var m = text().trim()
             if (m === "light" || m === "dark") root.gtkMode = m
@@ -54,38 +55,9 @@ Singleton {
     }
 
     FileView {
-        id: animationsStateFile
-        path: root.configHome + "/argvus/state/animations"
-        onTextChanged: {
-            root.animationsState = root.stateWithLegacyFallback(text())
-        }
-    }
-
-    FileView {
-        id: transparencyValueFile
-        path: root.configHome + "/argvus/state/effects/" + root.themeName + ".conf"
-        onTextChanged: root.loadEffectSettings(text())
-    }
-
-    FileView {
-        id: bordersFile
-        path: root.configHome + "/argvus/.borders"
-        onTextChanged: root.loadBorders(text())
-    }
-
-    FileView {
         id: fontsFile
-        path: root.configHome + "/argvus/fonts.conf"
+        path: root.configHome + "/argvus/data/generated/fonts.conf"
         onTextChanged: root.loadFonts(text())
-    }
-
-    // spaces-switch.sh is the sole owner of the requested -> effective
-    // geometry transformation. This generated file is runtime state, not a
-    // user preference, and is atomically regenerated before services restart.
-    FileView {
-        id: effectiveSpacesFile
-        path: root.configHome + "/argvus/generated/spaces-effective.conf"
-        onTextChanged: root.loadEffectiveSpaces(text())
     }
 
     property var themeObj: null
@@ -105,13 +77,23 @@ Singleton {
     }
 
     function loadTheme() {
-        // 1. User config (~/.config/argvus) — where accent-switch writes accent colors
+        // The managed user copy lives in the runtime data root, which is where
+        // accent-switch.sh writes the resolved highlight color
+        // (paths_config resolves control-panel/config/quickshell/* to
+        // data/quickshell/*). Read it first, otherwise this panel would keep
+        // showing the packaged per-theme accent.
+        themeFile.path = root.dataConfig + "/quickshell/argvus-control-panel/themes/" +
+            themeName + "/Theme.qml"
+        themeFile.reload()
+        if (themeFile.text().trim() !== "") return
+
+        // Pre-`data/` user copy, kept for layouts installed before the move.
         themeFile.path = root.configHome + "/argvus/quickshell/argvus-control-panel/themes/" +
             themeName + "/Theme.qml"
         themeFile.reload()
         if (themeFile.text().trim() !== "") return
 
-        // 2. Generated config (~/.config/argvus/generated)
+        // 2. Generated config (~/.config/argvus/data/generated)
         themeFile.path = root.generatedConfig + "/quickshell/argvus-control-panel/themes/" +
             themeName + "/Theme.qml"
         themeFile.reload()
@@ -125,6 +107,14 @@ Singleton {
 
     function reloadActiveTheme() {
         themeNameFile.reload()
+    }
+
+    function reloadCanonicalConfig() {
+        appearanceConfigFile.reload()
+        effectsConfigFile.reload()
+        layoutConfigFile.reload()
+        powerConfigFile.reload()
+        audioConfigFile.reload()
     }
 
     function reloadAccent() { themeFile.reload() }
@@ -171,6 +161,71 @@ Singleton {
             contents, "control-panel.transparency.enabled", "enabled")
     }
 
+    function parseSection(contents) {
+        if (!contents || contents.trim() === "") return
+        try { return JSON.parse(contents) } catch (error) { return null }
+    }
+
+    function loadAppearance(contents) {
+        var appearance = parseSection(contents)
+        if (!appearance) return
+        if (typeof appearance.theme === "string" && appearance.theme !== "") root.themeName = appearance.theme
+        if (appearance.gtk_mode === "light" || appearance.gtk_mode === "dark") root.gtkMode = appearance.gtk_mode
+    }
+
+    function loadEffects(contents) {
+        var effects = parseSection(contents)
+        if (!effects) return
+        if (typeof effects.animations === "boolean") root.animationsState = effects.animations ? "enabled" : "disabled"
+        if (typeof effects.widget_telemetry_enabled === "boolean") root.widgetTelemetryEnabled = effects.widget_telemetry_enabled
+        if (typeof effects["transparency_control-panel_value"] === "number")
+            root.controlPanelTransparency = Math.min(Math.max(effects["transparency_control-panel_value"], 0), 100)
+        if (typeof effects["transparency_control-panel_enabled"] === "boolean")
+            root.controlPanelTransparencyState = effects["transparency_control-panel_enabled"] ? "enabled" : "disabled"
+    }
+
+    function loadLayout(contents) {
+        var layout = parseSection(contents)
+        if (!layout) return
+        var windowLayout = layout.window || {}
+        var taskbar = layout.taskbar || {}
+        if (typeof windowLayout.rounded === "boolean") root.bordersRounded = windowLayout.rounded
+        if (typeof windowLayout.rounding === "number") root.bordersRounding = Math.min(Math.max(windowLayout.rounding, 0), 10)
+
+        var top = Number(windowLayout.gaps_out_top)
+        var right = Number(windowLayout.gaps_out_right)
+        var bottom = Number(windowLayout.gaps_out_bottom)
+        var left = Number(windowLayout.gaps_out_left)
+        if (isNaN(top)) top = 0
+        if (isNaN(right)) right = 0
+        if (isNaN(bottom)) bottom = 0
+        if (isNaN(left)) left = 0
+        var taskbarTop = Number(taskbar.margin_top)
+        var taskbarBottom = Number(taskbar.margin_bottom)
+        if (isNaN(taskbarTop)) taskbarTop = 0
+        if (isNaN(taskbarBottom)) taskbarBottom = 0
+        if (taskbar.position === "top") top = Math.max(0, top - taskbarBottom)
+        if (taskbar.position === "bottom") bottom = Math.max(0, bottom - taskbarTop)
+        root._effectiveTop = top
+        root._effectiveRight = right
+        root._effectiveBottom = bottom
+        root._effectiveLeft = left
+    }
+
+    function loadPower(contents) {
+        var power = parseSection(contents)
+        if (!power) return
+        if (typeof power.lock_minutes === "number") root.sessionLockMinutes = Math.max(0, power.lock_minutes)
+        if (typeof power.keep_awake === "boolean") root.keepAwake = power.keep_awake
+    }
+
+    function loadAudio(contents) {
+        var audio = parseSection(contents)
+        if (!audio) return
+        if (typeof audio.output_volume === "number") root.audioVolume = Math.min(Math.max(audio.output_volume / 100.0, 0), 1)
+        if (typeof audio.output_muted === "boolean") root.audioMuted = audio.output_muted
+    }
+
     function effectState(contents, key, fallback) {
         var lines = contents.split("\n")
         for (var i = 0; i < lines.length; i++) {
@@ -180,48 +235,6 @@ Singleton {
             if (value === "enabled" || value === "disabled") return value
         }
         return fallback
-    }
-
-    function loadBorders(contents) {
-        var defaultRounded = root.themeName.endsWith("-float")
-        var rounded = defaultRounded ? 1 : 0
-        var rounding = defaultRounded ? 4 : 0
-        var lines = contents.split("\n")
-        for (var i = 0; i < lines.length; i++) {
-            var line = lines[i].trim()
-            var eq = line.indexOf("=")
-            if (eq <= 0) continue
-            var key = line.substring(0, eq).trim()
-            var value = line.substring(eq + 1).trim()
-            if (key === "rounded" && (value === "0" || value === "1")) rounded = parseInt(value, 10)
-            if (key === "rounding") {
-                var parsed = parseInt(value, 10)
-                if (!isNaN(parsed)) rounding = parsed
-            }
-        }
-        root.bordersRounded = rounded === 1
-        root.bordersRounding = Math.min(Math.max(rounding, 0), 10)
-    }
-
-    function loadEffectiveSpaces(contents) {
-        var isFloat = root.themeName.endsWith("-float")
-        root._effectiveTop = 0
-        root._effectiveRight = isFloat ? 18 : 0
-        root._effectiveBottom = isFloat ? 18 : 0
-        root._effectiveLeft = isFloat ? 18 : 0
-        var lines = contents.split("\n")
-        for (var i = 0; i < lines.length; i++) {
-            var line = lines[i].trim()
-            var eq = line.indexOf("=")
-            if (eq <= 0) continue
-            var key = line.substring(0, eq).trim()
-            var value = line.substring(eq + 1).trim()
-            var parsed = parseInt(value, 10)
-            if (key === "effective_top" && !isNaN(parsed)) root._effectiveTop = parsed
-            if (key === "effective_right" && !isNaN(parsed)) root._effectiveRight = parsed
-            if (key === "effective_bottom" && !isNaN(parsed)) root._effectiveBottom = parsed
-            if (key === "effective_left" && !isNaN(parsed)) root._effectiveLeft = parsed
-        }
     }
 
     function scaledFont(baseSize) {
@@ -236,28 +249,19 @@ Singleton {
         onTriggered: {
             themeNameFile.reload()
             gtkModeFile.reload()
-            animationsStateFile.reload()
-            transparencyValueFile.reload()
-            legacyEffectsStateFile.reload()
+            root.reloadCanonicalConfig()
             fontsFile.reload()
-            bordersFile.reload()
-            effectiveSpacesFile.reload()
         }
     }
 
     onThemeNameChanged: {
         loadTheme()
-        loadBorders(bordersFile.text())
-        transparencyValueFile.reload()
+        root.reloadCanonicalConfig()
     }
     Component.onCompleted: {
         loadTheme()
         fontsFile.reload()
-        bordersFile.reload()
-        effectiveSpacesFile.reload()
-        animationsStateFile.reload()
-        transparencyValueFile.reload()
-        legacyEffectsStateFile.reload()
+        root.reloadCanonicalConfig()
     }
 
     // modeColors — non-null when theme declares a `light` QtObject and gtkMode is "light"
@@ -280,7 +284,7 @@ Singleton {
         if (controlPanelTransparencyState === "disabled")
             return Qt.rgba(c.r, c.g, c.b, 1)
         var factor = Math.max(0, Math.min(1, (100 - controlPanelTransparency) / 100.0))
-        return Qt.rgba(c.r, c.g, c.b, c.a * factor)
+        return Qt.rgba(c.r, c.g, c.b, factor)
     }
     readonly property color bgPanel:         solidWhenTransparencyDisabled(modeColors ? modeColors.bgPanel : (themeObj ? themeObj.bgPanel   : "#b01e1e2e"))
     readonly property color bgCard:          solidWhenTransparencyDisabled(modeColors ? modeColors.bgCard  : (themeObj ? themeObj.bgCard    : "#b0313244"))
