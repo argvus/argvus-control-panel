@@ -6,9 +6,16 @@ BaseCard {
     cardTitle: Strings.cardTitleVolume
     cardIcon:  "»"
 
-    property real volume: 0
-    property bool muted:  false
+    property real volume: Theme.audioVolume
+    property bool muted:  Theme.audioMuted
     property bool dragging: false
+    property bool applyAfterSet: false
+
+    Connections {
+        target: Theme
+        function onAudioVolumeChanged() { if (!dragging) volume = Theme.audioVolume }
+        function onAudioMutedChanged() { muted = Theme.audioMuted }
+    }
 
     Timer {
         interval: 1000; running: pollingActive; repeat: true; triggeredOnStart: true
@@ -18,14 +25,22 @@ BaseCard {
     Process {
         id: readProc
         command: ["bash", "-c",
-            "wpctl get-volume @DEFAULT_AUDIO_SINK@"
+            "argvus-config get /audio --effective 2>/dev/null | jq -c . || wpctl get-volume @DEFAULT_AUDIO_SINK@"
         ]
         stdout: SplitParser {
             onRead: data => {
+                try {
+                    var canonical = JSON.parse(data)
+                    if (canonical && typeof canonical.output_volume === "number") {
+                        volume = Math.min(Math.max(canonical.output_volume / 100.0, 0), 1.0)
+                        muted = canonical.output_muted === true
+                        return
+                    }
+                } catch (error) {}
                 var parts = data.trim().split(/\s+/)
                 if (parts.length >= 2) {
                     volume = Math.min(parseFloat(parts[1]) || 0, 1.0)
-                    muted  = data.includes("[MUTED]")
+                    muted = data.includes("[MUTED]")
                 }
             }
         }
@@ -35,17 +50,35 @@ BaseCard {
         id: setProc
         property string cmd: ""
         command: ["bash", "-c", cmd]
+        onExited: {
+            Theme.reloadCanonicalConfig()
+            if (applyAfterSet && !dragging) {
+                applyAfterSet = false
+                if (!applyConfigProc.running) applyConfigProc.running = true
+            }
+        }
+    }
+
+    Process {
+        id: applyConfigProc
+        command: ["systemctl", "--user", "reload", "argvus-config.service"]
     }
 
     function setVolume(v) {
         volume = Math.min(Math.max(v, 0), 1.0)
-        setProc.cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + volume.toFixed(2)
+        Theme.audioVolume = volume
+        var reload = dragging ? "" : " && systemctl --user reload argvus-config.service"
+        setProc.cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + volume.toFixed(2) +
+            " && argvus-config set /audio/output_volume " + Math.round(volume * 100) +
+            reload
         setProc.running = true
     }
 
     function toggleMute() {
         muted = !muted
-        setProc.cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        Theme.audioMuted = muted
+        setProc.cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && argvus-config set /audio/output_muted " + (muted ? "true" : "false") +
+            " && systemctl --user reload argvus-config.service"
         setProc.running = true
     }
 
@@ -102,6 +135,11 @@ BaseCard {
                 }
                 onReleased: {
                     dragging = false
+                    applyAfterSet = true
+                    if (!setProc.running) {
+                        applyAfterSet = false
+                        if (!applyConfigProc.running) applyConfigProc.running = true
+                    }
                 }
             }
         }
