@@ -8,8 +8,8 @@ BaseCard {
     cardTitle: Strings.cardTitleAppearance
     cardIcon:  "»"
 
-    property bool widgetTelemetryEnabled: false
-    property bool animationsEnabled: true
+    property bool widgetTelemetryEnabled: Theme.widgetTelemetryEnabled
+    property bool animationsEnabled: Theme.animationsEnabled
     property string draftHex: ""
 
     function telemetryStateFromOutput(data) {
@@ -34,16 +34,43 @@ BaseCard {
         }).join("").toUpperCase()
     }
 
+    // A user-selected highlight color is a canonical decision, not a runtime
+    // detail. Persist `/appearance/accent` and `/appearance/accent_custom`
+    // before the adapters run, otherwise the compositor keeps the per-theme
+    // border color (hyprland.lua only honors the accent marker when the
+    // canonical custom flag is set) and the next config projection would
+    // re-derive the theme default.
+    function accentPatch(color, isCustom) {
+        var patch = { "/appearance/accent_custom": isCustom }
+        if (color !== "") patch["/appearance/accent"] = color
+        return JSON.stringify(patch)
+    }
+
     function applyAccent() {
         if (accentProc.running || !validHex(draftHex)) return
-        accentProc.command = [Theme.systemConfig + "/appearance/sh/accent-switch.sh", normalizeHex(draftHex)]
+        accentProc.command = accentApplyCommand(normalizeHex(draftHex), true)
         accentProc.running = true
     }
 
     function resetAccent() {
         if (accentProc.running) return
-        accentProc.command = [Theme.systemConfig + "/appearance/sh/accent-switch.sh", "--theme-default"]
+        accentProc.command = accentApplyCommand("", false)
         accentProc.running = true
+    }
+
+    // Persist first, then apply. `argvus-config patch` does not reproject, so
+    // the ordering keeps the canonical document and the generated accent in
+    // agreement. An empty color only clears the custom flag.
+    function accentApplyCommand(color, isCustom) {
+        var accentScript = Theme.systemConfig + "/appearance/sh/accent-switch.sh"
+        var accentArgument = isCustom ? color : "--theme-default"
+        return ["bash", "-c",
+            "argvus-config patch " + shellQuote(accentPatch(color, isCustom)) +
+            " && exec sh " + shellQuote(accentScript) + " " + shellQuote(accentArgument)]
+    }
+
+    function shellQuote(value) {
+        return "'" + String(value).replace(/'/g, "'\\''") + "'"
     }
 
     Component.onCompleted: draftHex = colorToHex(Theme.accent)
@@ -98,6 +125,12 @@ BaseCard {
         target: Theme
         function onThemeObjChanged() {
             draftHex = colorToHex(Theme.accent)
+        }
+        function onWidgetTelemetryEnabledChanged() {
+            widgetTelemetryEnabled = Theme.widgetTelemetryEnabled
+        }
+        function onAnimationsStateChanged() {
+            animationsEnabled = Theme.animationsEnabled
         }
     }
 
@@ -253,7 +286,10 @@ BaseCard {
 
     Process {
         id: accentProc
-        command: [Theme.systemConfig + "/appearance/sh/accent-switch.sh"]
+        // The real command is always assigned by applyAccent() or resetAccent()
+        // before the process is started. This default is the reversible
+        // theme-default path so an unexpected start cannot damage other state.
+        command: accentApplyCommand("", false)
         onExited: Theme.reloadAccent()
     }
 
