@@ -9,7 +9,7 @@ The panel uses the shared `argvus-i18n` catalogs. When a different language is a
 
 ## Control Panel or Control Center?
 
-Use the panel for current status and quick actions. Use [Control Center](../control-center/) when you want to change persistent desktop configuration. For example, the panel can expose appearance, display, network, volume, brightness, notification, power and session controls; the detailed visual and layout configuration belongs in **Control Center → Appearance**.
+Use the panel for current status and quick actions. Use [Control Center](/docs/argvus-control-center/) when you want to change persistent desktop configuration. For example, the panel can expose appearance, display, network, volume, brightness, notification, power and session controls; the detailed visual and layout configuration belongs in **Control Center → Appearance**.
 
 ## Cards
 
@@ -53,4 +53,4 @@ The Control Panel appearance card no longer manages a global Transparency settin
 
 `argvus-control-panel.service` is started by `argvus-session`. Opening and closing the panel changes the session panel state, but does not mean that every card action is persistent configuration. Network, audio, power and display actions may be handed to their providers or to the current desktop session.
 
-See [taskbar and panels](./taskbar/) for the relationship between the panel, taskbar margins and window layout.
+See [taskbar and panels](/docs/argvus-taskbar/taskbar/) for the relationship between the panel, taskbar margins and window layout.

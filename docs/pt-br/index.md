@@ -12,7 +12,7 @@ O card de aparência do Control Panel não gerencia mais uma Transparência glob
 
 ## Control Panel ou Control Center?
 
-Use o painel para status atual e ações rápidas. Use o [Control Center](../control-center/) quando quiser alterar uma configuração persistente do desktop. Por exemplo, o painel pode oferecer controles de aparência, display, rede, volume, brilho, notificações, energia e sessão; a configuração visual e de layout detalhada fica em **Control Center → Aparência**.
+Use o painel para status atual e ações rápidas. Use o [Control Center](/pt/docs/argvus-control-center/) quando quiser alterar uma configuração persistente do desktop. Por exemplo, o painel pode oferecer controles de aparência, display, rede, volume, brilho, notificações, energia e sessão; a configuração visual e de layout detalhada fica em **Control Center → Aparência**.
 
 ## Cards
 
@@ -54,4 +54,4 @@ Desativar um card apenas o oculta do painel; não desinstala o provider por trá
 
 `argvus-control-panel.service` é iniciado pelo `argvus-session`. Abrir e fechar o painel altera o estado do painel na sessão, mas não significa que toda ação dos cards seja uma configuração persistente. Ações de rede, áudio, energia e display podem ser encaminhadas aos providers ou à sessão desktop atual.
 
-Veja [taskbar e painéis](./taskbar/) para a relação entre painel, margens da taskbar e layout das janelas.
+Veja [taskbar e painéis](/pt/docs/argvus-taskbar/taskbar/) para a relação entre painel, margens da taskbar e layout das janelas.
