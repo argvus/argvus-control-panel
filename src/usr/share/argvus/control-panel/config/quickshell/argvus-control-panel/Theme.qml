@@ -8,6 +8,7 @@ Singleton {
     id: root
 
     property string themeName: "argvus-dark"
+    property string activeThemeFromFile: ""
     property string gtkMode: "dark"
     property string animationsState: "enabled"
     property string controlPanelTransparencyState: "enabled"
@@ -41,7 +42,11 @@ Singleton {
         path: root.configHome + "/argvus/data/.active-theme"
         onTextChanged: {
             var n = text().trim()
-            if (n !== "") root.themeName = n
+            if (n === "") return
+            // The resolved marker includes the layout suffix (e.g. `-float`),
+            // so it is the authority for the theme file.
+            root.activeThemeFromFile = n
+            root.themeName = n
         }
     }
 
@@ -169,7 +174,11 @@ Singleton {
     function loadAppearance(contents) {
         var appearance = parseSection(contents)
         if (!appearance) return
-        if (typeof appearance.theme === "string" && appearance.theme !== "") root.themeName = appearance.theme
+        // appearance.json holds the base theme ID without the layout suffix.
+        // Use it only when the resolved `.active-theme` marker is unavailable,
+        // otherwise the two sources race and the wrong variant is loaded.
+        if (root.activeThemeFromFile === "" && typeof appearance.theme === "string" && appearance.theme !== "")
+            root.themeName = appearance.theme
         if (appearance.gtk_mode === "light" || appearance.gtk_mode === "dark") root.gtkMode = appearance.gtk_mode
     }
 

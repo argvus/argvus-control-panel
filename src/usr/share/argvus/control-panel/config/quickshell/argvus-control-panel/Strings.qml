@@ -72,7 +72,6 @@ QtObject {
     readonly property string btnAccent:               tr("appearance.accent")
     readonly property string hexColor:                tr("appearance.hex_color")
     readonly property string applyAccent:             tr("appearance.apply_accent")
-    readonly property string resetAccent:             tr("appearance.reset_accent")
     readonly property string widgetTelemetryTitle:    tr("appearance.widget.title")
     readonly property string widgetTelemetryEnabled:  tr("appearance.widget.enabled")
     readonly property string widgetTelemetryDisabled: tr("appearance.widget.disabled")

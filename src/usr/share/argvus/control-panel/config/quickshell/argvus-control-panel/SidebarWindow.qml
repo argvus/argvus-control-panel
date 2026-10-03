@@ -394,7 +394,7 @@ PanelWindow {
                 color: thumbMa.pressed
                       ? Theme.scrollbarFg
                       : thumbMa.containsMouse
-                          ? Qt.rgba(1, 1, 1, 0.75)
+                          ? Qt.rgba(Theme.fgText.r, Theme.fgText.g, Theme.fgText.b, 0.75)
                           : Theme.scrollbarFg
 
                 Behavior on color { ColorAnimation { duration: Theme.animFast } }

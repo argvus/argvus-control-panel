@@ -52,12 +52,6 @@ BaseCard {
         accentProc.running = true
     }
 
-    function resetAccent() {
-        if (accentProc.running) return
-        accentProc.command = accentApplyCommand("", false)
-        accentProc.running = true
-    }
-
     // Persist first, then apply. `argvus-config patch` does not reproject, so
     // the ordering keeps the canonical document and the generated accent in
     // agreement. An empty color only clears the custom flag.
@@ -133,15 +127,6 @@ BaseCard {
             animationsEnabled = Theme.animationsEnabled
         }
     }
-
-    RowLayout {
-        Layout.fillWidth: true
-        spacing: 6
-
-        GlassButton { Layout.fillWidth: true; label: Strings.resetAccent; onClicked: resetAccent() }
-    }
-
-    Item { Layout.preferredHeight: 4 }
 
     RowLayout {
         Layout.fillWidth: true
@@ -286,9 +271,9 @@ BaseCard {
 
     Process {
         id: accentProc
-        // The real command is always assigned by applyAccent() or resetAccent()
-        // before the process is started. This default is the reversible
-        // theme-default path so an unexpected start cannot damage other state.
+        // The real command is always assigned by applyAccent() before the
+        // process is started. This default is the reversible theme-default
+        // path so an unexpected start cannot damage other state.
         command: accentApplyCommand("", false)
         onExited: Theme.reloadAccent()
     }
