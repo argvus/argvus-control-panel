@@ -10,7 +10,7 @@ CONFIG_FILE="$CONFIG_HOME/argvus/data/control-panel/cards.json"
 MASTER_FILE="$CONFIG_HOME/argvus/data/state/control-panel"
 CARD_IDS=(
   user notifications calendar weather volume brightness network bluetooth
-  system appearance session display power
+  system appearance session display spaces-borders-position power
 )
 
 usage() {
