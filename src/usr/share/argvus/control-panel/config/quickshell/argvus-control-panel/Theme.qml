@@ -289,16 +289,20 @@ Singleton {
     readonly property color fgFaint:         modeColors ? modeColors.fgFaint         : (themeObj ? themeObj.fgFaint        : "#6c7086")
     readonly property color fgOnAccent:      themeObj ? themeObj.fgOnAccent      : "#111316"
     readonly property color bg:              modeColors ? modeColors.bg              : (themeObj ? themeObj.bg             : "#1e1e2e")
-    function solidWhenTransparencyDisabled(c) {
+    // Cards sit on top of the panel, so their alpha is scaled down. Otherwise the
+    // stacked layers reach 1-(1-a)^n opacity and the slider barely changes what is seen.
+    readonly property real nestedLayerAlphaScale: 0.5
+    function solidWhenTransparencyDisabled(c, layerScale) {
         if (controlPanelTransparencyState === "disabled")
             return Qt.rgba(c.r, c.g, c.b, 1)
-        var factor = Math.max(0, Math.min(1, (100 - controlPanelTransparency) / 100.0))
+        var scale = layerScale === undefined ? 1.0 : layerScale
+        var factor = Math.max(0, Math.min(1, (100 - controlPanelTransparency) / 100.0)) * scale
         return Qt.rgba(c.r, c.g, c.b, factor)
     }
     readonly property color bgPanel:         solidWhenTransparencyDisabled(modeColors ? modeColors.bgPanel : (themeObj ? themeObj.bgPanel   : "#b01e1e2e"))
-    readonly property color bgCard:          solidWhenTransparencyDisabled(modeColors ? modeColors.bgCard  : (themeObj ? themeObj.bgCard    : "#b0313244"))
-    readonly property color bgCardAlt:       solidWhenTransparencyDisabled(modeColors ? modeColors.bgCardAlt : (themeObj ? themeObj.bgCardAlt : "#b045475a"))
-    readonly property color bgHeader:        solidWhenTransparencyDisabled(modeColors ? modeColors.bgHeader : (themeObj ? themeObj.bgHeader  : "#b011111b"))
+    readonly property color bgCard:          solidWhenTransparencyDisabled(modeColors ? modeColors.bgCard  : (themeObj ? themeObj.bgCard    : "#b0313244"), nestedLayerAlphaScale)
+    readonly property color bgCardAlt:       solidWhenTransparencyDisabled(modeColors ? modeColors.bgCardAlt : (themeObj ? themeObj.bgCardAlt : "#b045475a"), nestedLayerAlphaScale)
+    readonly property color bgHeader:        solidWhenTransparencyDisabled(modeColors ? modeColors.bgHeader : (themeObj ? themeObj.bgHeader  : "#b011111b"), nestedLayerAlphaScale)
     readonly property color bgItem:          modeColors ? modeColors.bgItem          : (themeObj ? themeObj.bgItem         : "#0acdd6f4")
     readonly property color bgItemHover:     modeColors ? modeColors.bgItemHover     : (themeObj ? themeObj.bgItemHover    : "#14cdd6f4")
     readonly property color bgActive:        themeObj ? themeObj.bgActive        : "#223590bd"
