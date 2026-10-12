@@ -32,7 +32,7 @@ BaseCard {
 
     Process {
         id: dndStatusProc
-        command: ["argvus-notifications", "dnd", "status"]
+        command: ["argvus", "notifications", "dnd", "status"]
         stdout: StdioCollector {
             onStreamFinished: {
                 var value = this.text.trim()
@@ -54,7 +54,7 @@ BaseCard {
 
     Process {
         id: dndToggleProc
-        command: ["argvus-notifications", "dnd", "toggle"]
+        command: ["argvus", "notifications", "dnd", "toggle"]
         onStarted: dndBusy = true
         onExited: {
             dndBusy = false

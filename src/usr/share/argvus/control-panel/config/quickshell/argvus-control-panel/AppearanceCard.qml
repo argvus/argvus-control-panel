@@ -59,7 +59,7 @@ BaseCard {
         var accentScript = Theme.systemConfig + "/appearance/sh/accent-switch.sh"
         var accentArgument = isCustom ? color : "--theme-default"
         return ["bash", "-c",
-            "argvus-config patch " + shellQuote(accentPatch(color, isCustom)) +
+            "argvus config patch " + shellQuote(accentPatch(color, isCustom)) +
             " && exec sh " + shellQuote(accentScript) + " " + shellQuote(accentArgument)]
     }
 
@@ -280,7 +280,7 @@ BaseCard {
 
     Process {
         id: toggleProc
-        command: ["env", "ARGVUS_MACHINE_OUTPUT=1", "argvus-widget-telemetry-toggle", "toggle"]
+        command: ["env", "ARGVUS_MACHINE_OUTPUT=1", "argvus", "widget-telemetry-toggle", "toggle"]
         stdout: SplitParser {
             onRead: data => widgetTelemetryEnabled = telemetryStateFromOutput(data)
         }
@@ -288,7 +288,7 @@ BaseCard {
 
     Process {
         id: checkProc
-        command: ["env", "ARGVUS_MACHINE_OUTPUT=1", "argvus-widget-telemetry-toggle", "status"]
+        command: ["env", "ARGVUS_MACHINE_OUTPUT=1", "argvus", "widget-telemetry-toggle", "status"]
         stdout: SplitParser {
             onRead: data => widgetTelemetryEnabled = telemetryStateFromOutput(data)
         }

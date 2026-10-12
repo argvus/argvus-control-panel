@@ -8,7 +8,7 @@ BaseCard {
     cardTitle: Strings.cardTitleDisplay
     cardIcon: "»"
 
-    readonly property string script: "argvus-displayctl"
+    readonly property string script: "argvus displayctl"
 
     property var monitors: []
 

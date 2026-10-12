@@ -20,7 +20,7 @@ BaseCard {
     property string avatarPath: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/.face"
     property int avatarVersion: 0
 
-    // Caminho absoluto de `argvus-accounts`, resolvido via shell de login.
+    // Caminho privado de `argvus-accounts`; o binário fica fora do PATH.
     // Necessário porque processos iniciados pelo Hyprland (exec-once →
     // Quickshell) NÃO herdam o $PATH do seu shell interativo (.bashrc/.profile) —
     // só o ambiente mínimo exportado na sessão. Por isso o comando roda liso
@@ -29,7 +29,7 @@ BaseCard {
     // Login shell (-l) causa erros quando .bash_profile referencia
     // ferramentas ausentes (ex.: ~/.cargo/env de uma instalação removida).
     // terminal do usuário usa (incluindo ~/.cargo/bin, ~/.local/bin, etc.).
-    property string accountsBin: "argvus-accounts"
+    property string accountsBin: "/usr/lib/argvus/commands/argvus-accounts"
 
     // Escapa um argumento para uso em um comando shell entre aspas simples.
     // Usa a técnica: 'abc' -> 'abc', "a'b" -> 'a'"'"'b'
@@ -62,39 +62,6 @@ BaseCard {
         target: root
         function onSidebarVisibleChanged() {
             if (!root.sidebarVisible) editing = false
-        }
-    }
-
-    // ── Resolve o caminho absoluto de argvus-accounts via shell de login ──
-    Process {
-        id: resolveBinProc
-        command: ["bash", "-c", "command -v argvus-accounts"]
-        stdout: SplitParser {
-            onRead: data => {
-                var p = data.trim()
-                if (p.length > 0) accountsBin = p
-            }
-        }
-        onExited: function(code) {
-            if (code !== 0)
-                console.warn("[UserCard] argvus-accounts não encontrado no PATH (nem via shell de login). " +
-                    "Verifique se está instalado e no PATH, ex.: /usr/bin ou ~/.cargo/bin.")
-        }
-    }
-
-    // Fallback: se não achou via PATH, verifica /usr/bin/argvus-accounts
-    Process {
-        id: resolveFallbackProc
-        running: pollingActive && (!accountsBin || accountsBin === "argvus-accounts")
-        command: ["bash", "-c", "test -x /usr/bin/argvus-accounts && echo /usr/bin/argvus-accounts || echo "]
-        stdout: SplitParser {
-            onRead: data => {
-                var p = data.trim()
-                if (p.length > 0) accountsBin = p
-            }
-        }
-        onExited: function(code) {
-            // não reclama aqui — esse é apenas um fallback silencioso
         }
     }
 
@@ -189,8 +156,8 @@ BaseCard {
                 // recusado, etc.) em vez de um erro genérico, já que
                 // várias causas diferentes levam a esse mesmo code != 0.
                 var reason = (errOutput + "\n" + outOutput).trim()
-                if (reason.length === 0 && accountsBin === "argvus-accounts")
-                    reason = "argvus-accounts não encontrado no PATH da sidebar (veja o console)"
+                if (reason.length === 0 && accountsBin === "/usr/lib/argvus/commands/argvus-accounts")
+                    reason = "argvus-accounts não está instalado em /usr/lib/argvus/commands (veja o console)"
                 console.warn("[UserCard] argvus-accounts name falhou (code " + code + "): " + reason)
                 editStatus = reason.length > 0
                     ? Strings.user_name_error + ": " + reason
@@ -227,8 +194,8 @@ BaseCard {
                 confirmPassField.text = ""
             } else {
                 var reason = (errOutput + "\n" + outOutput).trim()
-                if (reason.length === 0 && accountsBin === "argvus-accounts")
-                    reason = "argvus-accounts não encontrado no PATH da sidebar (veja o console)"
+                if (reason.length === 0 && accountsBin === "/usr/lib/argvus/commands/argvus-accounts")
+                    reason = "argvus-accounts não está instalado em /usr/lib/argvus/commands (veja o console)"
                 console.warn("[UserCard] argvus-accounts passwd falhou (code " + code + "): " + reason)
                 editStatus = reason.length > 0
                     ? Strings.userPasswordError + ": " + reason

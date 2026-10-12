@@ -25,7 +25,7 @@ BaseCard {
     Process {
         id: readProc
         command: ["bash", "-c",
-            "argvus-config get /audio --effective 2>/dev/null | jq -c . || wpctl get-volume @DEFAULT_AUDIO_SINK@"
+            "argvus config get /audio --effective 2>/dev/null | jq -c . || wpctl get-volume @DEFAULT_AUDIO_SINK@"
         ]
         stdout: SplitParser {
             onRead: data => {
@@ -69,7 +69,7 @@ BaseCard {
         Theme.audioVolume = volume
         var reload = dragging ? "" : " && systemctl --user reload argvus-config.service"
         setProc.cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + volume.toFixed(2) +
-            " && argvus-config set /audio/output_volume " + Math.round(volume * 100) +
+            " && argvus config set /audio/output_volume " + Math.round(volume * 100) +
             reload
         setProc.running = true
     }
@@ -77,7 +77,7 @@ BaseCard {
     function toggleMute() {
         muted = !muted
         Theme.audioMuted = muted
-        setProc.cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && argvus-config set /audio/output_muted " + (muted ? "true" : "false") +
+        setProc.cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && argvus config set /audio/output_muted " + (muted ? "true" : "false") +
             " && systemctl --user reload argvus-config.service"
         setProc.running = true
     }

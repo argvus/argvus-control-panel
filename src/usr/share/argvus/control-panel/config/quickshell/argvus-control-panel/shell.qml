@@ -24,7 +24,7 @@ ShellRoot {
 
     Process {
         id: localeProcess
-        command: ["argvus-i18n", "locale"]
+        command: ["argvus", "i18n", "locale"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {

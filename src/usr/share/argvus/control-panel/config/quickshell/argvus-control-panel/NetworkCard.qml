@@ -26,7 +26,7 @@ BaseCard {
 
     Process {
         id: nmStateProc
-        command: ["argvus-networkctl", "status"]
+        command: ["argvus", "networkctl", "status"]
         stdout: StdioCollector {
             onStreamFinished: {
                 var lines = this.text.trim().split("\n")
@@ -41,7 +41,7 @@ BaseCard {
     Process {
         id: toggleNetProc
         property bool turnOn: true
-        command: ["argvus-networkctl", turnOn ? "enable" : "disable"]
+        command: ["argvus", "networkctl", turnOn ? "enable" : "disable"]
         onExited: {
             if (exitCode === 0) {
                 networkingEnabled = turnOn
@@ -58,7 +58,7 @@ BaseCard {
 
     Process {
         id: netProc
-        command: ["argvus-networkctl", "status"]
+        command: ["argvus", "networkctl", "status"]
         stdout: StdioCollector {
             onStreamFinished: {
                 var lines = this.text.trim().split("\n")

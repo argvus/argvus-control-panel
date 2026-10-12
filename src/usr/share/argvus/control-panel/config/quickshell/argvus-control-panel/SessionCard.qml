@@ -27,7 +27,7 @@ BaseCard {
     function applyIdleTimeout(seconds) {
         if (keepAwake || idleSetProc.running) return
         var minutes = Math.round(seconds / 60)
-        idleSetProc.command = ["sh", "-c", "argvus-config set /power/lock_minutes " + minutes +
+        idleSetProc.command = ["sh", "-c", "argvus config set /power/lock_minutes " + minutes +
             " && systemctl --user reload argvus-config.service && ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh " + seconds]
         idleSetProc.running = true
     }
@@ -206,7 +206,7 @@ BaseCard {
 
     Process {
         id: idleSetProc
-        command: ["sh", "-c", "argvus-config set /power/lock_minutes 5 && systemctl --user reload argvus-config.service && ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh 300"]
+        command: ["sh", "-c", "argvus config set /power/lock_minutes 5 && systemctl --user reload argvus-config.service && ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh 300"]
         stdout: SplitParser {
             onRead: data => { idleTimeout = Number(data.trim()); Theme.reloadCanonicalConfig() }
         }
@@ -214,7 +214,7 @@ BaseCard {
 
     Process {
         id: idleStatusProc
-        command: ["sh", "-c", "minutes=$(argvus-config get /power/lock_minutes --effective --raw 2>/dev/null || true); if [ -n \"$minutes\" ]; then printf '%s\\n' $((minutes * 60)); else ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh status; fi"]
+        command: ["sh", "-c", "minutes=$(argvus config get /power/lock_minutes --effective --raw 2>/dev/null || true); if [ -n \"$minutes\" ]; then printf '%s\\n' $((minutes * 60)); else ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/idle-timeout.sh status; fi"]
         stdout: SplitParser {
             onRead: data => idleTimeout = Number(data.trim())
         }
@@ -238,7 +238,7 @@ BaseCard {
 
     Process {
         id: keepAwakeToggleProc
-        command: ["sh", "-c", "next=$( [ \"$(argvus-config get /power/keep_awake --effective --raw 2>/dev/null || true)\" = true ] && printf false || printf true ); argvus-config set /power/keep_awake $next && systemctl --user reload argvus-config.service && ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/keep-awake.sh $([ \"$next\" = true ] && printf on || printf off)"]
+        command: ["sh", "-c", "next=$( [ \"$(argvus config get /power/keep_awake --effective --raw 2>/dev/null || true)\" = true ] && printf false || printf true ); argvus config set /power/keep_awake $next && systemctl --user reload argvus-config.service && ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/keep-awake.sh $([ \"$next\" = true ] && printf on || printf off)"]
         stdout: SplitParser {
             onRead: data => { keepAwake = data.trim() === "enabled"; Theme.reloadCanonicalConfig() }
         }
@@ -246,7 +246,7 @@ BaseCard {
 
     Process {
         id: keepAwakeStatusProc
-        command: ["sh", "-c", "value=$(argvus-config get /power/keep_awake --effective --raw 2>/dev/null || true); [ \"$value\" = true ] && printf enabled || printf disabled"]
+        command: ["sh", "-c", "value=$(argvus config get /power/keep_awake --effective --raw 2>/dev/null || true); [ \"$value\" = true ] && printf enabled || printf disabled"]
         stdout: SplitParser {
             onRead: data => keepAwake = data.trim() === "enabled"
         }
