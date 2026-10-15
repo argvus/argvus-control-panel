@@ -10,7 +10,7 @@ export ARGVUS_CONFIG_HOME="$TEMP_DIR/config"
 
 status() { bash "$SCRIPT" status; }
 
-[[ "$(status | jq '.cards | length')" == '14' ]]
+[[ "$(status | jq '.cards | length')" == '13' ]]
 [[ "$(status | jq -r '.cards[0].id')" == 'user' ]]
 [[ "$(status | jq -r '.cards[] | select(.id == "user").enabled')" == 'true' ]]
 [[ "$(status | jq -r '.cards[] | select(.id == "weather").enabled')" == 'true' ]]

@@ -30,7 +30,6 @@ O registro atual de cards inclui:
 * Aparência;
 * Sessão;
 * Display;
-* Espaços, bordas e posição;
 * Energia.
 
 Alguns cards são condicionais. Bluetooth fica oculto quando o recurso não está disponível. Brilho fica oculto quando nenhuma ferramenta compatível de backlight ou controle de monitor está disponível. Portanto, a lista reflete a máquina atual e não promete controles que todo hardware possa oferecer.

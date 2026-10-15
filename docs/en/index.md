@@ -27,7 +27,6 @@ The current card registry includes:
 - Appearance;
 - Session;
 - Display;
-- Spaces, Borders & Position;
 - Power.
 
 Some cards are conditional. Bluetooth is hidden when the Bluetooth capability is unavailable. Brightness is hidden when neither the supported backlight nor monitor-control tool is available. The card list therefore reflects the current machine rather than promising controls every machine can provide.
