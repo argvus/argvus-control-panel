@@ -15,7 +15,7 @@ BaseCard {
     property string adapter: ""
     property string devices: ""
     property string statusName: "unavailable"
-    readonly property string script: "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/network/sh/bluetooth-control.sh"
+    readonly property string script: "argvus bluetoothctl"
 
     visible: available
 

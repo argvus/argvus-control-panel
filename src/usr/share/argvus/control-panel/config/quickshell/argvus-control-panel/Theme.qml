@@ -83,7 +83,7 @@ Singleton {
 
     function loadTheme() {
         // The managed user copy lives in the runtime data root, which is where
-        // accent-switch.sh writes the resolved highlight color
+        // `argvus config accent` writes the resolved highlight color
         // (paths_config resolves control-panel/config/quickshell/* to
         // data/quickshell/*). Read it first, otherwise this panel would keep
         // showing the packaged per-theme accent.

@@ -160,7 +160,7 @@ PanelWindow {
 
     Process {
         id: bluetoothCapabilityProcess
-        command: ["bash", "-c", Theme.systemConfig + "/network/sh/bluetooth-control.sh status"]
+        command: ["bash", "-c", "argvus bluetoothctl status"]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {

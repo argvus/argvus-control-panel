@@ -56,11 +56,10 @@ BaseCard {
     // the ordering keeps the canonical document and the generated accent in
     // agreement. An empty color only clears the custom flag.
     function accentApplyCommand(color, isCustom) {
-        var accentScript = Theme.systemConfig + "/appearance/sh/accent-switch.sh"
         var accentArgument = isCustom ? color : "--theme-default"
         return ["bash", "-c",
             "argvus config patch " + shellQuote(accentPatch(color, isCustom)) +
-            " && exec sh " + shellQuote(accentScript) + " " + shellQuote(accentArgument)]
+            " && exec argvus config accent " + shellQuote(accentArgument)]
     }
 
     function shellQuote(value) {
@@ -262,7 +261,7 @@ BaseCard {
         command: ["systemd-run", "--user", "--collect", "--quiet",
             "--setenv=ARGVUS_CONFIG_HOME=" + Theme.configHome,
             "--setenv=ARGVUS_SYSTEM_CONFIG=" + Theme.systemConfig,
-            "--", "sh", Theme.systemConfig + "/appearance/sh/theme-switch.sh"]
+            "--", "argvus", "theme-switch"]
         onExited: {
             Theme.reloadActiveTheme()
             Theme.reloadAccent()
@@ -296,7 +295,7 @@ BaseCard {
 
     Process {
         id: animationsToggleProc
-        command: ["sh", Theme.systemConfig + "/session/sh/effects-toggle.sh", "animations", "toggle"]
+        command: ["argvus", "effects-toggle", "animations", "toggle"]
         stdout: SplitParser {
             onRead: data => {
                 animationsEnabled = data.trim() === "enabled"
@@ -307,7 +306,7 @@ BaseCard {
 
     Process {
         id: animationsStatusProc
-        command: ["sh", Theme.systemConfig + "/session/sh/effects-toggle.sh", "animations", "status"]
+        command: ["argvus", "effects-toggle", "animations", "status"]
         stdout: SplitParser {
             onRead: data => {
                 animationsEnabled = data.trim() === "enabled"
