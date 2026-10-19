@@ -1,7 +1,6 @@
 ---
 title: Control Panel
 description: Use os cards do painel Quickshell.
-slug: pt/0.4.0/docs/user-guide/desktop/control-panel
 ---
 
 O Control Panel é a superfície Quickshell de acesso rápido da sessão ativa. É o lugar para consultar status ou executar uma ação frequente sem abrir o aplicativo completo de configurações.
