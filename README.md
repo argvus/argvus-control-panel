@@ -18,7 +18,7 @@ make install
 the package in `build/dist/`. Package metadata can be inspected with:
 
 ```sh
-makepkg -p packaging/arch/ci/PKGBUILD --printsrcinfo
+makepkg -p packaging/arch/remote/PKGBUILD --printsrcinfo
 makepkg -p packaging/arch/local/PKGBUILD --printsrcinfo
 ```
 

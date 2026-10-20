@@ -9,7 +9,7 @@ The panel uses the shared `argvus-i18n` catalogs. When a different language is a
 
 ## Control Panel or Control Center?
 
-Use the panel for current status and quick actions. Use [Control Center](/docs/argvus-control-center/) when you want to change persistent desktop configuration. For example, the panel can expose appearance, display, network, volume, brightness, notification, power and session controls; the detailed visual and layout configuration belongs in **Control Center → Appearance**.
+Use the panel for current status and quick actions. Use [Control Center](/docs/components/argvus-control-center/) when you want to change persistent desktop configuration. For example, the panel can expose appearance, display, network, volume, brightness, notification, power and session controls; the detailed visual and layout configuration belongs in **Control Center → Appearance**.
 
 ## Cards
 

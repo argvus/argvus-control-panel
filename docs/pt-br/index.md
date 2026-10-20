@@ -11,7 +11,7 @@ O card de aparência do Control Panel não gerencia mais uma Transparência glob
 
 ## Control Panel ou Control Center?
 
-Use o painel para status atual e ações rápidas. Use o [Control Center](/pt/docs/argvus-control-center/) quando quiser alterar uma configuração persistente do desktop. Por exemplo, o painel pode oferecer controles de aparência, display, rede, volume, brilho, notificações, energia e sessão; a configuração visual e de layout detalhada fica em **Control Center → Aparência**.
+Use o painel para status atual e ações rápidas. Use o [Control Center](/pt/docs/components/argvus-control-center/) quando quiser alterar uma configuração persistente do desktop. Por exemplo, o painel pode oferecer controles de aparência, display, rede, volume, brilho, notificações, energia e sessão; a configuração visual e de layout detalhada fica em **Control Center → Aparência**.
 
 ## Cards
 

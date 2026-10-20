@@ -29,7 +29,7 @@ BaseCard {
     // Login shell (-l) causa erros quando .bash_profile referencia
     // ferramentas ausentes (ex.: ~/.cargo/env de uma instalação removida).
     // terminal do usuário usa (incluindo ~/.cargo/bin, ~/.local/bin, etc.).
-    property string accountsBin: "/usr/lib/argvus/commands/argvus-accounts"
+    property string accountsBin: "/usr/lib/argvus/commands/accounts"
 
     // Escapa um argumento para uso em um comando shell entre aspas simples.
     // Usa a técnica: 'abc' -> 'abc', "a'b" -> 'a'"'"'b'
@@ -156,7 +156,7 @@ BaseCard {
                 // recusado, etc.) em vez de um erro genérico, já que
                 // várias causas diferentes levam a esse mesmo code != 0.
                 var reason = (errOutput + "\n" + outOutput).trim()
-                if (reason.length === 0 && accountsBin === "/usr/lib/argvus/commands/argvus-accounts")
+                if (reason.length === 0 && accountsBin === "/usr/lib/argvus/commands/accounts")
                     reason = "argvus-accounts não está instalado em /usr/lib/argvus/commands (veja o console)"
                 console.warn("[UserCard] argvus-accounts name falhou (code " + code + "): " + reason)
                 editStatus = reason.length > 0
@@ -194,7 +194,7 @@ BaseCard {
                 confirmPassField.text = ""
             } else {
                 var reason = (errOutput + "\n" + outOutput).trim()
-                if (reason.length === 0 && accountsBin === "/usr/lib/argvus/commands/argvus-accounts")
+                if (reason.length === 0 && accountsBin === "/usr/lib/argvus/commands/accounts")
                     reason = "argvus-accounts não está instalado em /usr/lib/argvus/commands (veja o console)"
                 console.warn("[UserCard] argvus-accounts passwd falhou (code " + code + "): " + reason)
                 editStatus = reason.length > 0
