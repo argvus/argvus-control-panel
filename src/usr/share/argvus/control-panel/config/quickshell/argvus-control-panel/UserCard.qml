@@ -177,14 +177,15 @@ BaseCard {
         property string errOutput: ""
         property string outOutput: ""
         command: ["true"]
+        stdinEnabled: true
         stdout: SplitParser { onRead: data => setPasswdProc.outOutput += data + "\n" }
         stderr: SplitParser { onRead: data => setPasswdProc.errOutput += data + "\n" }
         onRunningChanged: {
-            if (running) {
+            if (running)
                 errOutput = ""
-                command = [accountsBin, "passwd", userName, oldPass, newPass, confirmPass]
-            }
         }
+        // The command reads exactly three lines: current, new and confirmation.
+        onStarted: write(oldPass + "\n" + newPass + "\n" + confirmPass + "\n")
         onExited: function(code) {
             if (code === 0) {
                 editStatus = Strings.userPasswordOk
@@ -653,6 +654,9 @@ BaseCard {
                     // Solta o foco antes de disparar, mesma razão do nome:
                     // deixa o diálogo de polkit (se houver) assumir o teclado.
                     confirmPassField.focus = false
+                    // The passwords go to the command's standard input, never to
+                    // its arguments, so they are not visible in the process list.
+                    setPasswdProc.command = [accountsBin, "passwd", userName]
                     setPasswdProc.running = true
                 }
             }
