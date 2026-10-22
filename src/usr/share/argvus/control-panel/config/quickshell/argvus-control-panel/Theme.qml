@@ -20,10 +20,13 @@ Singleton {
     property bool bordersRounded: false
     property int bordersRounding: 0
     property bool widgetTelemetryEnabled: true
+    // True when blur or any effect surface transparency is on, which is what
+    // `argvus effects-toggle effects status` reports. Animations are separate.
+    property bool effectsEnabled: true
+    // Set by the sidebar while it is visible; gates the periodic refresh below.
+    property bool active: false
     property int sessionLockMinutes: 30
     property bool keepAwake: false
-    property real audioVolume: 0.5
-    property bool audioMuted: false
     readonly property string configHome: Quickshell.env("ARGVUS_CONFIG_HOME") ||
         StandardPaths.writableLocation(StandardPaths.GenericConfigLocation)
     readonly property string systemConfig: Quickshell.env("ARGVUS_SYSTEM_CONFIG") || "/usr/share/argvus"
@@ -35,7 +38,6 @@ Singleton {
     FileView { id: effectsConfigFile; path: root.configHome + "/argvus/config/effects.json"; onTextChanged: root.loadEffects(text()) }
     FileView { id: layoutConfigFile; path: root.configHome + "/argvus/config/layout.json"; onTextChanged: root.loadLayout(text()) }
     FileView { id: powerConfigFile; path: root.configHome + "/argvus/config/power.json"; onTextChanged: root.loadPower(text()) }
-    FileView { id: audioConfigFile; path: root.configHome + "/argvus/config/audio.json"; onTextChanged: root.loadAudio(text()) }
 
     FileView {
         id: themeNameFile
@@ -62,6 +64,8 @@ Singleton {
     FileView {
         id: fontsFile
         path: root.configHome + "/argvus/data/generated/fonts.conf"
+        // Optional file: defaults apply when it has not been generated yet.
+        printErrors: false
         onTextChanged: root.loadFonts(text())
     }
 
@@ -119,7 +123,6 @@ Singleton {
         effectsConfigFile.reload()
         layoutConfigFile.reload()
         powerConfigFile.reload()
-        audioConfigFile.reload()
     }
 
     function reloadAccent() { themeFile.reload() }
@@ -187,6 +190,17 @@ Singleton {
         if (!effects) return
         if (typeof effects.animations === "boolean") root.animationsState = effects.animations ? "enabled" : "disabled"
         if (typeof effects.widget_telemetry_enabled === "boolean") root.widgetTelemetryEnabled = effects.widget_telemetry_enabled
+        // EFFECTS covers blur and the transparency of the taskbar, widget
+        // telemetry, control panel, terminal and launchers; animations have their
+        // own switch. It reads as on when any of them is on, as the CLI does.
+        // A missing switch counts as enabled, matching the CLI defaults.
+        var anyEnabled = effects.blur_global_enabled !== false
+        var surfaces = ["taskbar", "control-panel", "widget-telemetry", "terminal", "launchers"]
+        for (var index = 0; index < surfaces.length; index++) {
+            if (effects["transparency_" + surfaces[index] + "_enabled"] !== false)
+                anyEnabled = true
+        }
+        root.effectsEnabled = anyEnabled
         if (typeof effects["transparency_control-panel_value"] === "number")
             root.controlPanelTransparency = Math.min(Math.max(effects["transparency_control-panel_value"], 0), 100)
         if (typeof effects["transparency_control-panel_enabled"] === "boolean")
@@ -228,13 +242,6 @@ Singleton {
         if (typeof power.keep_awake === "boolean") root.keepAwake = power.keep_awake
     }
 
-    function loadAudio(contents) {
-        var audio = parseSection(contents)
-        if (!audio) return
-        if (typeof audio.output_volume === "number") root.audioVolume = Math.min(Math.max(audio.output_volume / 100.0, 0), 1)
-        if (typeof audio.output_muted === "boolean") root.audioMuted = audio.output_muted
-    }
-
     function effectState(contents, key, fallback) {
         var lines = contents.split("\n")
         for (var i = 0; i < lines.length; i++) {
@@ -251,16 +258,23 @@ Singleton {
         return Math.max(8, Math.round(baseSize * scale))
     }
 
+    function refresh() {
+        themeNameFile.reload()
+        gtkModeFile.reload()
+        root.reloadCanonicalConfig()
+        fontsFile.reload()
+    }
+
+    // A FileView only re-reads on reload(). Its watchChanges option catches
+    // in-place writes but not the atomic rename `argvus config` uses, so the
+    // visible panel re-reads these files on a short interval. Nothing is drawn
+    // while the sidebar is hidden, and it refreshes as soon as it opens.
     Timer {
-        interval: 10000
-        running: true
+        interval: 2000
+        running: root.active
         repeat: true
-        onTriggered: {
-            themeNameFile.reload()
-            gtkModeFile.reload()
-            root.reloadCanonicalConfig()
-            fontsFile.reload()
-        }
+        triggeredOnStart: true
+        onTriggered: root.refresh()
     }
 
     onThemeNameChanged: {

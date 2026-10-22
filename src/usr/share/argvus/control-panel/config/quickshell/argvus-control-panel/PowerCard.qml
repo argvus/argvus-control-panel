@@ -10,9 +10,11 @@ BaseCard {
 
     readonly property var profiles: Strings.profiles
 
+    // The profile can also change through `powerprofilesctl` or another
+    // frontend, so the visible card keeps reading it instead of once.
     Timer {
-        interval: 500; running: pollingActive; repeat: false
-        onTriggered: readProc.running = true
+        interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
+        onTriggered: if (!readProc.running && !setProc.running) readProc.running = true
     }
 
     Process {

@@ -48,6 +48,22 @@ Use a interface quando possível. O estado do painel é uma configuração do us
 
 Desativar um card apenas o oculta do painel; não desinstala o provider por trás dele. Reordenar altera a ordem de apresentação. O helper atual não possui subcomando `reset`. Se a preferência dos cards for removida, o provider normaliza o estado novamente com os cards conhecidos, habilitados por padrão e na ordem empacotada.
 
+## Sincronização com o resto do desktop
+
+Os cards mostram o estado atual do desktop. Uma mudança feita em outro lugar (Control Center, taskbar, atalho de teclado ou linha de comando `argvus`) aparece no painel sem reiniciá-lo:
+
+| Card | De onde vem o estado | Quando atualiza |
+| --- | --- | --- |
+| Usuário | `getent passwd` | a cada 3 s com o painel aberto |
+| Volume | sink padrão do PipeWire (`wpctl`) e eventos do `pactl subscribe` | na hora, a cada evento de áudio; a cada 2 s como reserva |
+| Aparência (Telemetria, Animações e Efeitos) | seção `/effects` do `argvus config` | a cada 2 s com o painel aberto |
+| Energia | `powerprofilesctl` | a cada 3 s com o painel aberto |
+| Clima | arquivo de localização | ao abrir o painel e a cada 15 min |
+
+O card de Aparência tem dois interruptores independentes. **Animações** executa `argvus effects-toggle animations toggle` e controla tudo que se move. **Efeitos** executa `argvus effects-toggle effects toggle` e alterna juntos o blur e a transparência de Terminal, Launcher, Widget Telemetry, Control Panel e Taskbar; aparece como ativo quando pelo menos uma delas está ativa. **SUPER + F6** (`argvus effects-toggle toggle`) alterna os dois juntos. Alterar qualquer um reinicia o Control Panel, a Waybar e o daemon de notificações, então o painel recarrega por instantes depois do toggle.
+
+O scroll no ícone de volume da taskbar e as teclas de mídia usam `argvus config audio`, que aplica a mudança no PipeWire e também grava o volume em `/audio`. Assim, um reload da configuração não restaura um volume antigo.
+
 ## Comportamento da sessão
 
 `argvus-control-panel.service` é iniciado pelo `argvus-session`. Abrir e fechar o painel altera o estado do painel na sessão, mas não significa que toda ação dos cards seja uma configuração persistente. Ações de rede, áudio, energia e display podem ser encaminhadas aos providers ou à sessão desktop atual.

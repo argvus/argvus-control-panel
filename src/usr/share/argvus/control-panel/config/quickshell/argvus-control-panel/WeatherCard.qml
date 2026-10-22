@@ -34,16 +34,24 @@ BaseCard {
         id: locationFile
         path: StandardPaths.writableLocation(StandardPaths.HomeLocation) +
               "/.config/argvus/data/.weather-location"
+        // Absent until the user picks a location; the default is used meanwhile.
+        printErrors: false
         onTextChanged: {
-            root.location = text().trim()
+            var newLocation = text().trim()
+            if (newLocation === root.location) return
+            root.location = newLocation
             root.refreshWeather()
         }
     }
 
-    // Atualiza a cada 15 minutos
+    // Atualiza a cada 15 minutos e sempre que a sidebar abre. A localização é
+    // relida junto, porque ela também é alterada fora do painel.
     Timer {
         interval: 900000; running: pollingActive; repeat: true; triggeredOnStart: true
-        onTriggered: root.refreshWeather()
+        onTriggered: {
+            locationFile.reload()
+            root.refreshWeather()
+        }
     }
 
     Timer {

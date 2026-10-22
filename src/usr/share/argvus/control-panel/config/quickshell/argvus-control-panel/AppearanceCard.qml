@@ -8,15 +8,27 @@ BaseCard {
     cardTitle: Strings.cardTitleAppearance
     cardIcon:  "»"
 
-    property bool widgetTelemetryEnabled: Theme.widgetTelemetryEnabled
-    property bool animationsEnabled: Theme.animationsEnabled
+    // Both switches show the saved state from Theme. While a toggle command is
+    // running they show the requested state instead; if the command fails the
+    // card falls back to the saved state on its own.
+    property bool telemetryRequested: false
+    property bool animationsRequested: false
+    property bool effectsRequested: false
+    readonly property bool widgetTelemetryEnabled: toggleProc.running ? telemetryRequested : Theme.widgetTelemetryEnabled
+    // ANIMATIONS is the master switch for motion; EFFECTS is the master switch for
+    // blur and transparency. They are independent, as `argvus effects-toggle
+    // animations|effects` are.
+    readonly property bool animationsOn: animationsToggleProc.running ? animationsRequested : Theme.animationsState !== "disabled"
+    readonly property bool effectsOn: effectsToggleProc.running ? effectsRequested : Theme.effectsEnabled
     property string draftHex: ""
 
-    function telemetryStateFromOutput(data) {
-        const state = data.trim().toLowerCase()
-        if (state === "enabled") return true
-        if (state === "disabled") return false
-        return widgetTelemetryEnabled
+    // Changing the `effects` section makes argvus-config restart this panel,
+    // which would kill a child process half way. Run the command as a transient
+    // user unit instead (the same reason themeProc does) and wait for it.
+    function detachedCommand(words) {
+        return ["systemd-run", "--user", "--wait", "--collect", "--quiet",
+            "--setenv=ARGVUS_CONFIG_HOME=" + Theme.configHome,
+            "--setenv=ARGVUS_SYSTEM_CONFIG=" + Theme.systemConfig, "--"].concat(words)
     }
 
     function validHex(value) {
@@ -119,12 +131,6 @@ BaseCard {
         function onThemeObjChanged() {
             draftHex = colorToHex(Theme.accent)
         }
-        function onWidgetTelemetryEnabledChanged() {
-            widgetTelemetryEnabled = Theme.widgetTelemetryEnabled
-        }
-        function onAnimationsStateChanged() {
-            animationsEnabled = Theme.animationsEnabled
-        }
     }
 
     RowLayout {
@@ -159,7 +165,7 @@ BaseCard {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     if (toggleProc.running) return
-                    widgetTelemetryEnabled = !widgetTelemetryEnabled
+                    telemetryRequested = !widgetTelemetryEnabled
                     toggleProc.running = true
                 }
             }
@@ -199,7 +205,7 @@ BaseCard {
             id: animationsToggleBtn
             width: 44; height: 24
             radius: Theme.radius
-            color: animationsEnabled ? Theme.accent : Theme.borderSubtle
+            color: animationsOn ? Theme.accent : Theme.borderSubtle
             Layout.alignment: Qt.AlignVCenter
 
             Behavior on color { ColorAnimation { duration: Theme.animFast } }
@@ -207,7 +213,7 @@ BaseCard {
             Rectangle {
                 width: 18; height: 18
                 radius: Math.max(2, Theme.radius)
-                x: animationsEnabled ? parent.width - width - 3 : 3
+                x: animationsOn ? parent.width - width - 3 : 3
                 y: (parent.height - height) / 2
                 color: Theme.bgHeader
                 Behavior on x { NumberAnimation { duration: Theme.animNormal; easing.type: Easing.OutCubic } }
@@ -217,7 +223,11 @@ BaseCard {
                 anchors.fill: parent
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
-                onClicked: animationsToggleProc.running = true
+                onClicked: {
+                    if (animationsToggleProc.running) return
+                    animationsRequested = !animationsOn
+                    animationsToggleProc.running = true
+                }
             }
         }
 
@@ -233,19 +243,65 @@ BaseCard {
                 font.weight: Font.Medium
             }
             Text {
-                text: animationsEnabled ? Strings.animationsEnabled : Strings.animationsDisabled
-                color: animationsEnabled ? Theme.accent : Theme.danger
+                text: animationsOn ? Strings.animationsEnabled : Strings.animationsDisabled
+                color: animationsOn ? Theme.accent : Theme.danger
                 font.pixelSize: Theme.scaledFont(13)
                 font.family: Theme.fontFamily
             }
         }
     }
 
-    Timer {
-        interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
-        onTriggered: {
-            if (!checkProc.running) checkProc.running = true
-            if (!animationsStatusProc.running) animationsStatusProc.running = true
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: 10
+
+        Rectangle {
+            id: effectsToggleBtn
+            width: 44; height: 24
+            radius: Theme.radius
+            color: effectsOn ? Theme.accent : Theme.borderSubtle
+            Layout.alignment: Qt.AlignVCenter
+
+            Behavior on color { ColorAnimation { duration: Theme.animFast } }
+
+            Rectangle {
+                width: 18; height: 18
+                radius: Math.max(2, Theme.radius)
+                x: effectsOn ? parent.width - width - 3 : 3
+                y: (parent.height - height) / 2
+                color: Theme.bgHeader
+                Behavior on x { NumberAnimation { duration: Theme.animNormal; easing.type: Easing.OutCubic } }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    if (effectsToggleProc.running) return
+                    effectsRequested = !effectsOn
+                    effectsToggleProc.running = true
+                }
+            }
+        }
+
+        ColumnLayout {
+            spacing: 1
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignVCenter
+            Text {
+                text: Strings.effectsTitle
+                color: Theme.fgText
+                font.pixelSize: Theme.scaledFont(13)
+                font.family: Theme.fontFamily
+                font.weight: Font.Medium
+            }
+            Text {
+                text: effectsOn ? Strings.effectsEnabled : Strings.effectsDisabled
+                color: effectsOn ? Theme.accent : Theme.danger
+                font.pixelSize: Theme.scaledFont(13)
+                font.family: Theme.fontFamily
+            }
         }
     }
 
@@ -279,40 +335,19 @@ BaseCard {
 
     Process {
         id: toggleProc
-        command: ["env", "ARGVUS_MACHINE_OUTPUT=1", "argvus", "widget-telemetry-toggle", "toggle"]
-        stdout: SplitParser {
-            onRead: data => widgetTelemetryEnabled = telemetryStateFromOutput(data)
-        }
-    }
-
-    Process {
-        id: checkProc
-        command: ["env", "ARGVUS_MACHINE_OUTPUT=1", "argvus", "widget-telemetry-toggle", "status"]
-        stdout: SplitParser {
-            onRead: data => widgetTelemetryEnabled = telemetryStateFromOutput(data)
-        }
+        command: detachedCommand(["argvus", "widget-telemetry-toggle", "toggle"])
+        onExited: Theme.refresh()
     }
 
     Process {
         id: animationsToggleProc
-        command: ["argvus", "effects-toggle", "animations", "toggle"]
-        stdout: SplitParser {
-            onRead: data => {
-                animationsEnabled = data.trim() === "enabled"
-                Theme.animationsState = animationsEnabled ? "enabled" : "disabled"
-            }
-        }
+        command: detachedCommand(["argvus", "effects-toggle", "animations", "toggle"])
+        onExited: Theme.refresh()
     }
 
     Process {
-        id: animationsStatusProc
-        command: ["argvus", "effects-toggle", "animations", "status"]
-        stdout: SplitParser {
-            onRead: data => {
-                animationsEnabled = data.trim() === "enabled"
-                Theme.animationsState = animationsEnabled ? "enabled" : "disabled"
-            }
-        }
+        id: effectsToggleProc
+        command: detachedCommand(["argvus", "effects-toggle", "effects", "toggle"])
+        onExited: Theme.refresh()
     }
-
 }

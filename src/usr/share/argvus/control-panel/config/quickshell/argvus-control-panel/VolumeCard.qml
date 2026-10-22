@@ -6,80 +6,98 @@ BaseCard {
     cardTitle: Strings.cardTitleVolume
     cardIcon:  "»"
 
-    property real volume: Theme.audioVolume
-    property bool muted:  Theme.audioMuted
+    property real volume: 0
+    property bool muted: false
     property bool dragging: false
-    property bool applyAfterSet: false
+    // Latest slider value (percent) not yet sent; -1 when nothing is waiting.
+    property int pendingPercent: -1
 
-    Connections {
-        target: Theme
-        function onAudioVolumeChanged() { if (!dragging) volume = Theme.audioVolume }
-        function onAudioMutedChanged() { muted = Theme.audioMuted }
+    // PipeWire is the live source of truth. The taskbar scroll and the media
+    // keys change it directly, so this card reads the sink instead of the
+    // preference saved in `argvus config`, which only follows after a change.
+    function refresh() {
+        if (dragging || setProc.running || muteProc.running || pendingPercent >= 0 || readProc.running)
+            return
+        readProc.running = true
     }
 
     Timer {
-        interval: 1000; running: pollingActive; repeat: true; triggeredOnStart: true
-        onTriggered: if (!dragging && !readProc.running) readProc.running = true
+        interval: 2000; running: pollingActive; repeat: true; triggeredOnStart: true
+        onTriggered: refresh()
+    }
+
+    // `pactl subscribe` prints one line per audio event, so a change made
+    // elsewhere shows up right away. The timer above is only a safety net.
+    Process {
+        id: eventProc
+        command: ["env", "LC_ALL=C", "pactl", "subscribe"]
+        running: pollingActive
+        stdout: SplitParser {
+            onRead: data => {
+                if (data.indexOf(" on sink ") !== -1 || data.indexOf(" on server") !== -1)
+                    settleTimer.restart()
+            }
+        }
+    }
+
+    // One volume change emits several events; read once after they settle.
+    Timer {
+        id: settleTimer
+        interval: 60
+        onTriggered: refresh()
     }
 
     Process {
         id: readProc
-        command: ["bash", "-c",
-            "argvus config get /audio --effective 2>/dev/null | jq -c . || wpctl get-volume @DEFAULT_AUDIO_SINK@"
-        ]
+        command: ["wpctl", "get-volume", "@DEFAULT_AUDIO_SINK@"]
         stdout: SplitParser {
+            // Output looks like "Volume: 0.45" or "Volume: 0.45 [MUTED]".
             onRead: data => {
-                try {
-                    var canonical = JSON.parse(data)
-                    if (canonical && typeof canonical.output_volume === "number") {
-                        volume = Math.min(Math.max(canonical.output_volume / 100.0, 0), 1.0)
-                        muted = canonical.output_muted === true
-                        return
-                    }
-                } catch (error) {}
                 var parts = data.trim().split(/\s+/)
-                if (parts.length >= 2) {
-                    volume = Math.min(parseFloat(parts[1]) || 0, 1.0)
-                    muted = data.includes("[MUTED]")
-                }
+                if (parts.length < 2 || parts[0] !== "Volume:") return
+                var level = parseFloat(parts[1])
+                if (isNaN(level)) return
+                volume = Math.min(Math.max(level, 0), 1.0)
+                muted = data.indexOf("[MUTED]") !== -1
             }
         }
     }
 
+    // `argvus config audio` sets the sink and records the result in
+    // /audio, so a later `config project` does not restore an old volume.
     Process {
         id: setProc
-        property string cmd: ""
-        command: ["bash", "-c", cmd]
         onExited: {
-            Theme.reloadCanonicalConfig()
-            if (applyAfterSet && !dragging) {
-                applyAfterSet = false
-                if (!applyConfigProc.running) applyConfigProc.running = true
-            }
+            if (pendingPercent >= 0) sendVolume()
+            else refresh()
         }
     }
 
     Process {
-        id: applyConfigProc
-        command: ["systemctl", "--user", "reload", "argvus-config.service"]
+        id: muteProc
+        command: ["argvus", "config", "audio", "mute", "toggle"]
+        onExited: refresh()
+    }
+
+    // Sends the latest value only; while the previous command runs, newer
+    // slider positions overwrite pendingPercent instead of queueing.
+    function sendVolume() {
+        if (setProc.running || pendingPercent < 0) return
+        setProc.command = ["argvus", "config", "audio", "volume", String(pendingPercent)]
+        pendingPercent = -1
+        setProc.running = true
     }
 
     function setVolume(v) {
         volume = Math.min(Math.max(v, 0), 1.0)
-        Theme.audioVolume = volume
-        var reload = dragging ? "" : " && systemctl --user reload argvus-config.service"
-        setProc.cmd = "wpctl set-volume @DEFAULT_AUDIO_SINK@ " + volume.toFixed(2) +
-            " && argvus config set /audio/output_volume " + Math.round(volume * 100) +
-            reload
-        setProc.running = true
+        pendingPercent = Math.round(volume * 100)
+        sendVolume()
     }
 
     function toggleMute() {
+        if (muteProc.running) return
         muted = !muted
-        Theme.audioMuted = muted
-        setProc.cmd = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && argvus config set /audio/output_muted " + (muted ? "true" : "false") +
-            " && systemctl --user reload argvus-config.service"
-        setProc.running = true
+        muteProc.running = true
     }
 
     // ── Mute button + slider + value ──
@@ -135,11 +153,7 @@ BaseCard {
                 }
                 onReleased: {
                     dragging = false
-                    applyAfterSet = true
-                    if (!setProc.running) {
-                        applyAfterSet = false
-                        if (!applyConfigProc.running) applyConfigProc.running = true
-                    }
+                    refresh()
                 }
             }
         }

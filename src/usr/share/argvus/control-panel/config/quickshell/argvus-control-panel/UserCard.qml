@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import QtCore
 import Quickshell.Io
 
 BaseCard {
@@ -17,7 +16,9 @@ BaseCard {
     property string userName: ""
     property string hostName: ""
     property string userIcon: "\uf007"
-    property string avatarPath: StandardPaths.writableLocation(StandardPaths.HomeLocation) + "/.face"
+    // Filled by avatarCheckProc with a plain filesystem path. StandardPaths
+    // returns a file:// URL in Qt 6, which made the image source "file://file:///…".
+    property string avatarPath: ""
     property int avatarVersion: 0
 
     // Caminho privado de `argvus-accounts`; o binário fica fora do PATH.
@@ -49,7 +50,6 @@ BaseCard {
 
     function refreshUserData() {
         if (!userProc.running) userProc.running = true
-        if (!resolveBinProc.running) resolveBinProc.running = true
     }
 
     onPollingActiveChanged: {
@@ -65,9 +65,16 @@ BaseCard {
         }
     }
 
+    // The display name is edited elsewhere (Control Center, `argvus accounts`).
+    // Account tools usually replace /etc/passwd instead of writing in place, and
+    // a FileView watcher misses that, so the visible card asks `getent` again
+    // on every tick.
     Timer {
         interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
-        onTriggered: if (!avatarCheckProc.running) avatarCheckProc.running = true
+        onTriggered: {
+            if (!avatarCheckProc.running) avatarCheckProc.running = true
+            refreshUserData()
+        }
     }
 
     // ── Read user info ──
@@ -77,7 +84,11 @@ BaseCard {
             "echo \"$(getent passwd $(whoami) | cut -d: -f5 | cut -d, -f1)\"; " +
             "whoami; hostname"
         ]
+        // The parser outlives each run, so its line counter must restart with
+        // every run or only the first read would ever update the card.
+        onStarted: userParser.lineNum = 0
         stdout: SplitParser {
+            id: userParser
             property int lineNum: 0
             onRead: data => {
                 var line = data.trim()

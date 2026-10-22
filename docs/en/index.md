@@ -48,6 +48,22 @@ Disabling a card hides it from the panel; it does not uninstall the provider beh
 
 The Control Panel appearance card no longer manages a global Transparency setting. Configure Transparency and Blur independently for the Control Panel in **Control Center → Appearance → Control Panel**. The Control Panel master **Enable** switch still controls the whole surface and its service.
 
+## Staying in sync with the rest of the desktop
+
+The cards show the live state of the desktop. A change made elsewhere (Control Center, the taskbar, a keyboard shortcut or the `argvus` command line) shows up in the panel without restarting it:
+
+| Card | Where the state comes from | When it refreshes |
+| --- | --- | --- |
+| User | `getent passwd` | every 3 s while the panel is open |
+| Volume | the PipeWire default sink (`wpctl`) and `pactl subscribe` events | immediately on each audio event; every 2 s as a safety net |
+| Appearance (Telemetry, Animations and Effects) | the `/effects` section of `argvus config` | every 2 s while the panel is open |
+| Power | `powerprofilesctl` | every 3 s while the panel is open |
+| Weather | the location file | when the panel opens and every 15 min |
+
+The Appearance card has two independent switches. **Animations** runs `argvus effects-toggle animations toggle` and controls everything that moves. **Effects** runs `argvus effects-toggle effects toggle` and switches blur and the transparency of Terminal, Launcher, Widget Telemetry, Control Panel and Taskbar together; it shows as on when at least one of them is on. **SUPER + F6** (`argvus effects-toggle toggle`) switches both together. Changing either restarts the Control Panel, Waybar and the notification daemon, so the panel reloads for a moment after the toggle.
+
+Scrolling on the taskbar volume icon and the media keys use `argvus config audio`, which applies the change to PipeWire and also records the volume in `/audio`. A configuration reload therefore does not restore an old volume.
+
 ## Session behavior
 
 `argvus-control-panel.service` is started by `argvus-session`. Opening and closing the panel changes the session panel state, but does not mean that every card action is persistent configuration. Network, audio, power and display actions may be handed to their providers or to the current desktop session.

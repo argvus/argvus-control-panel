@@ -19,6 +19,8 @@ PanelWindow {
     property bool hardwareCapabilitiesReady: false
     property bool cardsStatusReady: false
     readonly property bool cardsLoading: !cardsStatusReady || !hardwareCapabilitiesReady
+    // Keeps the shared Theme state fresh only while the sidebar is on screen.
+    Binding { target: Theme; property: "active"; value: root.sidebarVisible }
     ListModel { id: cardsModel }
     property var cardDefinitions: ({
         "user": "UserCard.qml",
