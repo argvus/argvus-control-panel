@@ -1,5 +1,18 @@
 # argvus-control-panel
 
+<div align="center">
+
+[![CI](https://github.com/argvus/argvus-control-panel/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/argvus/argvus-control-panel/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/argvus/argvus-control-panel)](./LICENSE)
+[![Language: QML](https://img.shields.io/badge/QML-Quickshell-41CD52?logo=qt&logoColor=white)](https://quickshell.outfoxxed.me/)
+[![Platform: Arch Linux | Wayland](https://img.shields.io/badge/platform-Arch%20Linux%20%7C%20Wayland-1793D1?logo=archlinux&logoColor=white)](https://archlinux.org/)
+[![Pull requests](https://img.shields.io/github/issues-pr/argvus/argvus-control-panel)](https://github.com/argvus/argvus-control-panel/pulls)
+[![Issues](https://img.shields.io/github/issues/argvus/argvus-control-panel)](https://github.com/argvus/argvus-control-panel/issues)
+[![Last commit](https://img.shields.io/github/last-commit/argvus/argvus-control-panel)](https://github.com/argvus/argvus-control-panel/commits/main)
+[![Docs](https://img.shields.io/badge/docs-project-blue)](./docs/)
+
+</div>
+
 Quickshell control panel for the ARGVUS desktop, providing the sidebar cards,
 themes, and helper scripts used by the desktop session.
 
