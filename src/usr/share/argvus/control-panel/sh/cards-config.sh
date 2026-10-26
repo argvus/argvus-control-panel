@@ -74,10 +74,18 @@ case "${1:-}" in
       set)
         [[ "$#" -eq 3 ]] || usage
         case "$3" in enabled|disabled) ;; *) usage ;; esac
+        previous=enabled
+        if [[ -r "$MASTER_FILE" ]] && [[ "$(sed -n '1p' "$MASTER_FILE")" == disabled ]]; then
+          previous=disabled
+        fi
         mkdir -p "$(dirname -- "$MASTER_FILE")"
         printf '%s\n' "$3" > "$MASTER_FILE"
+        # The panel is recreated only when the switch changes; an unchanged
+        # switch just makes sure an enabled panel runs.
         if command -v systemctl >/dev/null 2>&1; then
-          if [[ "$3" == enabled ]]; then
+          if [[ "$3" == enabled && "$previous" == enabled ]]; then
+            systemctl --user start argvus-control-panel.service >/dev/null 2>&1 || true
+          elif [[ "$3" == enabled ]]; then
             systemctl --user restart argvus-control-panel.service >/dev/null 2>&1 || true
           else
             systemctl --user stop argvus-control-panel.service >/dev/null 2>&1 || true

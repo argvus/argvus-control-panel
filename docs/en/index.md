@@ -46,7 +46,7 @@ Use the UI when possible. The panel state is stored as user configuration; it is
 
 Disabling a card hides it from the panel; it does not uninstall the provider behind it. Reordering changes the order in which cards are presented. There is no `reset` subcommand in the current helper. If the user card preference is removed, the provider normalizes the state back to the known cards, enabled by default and in packaged order.
 
-The Control Panel appearance card no longer manages a global Transparency setting. Configure Transparency and Blur independently for the Control Panel in **Control Center → Appearance → Control Panel**. The Control Panel master **Enable** switch still controls the whole surface and its service.
+The Control Panel appearance card no longer manages a global Transparency setting. Configure Transparency and Blur independently for the Control Panel in **Control Center → Appearance → Control Panel**. The Control Panel master **Enable** switch still controls the whole surface and its service. `cards-config.sh master set` restarts or stops the panel only when the switch changes; setting the value it already has only makes sure an enabled panel runs.
 
 ## Staying in sync with the rest of the desktop
 
@@ -60,7 +60,7 @@ The cards show the live state of the desktop. A change made elsewhere (Control C
 | Power | `powerprofilesctl` | every 3 s while the panel is open |
 | Weather | the location file | when the panel opens and every 15 min |
 
-The Appearance card has two independent switches. **Animations** runs `argvus effects-toggle animations toggle` and controls everything that moves. **Effects** runs `argvus effects-toggle effects toggle` and switches blur and the transparency of Terminal, Launcher, Widget Telemetry, Control Panel and Taskbar together; it shows as on when at least one of them is on. **SUPER + F6** (`argvus effects-toggle toggle`) switches both together. Changing either restarts the Control Panel, Waybar and the notification daemon, so the panel reloads for a moment after the toggle.
+The Appearance card has two independent switches. **Animations** runs `argvus effects-toggle animations toggle` and controls everything that moves. **Effects** runs `argvus effects-toggle effects toggle` and switches blur and the transparency of Terminal, Launcher, Widget Telemetry, Control Panel and Taskbar together; it shows as on when at least one of them is on. **SUPER + F6** (`argvus effects-toggle toggle`) switches both together. Changing either reloads Hyprland and the theme consumers in place: Waybar re-reads its stylesheets, the panel reloads over IPC and Dunst reloads its configuration. Nothing is restarted and no loading screen appears.
 
 Scrolling on the taskbar volume icon and the media keys use `argvus config audio`, which applies the change to PipeWire and also records the volume in `/audio`. A configuration reload therefore does not restore an old volume.
 

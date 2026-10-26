@@ -29,3 +29,19 @@ if bash "$SCRIPT" set about disabled >/dev/null 2>&1; then
   printf 'About must not be configurable\n' >&2
   exit 1
 fi
+
+# The master switch recreates the panel only when it changes.
+mkdir -p "$TEMP_DIR/bin"
+cat > "$TEMP_DIR/bin/systemctl" <<'STUB'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$SYSTEMCTL_LOG"
+STUB
+chmod +x "$TEMP_DIR/bin/systemctl"
+export SYSTEMCTL_LOG="$TEMP_DIR/systemctl.log"
+master() { PATH="$TEMP_DIR/bin:$PATH" bash "$SCRIPT" master set "$1" >/dev/null; tail -n 1 "$SYSTEMCTL_LOG"; }
+
+[[ "$(master enabled)" == '--user start argvus-control-panel.service' ]]
+[[ "$(master disabled)" == '--user stop argvus-control-panel.service' ]]
+[[ "$(master disabled)" == '--user stop argvus-control-panel.service' ]]
+[[ "$(master enabled)" == '--user restart argvus-control-panel.service' ]]
+[[ "$(bash "$SCRIPT" master status)" == 'enabled' ]]

@@ -7,7 +7,7 @@ O Control Panel é a superfície Quickshell de acesso rápido da sessão ativa. 
 
 Os textos do painel usam os catálogos compartilhados do `argvus-i18n`. Ao aplicar outro idioma em **Control Center → Localidade e região**, o serviço do Control Panel é reiniciado automaticamente para carregar o catálogo selecionado.
 
-O card de aparência do Control Panel não gerencia mais uma Transparência global. Configure Transparência e Blur individualmente para o Control Panel em **Control Center → Aparência → Control Panel**. O controle geral **Ativar** continua controlando toda a superfície e seu serviço.
+O card de aparência do Control Panel não gerencia mais uma Transparência global. Configure Transparência e Blur individualmente para o Control Panel em **Control Center → Aparência → Control Panel**. O controle geral **Ativar** continua controlando toda a superfície e seu serviço. O `cards-config.sh master set` só reinicia ou para o painel quando o interruptor muda; gravar o valor que ele já tem só garante que um painel ativado esteja rodando.
 
 ## Control Panel ou Control Center?
 
@@ -60,7 +60,7 @@ Os cards mostram o estado atual do desktop. Uma mudança feita em outro lugar (C
 | Energia | `powerprofilesctl` | a cada 3 s com o painel aberto |
 | Clima | arquivo de localização | ao abrir o painel e a cada 15 min |
 
-O card de Aparência tem dois interruptores independentes. **Animações** executa `argvus effects-toggle animations toggle` e controla tudo que se move. **Efeitos** executa `argvus effects-toggle effects toggle` e alterna juntos o blur e a transparência de Terminal, Launcher, Widget Telemetry, Control Panel e Taskbar; aparece como ativo quando pelo menos uma delas está ativa. **SUPER + F6** (`argvus effects-toggle toggle`) alterna os dois juntos. Alterar qualquer um reinicia o Control Panel, a Waybar e o daemon de notificações, então o painel recarrega por instantes depois do toggle.
+O card de Aparência tem dois interruptores independentes. **Animações** executa `argvus effects-toggle animations toggle` e controla tudo que se move. **Efeitos** executa `argvus effects-toggle effects toggle` e alterna juntos o blur e a transparência de Terminal, Launcher, Widget Telemetry, Control Panel e Taskbar; aparece como ativo quando pelo menos uma delas está ativa. **SUPER + F6** (`argvus effects-toggle toggle`) alterna os dois juntos. Alterar qualquer um recarrega o Hyprland e os consumidores do tema no lugar: a Waybar relê as folhas de estilo, o painel recarrega por IPC e o Dunst recarrega a configuração. Nada é reiniciado e nenhuma tela de carregamento aparece.
 
 O scroll no ícone de volume da taskbar e as teclas de mídia usam `argvus config audio`, que aplica a mudança no PipeWire e também grava o volume em `/audio`. Assim, um reload da configuração não restaura um volume antigo.
 
