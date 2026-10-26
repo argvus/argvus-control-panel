@@ -71,9 +71,17 @@ Singleton {
 
     property var themeObj: null
 
+    // The theme build (`argvus theme`) renders this panel's colours for the
+    // active theme, layout and accent. Its path never changes: a switch points
+    // `current` at another build and calls `theme reload` over IPC. Without a
+    // build the defaults below apply.
+    readonly property string currentBuild: root.generatedConfig + "/theme/current"
+
     FileView {
         id: themeFile
+        path: root.currentBuild + "/control-panel/Theme.qml"
         blockLoading: true
+        printErrors: false
         onTextChanged: {
             var qml = text().trim()
             if (qml === "") return
@@ -86,31 +94,6 @@ Singleton {
     }
 
     function loadTheme() {
-        // The managed user copy lives in the runtime data root, which is where
-        // `argvus config accent` writes the resolved highlight color
-        // (paths_config resolves control-panel/config/quickshell/* to
-        // data/quickshell/*). Read it first, otherwise this panel would keep
-        // showing the packaged per-theme accent.
-        themeFile.path = root.dataConfig + "/quickshell/argvus-control-panel/themes/" +
-            themeName + "/Theme.qml"
-        themeFile.reload()
-        if (themeFile.text().trim() !== "") return
-
-        // Pre-`data/` user copy, kept for layouts installed before the move.
-        themeFile.path = root.configHome + "/argvus/quickshell/argvus-control-panel/themes/" +
-            themeName + "/Theme.qml"
-        themeFile.reload()
-        if (themeFile.text().trim() !== "") return
-
-        // 2. Generated config (~/.config/argvus/data/generated)
-        themeFile.path = root.generatedConfig + "/quickshell/argvus-control-panel/themes/" +
-            themeName + "/Theme.qml"
-        themeFile.reload()
-        if (themeFile.text().trim() !== "") return
-
-        // 3. System default
-        themeFile.path = root.systemConfig + "/control-panel/config/quickshell/argvus-control-panel/themes/" +
-            themeName + "/Theme.qml"
         themeFile.reload()
     }
 
@@ -126,6 +109,13 @@ Singleton {
     }
 
     function reloadAccent() { themeFile.reload() }
+
+    // Called by `qs ipc call theme reload` after a theme or accent change: the
+    // build path stays the same, so nothing else tells the panel to re-read it.
+    function reloadTheme() {
+        root.refresh()
+        loadTheme()
+    }
 
     function fontValue(contents, key, fallback) {
         var lines = contents.split("\n")

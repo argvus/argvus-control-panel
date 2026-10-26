@@ -29,6 +29,8 @@ arch_package_control_panel() {
 	local source_root="${srcdir}/${pkgname}-${pkgver}"
 	install -dm755 "${pkgdir}/usr/share/argvus/control-panel"
 	cp -a "${source_root}/src/usr/share/argvus/control-panel/." "${pkgdir}/usr/share/argvus/control-panel/"
+	install -dm755 "${pkgdir}/usr/share/argvus/theme"
+	cp -a "${source_root}/src/usr/share/argvus/theme/." "${pkgdir}/usr/share/argvus/theme/"
 	find "${pkgdir}/usr/share/argvus/control-panel" -type f -name '*.sh' -exec chmod 755 {} +
 	install -Dm644 "${source_root}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }

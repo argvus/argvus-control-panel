@@ -1,0 +1,30 @@
+# Theme consumer: rendered into every theme build as control-panel/Theme.qml.
+id = "control-panel"
+template = "control-panel/theme-template/Theme.qml"
+output = "control-panel/Theme.qml"
+# It reads the build directly, so it reloads as soon as the build is active.
+reload_stage = "build"
+
+# The panel re-reads its Theme.qml from the build.
+[reload]
+kind = "command"
+argv = ["qs", "-c", "argvus-control-panel", "ipc", "call", "theme", "reload"]
+
+# Defaults for the tokens the template reads; a theme that defines one wins.
+[palette]
+bg_card = "@bg | mix(@fg, 0.05) | alpha(0.814)"
+bg_card_alt = "@bg | mix(@fg, 0.08) | alpha(0.814)"
+bg_header = "@bg | mix(@fg, 0.11) | alpha(0.814)"
+bg_item = "@bg | mix(@fg, 0.2) | alpha(0.08)"
+bg_item_hover = "@bg | mix(@fg, 0.15) | alpha(0.132)"
+bg_panel = "@bg | alpha(0.814)"
+border_subtle = "@bg | mix(@fg, 0.2)"
+danger = "#E06C75"
+danger_dim = "@danger | alpha(0.4)"
+fg_dim = "@fg | mix(@bg, 0.25)"
+fg_faint = "@bg | mix(@fg, 0.4)"
+fg_subtle = "@fg | mix(@bg, 0.45)"
+ok = "#98C379"
+scrollbar_bg = "@bg_card"
+scrollbar_fg = "@fg_subtle"
+warn = "#E5C07B"

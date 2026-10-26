@@ -48,6 +48,11 @@ ShellRoot {
     }
     // Toggle via: qs -c argvus-control-panel ipc call sidebar toggle
     IpcHandler {
+        target: "theme"
+        function reload(): void { Theme.reloadTheme() }
+    }
+
+    IpcHandler {
         target: "sidebar"
         function toggle(): void { sidebarWin.sidebarVisible = !sidebarWin.sidebarVisible }
         function open():   void { sidebarWin.sidebarVisible = true }

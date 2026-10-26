@@ -312,8 +312,9 @@ BaseCard {
 
     Process {
         id: themeProc
-        // The theme switch restarts this panel. Run outside its service cgroup
-        // so stopping the panel cannot kill the transition before DPMS resumes.
+        // The theme menu and the switch run outside this panel's service cgroup,
+        // so a panel restart (a layout change) cannot end them. The switch calls
+        // `ipc call theme reload` when the new theme is active.
         command: ["systemd-run", "--user", "--collect", "--quiet",
             "--setenv=ARGVUS_CONFIG_HOME=" + Theme.configHome,
             "--setenv=ARGVUS_SYSTEM_CONFIG=" + Theme.systemConfig,
