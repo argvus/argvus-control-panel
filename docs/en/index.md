@@ -48,6 +48,10 @@ Disabling a card hides it from the panel; it does not uninstall the provider beh
 
 The Control Panel appearance card no longer manages a global Transparency setting. Configure Transparency and Blur independently for the Control Panel in **Control Center → Appearance → Control Panel**. The Control Panel master **Enable** switch still controls the whole surface and its service. `cards-config.sh master set` restarts or stops the panel only when the switch changes; setting the value it already has only makes sure an enabled panel runs.
 
+## Keyboard navigation
+
+When the panel opens, use **↑/↓** to scroll its content. **Tab** moves forward through buttons, controls and fields; **Shift+Tab** moves backward. Buttons show focus with a highlighted border and can be activated with **Enter** or **Space**. Sliders and text fields keep those keys for their own adjustment or editing. **Esc** closes the panel.
+
 ## Staying in sync with the rest of the desktop
 
 The cards show the live state of the desktop. A change made elsewhere (Control Center, the taskbar, a keyboard shortcut or the `argvus` command line) shows up in the panel without restarting it:

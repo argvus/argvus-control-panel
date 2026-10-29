@@ -9,6 +9,10 @@ Os textos do painel usam os catálogos compartilhados do `argvus-i18n`. Ao aplic
 
 O card de aparência do Control Panel não gerencia mais uma Transparência global. Configure Transparência e Blur individualmente para o Control Panel em **Control Center → Aparência → Control Panel**. O controle geral **Ativar** continua controlando toda a superfície e seu serviço. O `cards-config.sh master set` só reinicia ou para o painel quando o interruptor muda; gravar o valor que ele já tem só garante que um painel ativado esteja rodando.
 
+## Navegação por teclado
+
+Ao abrir o painel, use **↑/↓** para rolar o conteúdo. **Tab** avança entre botões, controles e campos; **Shift+Tab** volta. Botões mostram o foco com uma borda destacada e podem ser acionados com **Enter** ou **Espaço**. Em sliders e campos de texto, as teclas continuam controlando ou editando o próprio campo. **Esc** fecha o painel.
+
 ## Control Panel ou Control Center?
 
 Use o painel para status atual e ações rápidas. Use o [Control Center](/pt/docs/components/argvus-control-center/) quando quiser alterar uma configuração persistente do desktop. Por exemplo, o painel pode oferecer controles de aparência, display, rede, volume, brilho, notificações, energia e sessão; a configuração visual e de layout detalhada fica em **Control Center → Aparência**.

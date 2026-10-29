@@ -247,7 +247,7 @@ PanelWindow {
     onSidebarVisibleChanged: {
         publishControlPanelState()
         if (sidebarVisible)
-            keyCatcher.forceActiveFocus()
+            flick.forceActiveFocus()
     }
 
     Component.onCompleted: publishControlPanelState()
@@ -282,18 +282,6 @@ PanelWindow {
             z: 2
         }
 
-        // Captura Esc
-        Item {
-            id: keyCatcher
-            anchors.fill: parent
-            focus: true
-            Keys.onEscapePressed: root.sidebarVisible = false
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {}
-            }
-        }
-
         // Flickable — mais confiável que ScrollView para calcular contentHeight
         Flickable {
             z: 1
@@ -308,6 +296,16 @@ PanelWindow {
             flickDeceleration: 3000
             maximumFlickVelocity: 2000
             boundsBehavior: Flickable.StopAtBounds
+            focus: true
+            activeFocusOnTab: false
+
+            Keys.onEscapePressed: root.sidebarVisible = false
+            Keys.onUpPressed: {
+                contentY = Math.max(0, contentY - 48)
+            }
+            Keys.onDownPressed: {
+                contentY = Math.min(Math.max(0, contentHeight - height), contentY + 48)
+            }
 
             ColumnLayout {
                 id: contentCol

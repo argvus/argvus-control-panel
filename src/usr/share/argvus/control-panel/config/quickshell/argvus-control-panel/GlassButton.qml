@@ -11,6 +11,8 @@ Rectangle {
     property color  accentColor: Theme.accent
     signal clicked()
 
+    activeFocusOnTab: true
+
     implicitHeight: 38
     radius: Theme.radiusSmall
 
@@ -21,10 +23,19 @@ Rectangle {
     }
     border.color: {
         if (active) return accentColor
+        if (activeFocus) return Theme.accentLight
         if (ma.containsMouse) return accentColor
         return Theme.borderSubtle
     }
-    border.width: 1
+    border.width: activeFocus ? 2 : 1
+
+    Keys.onPressed: function(event) {
+        if (!root.enabled || (event.key !== Qt.Key_Return
+                && event.key !== Qt.Key_Enter && event.key !== Qt.Key_Space))
+            return
+        root.clicked()
+        event.accepted = true
+    }
 
     Behavior on color { ColorAnimation { duration: Theme.animFast } }
 
@@ -83,6 +94,7 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
+        onPressed: root.forceActiveFocus()
         onClicked: root.clicked()
     }
 }
