@@ -73,3 +73,7 @@ O scroll no ícone de volume da taskbar e as teclas de mídia usam `argvus confi
 `argvus-control-panel.service` é iniciado pelo `argvus-session`. Abrir e fechar o painel altera o estado do painel na sessão, mas não significa que toda ação dos cards seja uma configuração persistente. Ações de rede, áudio, energia e display podem ser encaminhadas aos providers ou à sessão desktop atual.
 
 Veja [taskbar e painéis](/pt/docs/argvus-taskbar/taskbar/) para a relação entre painel, margens da taskbar e layout das janelas.
+
+## Luz noturna
+
+O cartão Display mostra uma chave liga/desliga de luz noturna e a temperatura ativa. Os cantos e as animações seguem os mesmos tokens de tema das outras chaves do painel, incluindo os modos Sticky e Float. A chave não tem borda e usa cursor de mão (pointer), como as outras chaves do painel. Usa `argvus config display night-light status|toggle`, consulta a cada dois segundos enquanto aberto e atualiza após uma ação. A linha fica oculta quando o backend está indisponível; falhas nas ações mostram um erro. Temperatura e programação ficam em **Central de Controle > Área de trabalho e entrada > Monitores > Luz noturna**. Com programação, o toggle manual vale até a próxima transição; sem ela, a ativação é persistente.

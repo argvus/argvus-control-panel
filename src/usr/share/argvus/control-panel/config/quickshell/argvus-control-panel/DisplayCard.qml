@@ -11,10 +11,39 @@ BaseCard {
     readonly property string script: "argvus displayctl"
 
     property var monitors: []
+    property var nightLight: null
+    property string nightError: ""
+
+    function refreshNightLight() {
+        if (!nightStatus.running && !nightToggle.running) nightStatus.running = true
+    }
+
+    Process {
+        id: nightStatus
+        command: ["argvus", "config", "display", "night-light", "status"]
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try { card.nightLight = JSON.parse(text) }
+                catch (error) { card.nightLight = null }
+            }
+        }
+        onExited: function(code) { if (code !== 0) card.nightLight = null }
+    }
+
+    Process {
+        id: nightToggle
+        command: ["argvus", "config", "display", "night-light", "toggle"]
+        onExited: function(code) {
+            card.nightError = code === 0 ? "" : Strings.displayNightFailed
+            card.refreshNightLight()
+        }
+    }
+
 
     Timer {
         interval: 2000; running: pollingActive; repeat: true; triggeredOnStart: true
         onTriggered: {
+            card.refreshNightLight()
             if (!statusProc.running) statusProc.running = true
             if (!brightProbe.running) brightProbe.running = true
             if (card.brightSupported && !brightGet.running) brightGet.running = true
@@ -99,6 +128,83 @@ BaseCard {
     ColumnLayout {
         Layout.fillWidth: true
         spacing: 10
+
+        RowLayout {
+            Layout.fillWidth: true
+            visible: card.nightLight !== null && card.nightLight.available === true
+            spacing: 8
+
+            Text {
+                Layout.fillWidth: true
+                text: Strings.displayNightLight
+                color: Theme.fgText
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.scaledFont(11)
+            }
+            Text {
+                visible: card.nightLight !== null && card.nightLight.active === true
+                text: card.nightLight && card.nightLight.effective_temperature !== null
+                    ? card.nightLight.effective_temperature + " K" : ""
+                color: Theme.fgSubtle
+                font.family: Theme.fontFamily
+                font.pixelSize: Theme.scaledFont(11)
+            }
+            Rectangle {
+                id: nightSwitch
+                readonly property bool checked: card.nightLight !== null && card.nightLight.active === true
+                enabled: !nightToggle.running && !nightStatus.running
+                activeFocusOnTab: true
+                Layout.alignment: Qt.AlignVCenter
+                Accessible.role: Accessible.CheckBox
+                Accessible.name: Strings.displayNightLight
+                Accessible.checkable: true
+                Accessible.checked: checked
+                width: 44
+                height: 24
+                radius: Theme.radius
+                color: checked ? Theme.accent : Theme.borderSubtle
+                border.width: 0
+                opacity: enabled ? 1 : 0.55
+
+                Behavior on color { ColorAnimation { duration: Theme.animFast } }
+
+                Keys.onPressed: function(event) {
+                    if (event.key === Qt.Key_Space || event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+                        if (!nightToggle.running) nightToggle.running = true
+                        event.accepted = true
+                    }
+                }
+
+                Rectangle {
+                    width: 18
+                    height: 18
+                    radius: Math.max(2, Theme.radius)
+                    x: nightSwitch.checked ? parent.width - width - 3 : 3
+                    y: (parent.height - height) / 2
+                    color: Theme.bgHeader
+                    Behavior on x { NumberAnimation { duration: Theme.animNormal; easing.type: Easing.OutCubic } }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: {
+                        nightSwitch.forceActiveFocus()
+                        if (!nightToggle.running) nightToggle.running = true
+                    }
+                }
+            }
+        }
+        Text {
+            Layout.fillWidth: true
+            visible: card.nightError.length > 0
+            text: card.nightError
+            color: Theme.danger
+            font.family: Theme.fontFamily
+            font.pixelSize: Theme.scaledFont(11)
+            wrapMode: Text.WordWrap
+        }
 
         // Global brightness (backlight for panel/internal)
         RowLayout {

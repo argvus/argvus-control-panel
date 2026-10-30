@@ -24,6 +24,9 @@ QtObject {
     readonly property string aboutHint: tr("about.hint")
     readonly property string aboutOpen: tr("about.open")
 
+    readonly property string displayNightLight: tr("display.night_light")
+    readonly property string displayNightOff: tr("display.night_light_off")
+    readonly property string displayNightFailed: tr("display.night_light_failed")
     readonly property string displayScale:      tr("display.scale")
     readonly property string displayDpi:        tr("display.dpi")
     readonly property string displayBrightness: tr("display.brightness")

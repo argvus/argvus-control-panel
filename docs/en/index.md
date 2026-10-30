@@ -73,3 +73,7 @@ Scrolling on the taskbar volume icon and the media keys use `argvus config audio
 `argvus-control-panel.service` is started by `argvus-session`. Opening and closing the panel changes the session panel state, but does not mean that every card action is persistent configuration. Network, audio, power and display actions may be handed to their providers or to the current desktop session.
 
 See [taskbar and panels](/docs/argvus-taskbar/taskbar/) for the relationship between the panel, taskbar margins and window layout.
+
+## Night Light
+
+The Display card shows a Night Light on/off switch and the active temperature. Its corners and animations follow the same theme tokens as the other panel switches, including Sticky and Float layouts. The switch has no border and uses a pointing-hand cursor, like the other panel switches. It uses `argvus config display night-light status|toggle`, polling every two seconds while open and refetching after an action. The row is hidden when the backend is unavailable; a failed action shows an error. Scheduling and temperature are configured in **Control Center > Desktop & Input > Displays > Night Light**. A scheduled manual toggle lasts until the next transition; otherwise activation is persistent.
