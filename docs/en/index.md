@@ -7,6 +7,8 @@ The Control Panel is the quick-access Quickshell surface for the active session.
 
 The panel uses the shared `argvus-i18n` catalogs. When a different language is applied in **Control Center → Locale & Region**, the Control Panel service is restarted automatically so it loads the selected catalog.
 
+The Control Panel shares the taskbar edge with ARGVUS Focus and ARGVUS Clock. Opening the panel closes both popups first; opening Focus or Clock closes the panel.
+
 ## Control Panel or Control Center?
 
 Use the panel for current status and quick actions. Use [Control Center](/docs/components/argvus-control-center/) when you want to change persistent desktop configuration. For example, the panel can expose appearance, display, network, volume, brightness, notification, power and session controls; the detailed visual and layout configuration belongs in **Control Center → Appearance**.
@@ -77,3 +79,5 @@ See [taskbar and panels](/docs/argvus-taskbar/taskbar/) for the relationship bet
 ## Night Light
 
 The Display card shows a Night Light on/off switch and the active temperature. Its corners and animations follow the same theme tokens as the other panel switches, including Sticky and Float layouts. The switch has no border and uses a pointing-hand cursor, like the other panel switches. It uses `argvus config display night-light status|toggle`, polling every two seconds while open and refetching after an action. The row is hidden when the backend is unavailable; a failed action shows an error. Scheduling and temperature are configured in **Control Center > Desktop & Input > Displays > Night Light**. A scheduled manual toggle lasts until the next transition; otherwise activation is persistent.
+
+The taskbar calendar, ARGVUS Focus, ARGVUS Clock and Control Panel are mutually exclusive: opening one closes the others.

@@ -7,6 +7,32 @@ ShellRoot {
     id: root
     readonly property string catalogRoot: "/usr/share/argvus/i18n"
     property string selectedLocale: "en-US"
+    property bool pendingExclusiveOpen: false
+    property int pendingPopupClosures: 0
+
+    function openExclusive() {
+        if (sidebarWin.sidebarVisible || pendingExclusiveOpen)
+            return
+        pendingExclusiveOpen = true
+        pendingPopupClosures = 3
+        closeFocusProcess.running = true
+        closeClockProcess.running = true
+        closeCalendarProcess.running = true
+    }
+
+    function finishPopupClose() {
+        pendingPopupClosures -= 1
+        if (pendingPopupClosures <= 0 && pendingExclusiveOpen) {
+            pendingExclusiveOpen = false
+            sidebarWin.sidebarVisible = true
+        }
+    }
+
+    function closeExclusive() {
+        pendingExclusiveOpen = false
+        pendingPopupClosures = 0
+        sidebarWin.sidebarVisible = false
+    }
 
     function loadCatalog(localeName, contents) {
         if (!contents || contents.trim() === "")
@@ -46,6 +72,25 @@ ShellRoot {
         path: root.catalogRoot + "/en-US/control-panel.json"
         onTextChanged: root.loadCatalog("en-US", text())
     }
+
+    Process {
+        id: closeFocusProcess
+        command: ["gapplication", "action", "sh.argvus.Focus", "close"]
+        onExited: function(code) { root.finishPopupClose() }
+    }
+
+    Process {
+        id: closeClockProcess
+        command: ["gapplication", "action", "sh.argvus.Clock", "close"]
+        onExited: function(code) { root.finishPopupClose() }
+    }
+
+    Process {
+        id: closeCalendarProcess
+        command: ["argvus", "taskbar-calendar", "hide"]
+        onExited: function(code) { root.finishPopupClose() }
+    }
+
     // Toggle via: qs -c argvus-control-panel ipc call sidebar toggle
     IpcHandler {
         target: "theme"
@@ -54,9 +99,14 @@ ShellRoot {
 
     IpcHandler {
         target: "sidebar"
-        function toggle(): void { sidebarWin.sidebarVisible = !sidebarWin.sidebarVisible }
-        function open():   void { sidebarWin.sidebarVisible = true }
-        function close():  void { sidebarWin.sidebarVisible = false }
+        function toggle(): void {
+            if (sidebarWin.sidebarVisible || root.pendingExclusiveOpen)
+                root.closeExclusive()
+            else
+                root.openExclusive()
+        }
+        function open(): void { root.openExclusive() }
+        function close(): void { root.closeExclusive() }
     }
 
     SidebarWindow {

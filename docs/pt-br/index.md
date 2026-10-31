@@ -7,6 +7,8 @@ O Control Panel é a superfície Quickshell de acesso rápido da sessão ativa. 
 
 Os textos do painel usam os catálogos compartilhados do `argvus-i18n`. Ao aplicar outro idioma em **Control Center → Localidade e região**, o serviço do Control Panel é reiniciado automaticamente para carregar o catálogo selecionado.
 
+O Control Panel compartilha a lateral da taskbar com ARGVUS Focus e ARGVUS Clock. Ao abrir o painel, os dois popups são fechados primeiro; ao abrir Focus ou Clock, o painel é fechado.
+
 O card de aparência do Control Panel não gerencia mais uma Transparência global. Configure Transparência e Blur individualmente para o Control Panel em **Control Center → Aparência → Control Panel**. O controle geral **Ativar** continua controlando toda a superfície e seu serviço. O `cards-config.sh master set` só reinicia ou para o painel quando o interruptor muda; gravar o valor que ele já tem só garante que um painel ativado esteja rodando.
 
 ## Navegação por teclado
@@ -77,3 +79,5 @@ Veja [taskbar e painéis](/pt/docs/argvus-taskbar/taskbar/) para a relação ent
 ## Luz noturna
 
 O cartão Display mostra uma chave liga/desliga de luz noturna e a temperatura ativa. Os cantos e as animações seguem os mesmos tokens de tema das outras chaves do painel, incluindo os modos Sticky e Float. A chave não tem borda e usa cursor de mão (pointer), como as outras chaves do painel. Usa `argvus config display night-light status|toggle`, consulta a cada dois segundos enquanto aberto e atualiza após uma ação. A linha fica oculta quando o backend está indisponível; falhas nas ações mostram um erro. Temperatura e programação ficam em **Central de Controle > Área de trabalho e entrada > Monitores > Luz noturna**. Com programação, o toggle manual vale até a próxima transição; sem ela, a ativação é persistente.
+
+O calendário da taskbar, ARGVUS Focus, ARGVUS Clock e Control Panel são exclusivos entre si: abrir um fecha os demais.
