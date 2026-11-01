@@ -68,6 +68,8 @@ QtObject {
     readonly property string weatherWind:      tr("weather.wind")
     readonly property string weatherConfigure: tr("weather.configure")
     readonly property string weatherRefresh:   tr("weather.refresh")
+    readonly property string weatherForecast:  tr("weather.forecast")
+    readonly property string weatherCurrent:   tr("weather.current")
     readonly property string volumeMuted:       tr("volume.muted")
 
     readonly property string btnWallpaper:            tr("appearance.wallpaper")

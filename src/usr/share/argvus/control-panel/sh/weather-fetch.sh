@@ -29,8 +29,17 @@ urlencode() {
 }
 
 valid_wttr_response() {
-  jq -e '(.current_condition | type == "array" and length > 0) and (.nearest_area | type == "array" and length > 0)' \
+  jq -e '(.current_condition | type == "array" and length > 0) and (.nearest_area | type == "array" and length > 0) and (.weather | type == "array" and length >= 7)' \
     "$1" >/dev/null 2>&1
+}
+
+normalize_wttr() {
+  jq '{current_condition, nearest_area, forecast: [.weather[:7][] | {
+    date: .date,
+    minC: .mintempC,
+    maxC: .maxtempC,
+    weatherCode: .hourly[4].weatherCode
+  }]}' "$1"
 }
 
 fetch_wttr() {
@@ -42,7 +51,7 @@ fetch_wttr() {
 
   curl -4 -fsSL --connect-timeout 8 --max-time 12 "$_url" -o "$TMP_DIR/wttr.json" 2>/dev/null || return 1
   valid_wttr_response "$TMP_DIR/wttr.json" || return 1
-  cat "$TMP_DIR/wttr.json"
+  normalize_wttr "$TMP_DIR/wttr.json"
 }
 
 geocode_location() {
@@ -74,7 +83,7 @@ $_place
 EOF
 
   curl -4 -fsSL --connect-timeout 8 --max-time 12 \
-    "https://api.open-meteo.com/v1/forecast?latitude=${_latitude}&longitude=${_longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&timezone=auto" \
+    "https://api.open-meteo.com/v1/forecast?latitude=${_latitude}&longitude=${_longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=7&timezone=auto" \
     -o "$TMP_DIR/forecast.json" 2>/dev/null || return 1
 
   jq -e '.current' "$TMP_DIR/forecast.json" >/dev/null 2>&1 || return 1
@@ -101,7 +110,7 @@ EOF
       elif . <= 99 then $thunderstorm
       else $unknown
       end;
-    {
+    .daily as $forecast_daily | {
       current_condition: [{
         temp_C: (.current.temperature_2m | tostring),
         FeelsLikeC: (.current.apparent_temperature | tostring),
@@ -113,6 +122,12 @@ EOF
       nearest_area: [{
         areaName: [{value: $city}],
         country: [{value: $country}]
+      }],
+      forecast: [.daily.time | to_entries[] as $entry | {
+        date: $entry.value,
+        minC: ($forecast_daily.temperature_2m_min[$entry.key] | tostring),
+        maxC: ($forecast_daily.temperature_2m_max[$entry.key] | tostring),
+        weatherCode: ($forecast_daily.weather_code[$entry.key] | tostring)
       }]
     }
   ' "$TMP_DIR/forecast.json"

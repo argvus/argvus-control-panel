@@ -64,7 +64,7 @@ The cards show the live state of the desktop. A change made elsewhere (Control C
 | Volume | the PipeWire default sink (`wpctl`) and `pactl subscribe` events | immediately on each audio event; every 2 s as a safety net |
 | Appearance (Telemetry, Animations and Effects) | the `/effects` section of `argvus config` | every 2 s while the panel is open |
 | Power | `powerprofilesctl` | every 3 s while the panel is open |
-| Weather | the location file | when the panel opens and every 15 min |
+| Weather | the location file and the wttr.in/Open-Meteo providers | when the panel opens and every 15 min; tabs switch between current conditions and the daily forecast for the next seven days |
 
 The Appearance card has two independent switches. **Animations** runs `argvus effects-toggle animations toggle` and controls everything that moves. **Effects** runs `argvus effects-toggle effects toggle` and switches blur and the transparency of Terminal, Launcher, Widget Telemetry, Control Panel and Taskbar together; it shows as on when at least one of them is on. **SUPER + F6** (`argvus effects-toggle toggle`) switches both together. Changing either reloads Hyprland and the theme consumers in place: Waybar re-reads its stylesheets, the panel reloads over IPC and Dunst reloads its configuration. Nothing is restarted and no loading screen appears.
 

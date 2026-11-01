@@ -16,10 +16,29 @@ BaseCard {
     property string humidity:    "—"
     property string windKmh:     "—"
     property string weatherIcon: "~"
+    property var forecastDays: []
+    property int selectedTab: 0
     property bool   loading:     true
     property bool   hasError:    false
     property bool   hasData:     false
     property bool   refreshPending: false
+
+    function iconForCode(value) {
+        var code = parseInt(value)
+        if (code === 0 || code === 113) return "\uf185"
+        if (code <= 3 || code === 116 || code === 119 || code === 122) return ""
+        if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82) || (code >= 176 && code <= 308)) return ""
+        if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86) || (code >= 311 && code <= 377)) return ""
+        if ((code >= 95 && code <= 99) || (code >= 386 && code <= 395)) return ""
+        return ""
+    }
+
+    function dayLabel(dateValue) {
+        var parts = dateValue.split("-")
+        if (parts.length !== 3) return dateValue
+        var date = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]))
+        return Qt.locale().standaloneDayName(date.getDay(), Locale.ShortFormat)
+    }
 
     function refreshWeather() {
         if (fetchProc.running) {
@@ -82,16 +101,9 @@ BaseCard {
                     humidity  = cur.humidity
                     windKmh   = cur.windspeedKmph
                     condition = cur.weatherDesc[0].value
+                    forecastDays = d.forecast || []
 
-                    var code = parseInt(cur.weatherCode)
-                    if      (code === 113)                          weatherIcon = "\uf185"
-                    else if (code === 116)                          weatherIcon = ""
-                    else if (code === 119 || code === 122)          weatherIcon = ""
-                    else if (code >= 176 && code <= 281)            weatherIcon = ""
-                    else if (code >= 293 && code <= 308)            weatherIcon = ""
-                    else if (code >= 311 && code <= 377)            weatherIcon = ""
-                    else if (code >= 386 && code <= 395)            weatherIcon = ""
-                    else                                            weatherIcon = ""
+                    weatherIcon = iconForCode(cur.weatherCode)
 
                     hasData = true
                     hasError = false
@@ -137,9 +149,44 @@ BaseCard {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    // Conteudo principal
+    RowLayout {
+        Layout.fillWidth: true
+        spacing: 6
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+            radius: Theme.radiusSmall
+            color: root.selectedTab === 0 ? Theme.bgCard : Theme.bgPanel
+            border.color: root.selectedTab === 0 ? Theme.accent : Theme.borderSubtle
+            Text {
+                anchors.centerIn: parent
+                text: qsTr("Now")
+                color: root.selectedTab === 0 ? Theme.accent : Theme.fgSubtle
+                font.pixelSize: Theme.scaledFont(11)
+                font.family: Theme.fontFamily
+            }
+            MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.selectedTab = 0 }
+        }
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 30
+            radius: Theme.radiusSmall
+            color: root.selectedTab === 1 ? Theme.bgCard : Theme.bgPanel
+            border.color: root.selectedTab === 1 ? Theme.accent : Theme.borderSubtle
+            Text {
+                anchors.centerIn: parent
+                text: qsTr("Week")
+                color: root.selectedTab === 1 ? Theme.accent : Theme.fgSubtle
+                font.pixelSize: Theme.scaledFont(11)
+                font.family: Theme.fontFamily
+            }
+            MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: root.selectedTab = 1 }
+        }
+    }
+
+    // Current conditions stay compact; the weekly forecast is shown on demand.
     ColumnLayout {
-        visible: !loading && !hasError
+        visible: !loading && !hasError && root.selectedTab === 0
         Layout.fillWidth: true
         spacing: 6
 
@@ -218,6 +265,50 @@ BaseCard {
             }
         }
 
+    }
+
+    ColumnLayout {
+        visible: !loading && !hasError && root.selectedTab === 1
+        Layout.fillWidth: true
+        spacing: 6
+        Repeater {
+            model: forecastDays
+            delegate: RowLayout {
+                Layout.fillWidth: true
+                spacing: 6
+                Text {
+                    Layout.preferredWidth: 20
+                    text: root.iconForCode(modelData.weatherCode)
+                    color: Theme.fgText
+                    font.family: Theme.fontIcon
+                    font.pixelSize: Theme.scaledFont(14)
+                }
+                Text {
+                    Layout.preferredWidth: 48
+                    text: root.dayLabel(modelData.date)
+                    color: Theme.fgDim
+                    font.pixelSize: Theme.scaledFont(12)
+                    font.family: Theme.fontFamily
+                }
+                Item { Layout.fillWidth: true }
+                Text {
+                    Layout.preferredWidth: 48
+                    horizontalAlignment: Text.AlignRight
+                    text: modelData.minC + "°"
+                    color: Theme.fgDim
+                    font.pixelSize: Theme.scaledFont(12)
+                    font.family: Theme.fontFamily
+                }
+                Text {
+                    Layout.preferredWidth: 48
+                    horizontalAlignment: Text.AlignRight
+                    text: modelData.maxC + "°C"
+                    color: Theme.fgText
+                    font.pixelSize: Theme.scaledFont(12)
+                    font.family: Theme.fontFamily
+                }
+            }
+        }
     }
 
     RowLayout {

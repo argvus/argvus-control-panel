@@ -64,7 +64,7 @@ Os cards mostram o estado atual do desktop. Uma mudança feita em outro lugar (C
 | Volume | sink padrão do PipeWire (`wpctl`) e eventos do `pactl subscribe` | na hora, a cada evento de áudio; a cada 2 s como reserva |
 | Aparência (Telemetria, Animações e Efeitos) | seção `/effects` do `argvus config` | a cada 2 s com o painel aberto |
 | Energia | `powerprofilesctl` | a cada 3 s com o painel aberto |
-| Clima | arquivo de localização | ao abrir o painel e a cada 15 min |
+| Clima | arquivo de localização e provedores wttr.in/Open-Meteo | ao abrir o painel e a cada 15 min; abas alternam entre condições atuais e previsão diária dos próximos sete dias |
 
 O card de Aparência tem dois interruptores independentes. **Animações** executa `argvus effects-toggle animations toggle` e controla tudo que se move. **Efeitos** executa `argvus effects-toggle effects toggle` e alterna juntos o blur e a transparência de Terminal, Launcher, Widget Telemetry, Control Panel e Taskbar; aparece como ativo quando pelo menos uma delas está ativa. **SUPER + F6** (`argvus effects-toggle toggle`) alterna os dois juntos. Alterar qualquer um recarrega o Hyprland e os consumidores do tema no lugar: a Waybar relê as folhas de estilo, o painel recarrega por IPC e o Dunst recarrega a configuração. Nada é reiniciado e nenhuma tela de carregamento aparece.
 
