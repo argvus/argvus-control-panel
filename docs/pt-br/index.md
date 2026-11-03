@@ -56,6 +56,8 @@ Desativar um card apenas o oculta do painel; não desinstala o provider por trá
 
 ## Sincronização com o resto do desktop
 
+O card **Notificações** oculta o histórico enquanto o Não Perturbe está ativo. O Dunst mantém as notificações recebidas nesse período, e elas voltam a aparecer no card depois que o Não Perturbe é desativado.
+
 Os cards mostram o estado atual do desktop. Uma mudança feita em outro lugar (Control Center, taskbar, atalho de teclado ou linha de comando `argvus`) aparece no painel sem reiniciá-lo:
 
 | Card | De onde vem o estado | Quando atualiza |

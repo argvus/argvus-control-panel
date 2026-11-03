@@ -56,6 +56,8 @@ When the panel opens, use **↑/↓** to scroll its content. **Tab** moves forwa
 
 ## Staying in sync with the rest of the desktop
 
+The Notifications card hides its history while Do Not Disturb is active. Notifications received during that time remain in Dunst and appear in the card again after Do Not Disturb is turned off.
+
 The cards show the live state of the desktop. A change made elsewhere (Control Center, the taskbar, a keyboard shortcut or the `argvus` command line) shows up in the panel without restarting it:
 
 | Card | Where the state comes from | When it refreshes |

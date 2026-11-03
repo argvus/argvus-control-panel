@@ -15,14 +15,15 @@ BaseCard {
     property string dndError: ""
 
     readonly property int pageSize: 3
-    readonly property int pageCount: Math.ceil(notifications.length / pageSize)
-    readonly property var pageNotifications: notifications.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+    readonly property var visibleNotifications: dndAvailable && !dndEnabled ? notifications : []
+    readonly property int pageCount: Math.ceil(visibleNotifications.length / pageSize)
+    readonly property var pageNotifications: visibleNotifications.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
 
     onNotificationsChanged: currentPage = 0
 
     Timer {
         interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
-        onTriggered: if (!historyProc.running) historyProc.running = true
+        onTriggered: if (dndAvailable && !dndEnabled && !historyProc.running) historyProc.running = true
     }
 
     Timer {
@@ -44,6 +45,7 @@ BaseCard {
                     dndAvailable = true
                     dndEnabled = false
                     dndError = ""
+                    if (!historyProc.running) historyProc.running = true
                 } else {
                     dndAvailable = false
                     dndError = Strings.notifReadFailed
@@ -105,6 +107,7 @@ BaseCard {
                 enabled: dndAvailable && !dndBusy
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
+                    dndEnabled = !dndEnabled
                     dndToggleProc.running = true
                 }
             }
