@@ -45,7 +45,7 @@ Singleton {
         onTextChanged: {
             var n = text().trim()
             if (n === "") return
-            // The resolved marker includes the layout suffix (e.g. `-float`),
+            // The resolved marker includes the layout suffix (e.g. `-spaced`),
             // so it is the authority for the theme file.
             root.activeThemeFromFile = n
             root.themeName = n
