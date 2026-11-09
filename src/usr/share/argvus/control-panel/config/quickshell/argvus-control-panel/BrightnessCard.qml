@@ -68,7 +68,7 @@ BaseCard {
         spacing: 10
 
         Text {
-            Layout.preferredWidth: 32
+            Layout.preferredWidth: Math.max(32, implicitWidth)
             Layout.preferredHeight: 32
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
@@ -121,7 +121,7 @@ BaseCard {
             color: Theme.fgDim
             font.pixelSize: Theme.scaledFont(10)
             font.family: Theme.fontFamily
-            Layout.preferredWidth: 32
+            Layout.preferredWidth: Math.max(32, implicitWidth)
             horizontalAlignment: Text.AlignRight
         }
     }

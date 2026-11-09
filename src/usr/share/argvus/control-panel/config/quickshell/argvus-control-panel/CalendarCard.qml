@@ -20,6 +20,10 @@ BaseCard {
 
         Text {
             Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            elide: Text.ElideRight
+            wrapMode: Text.Wrap
+            maximumLineCount: 2
             text: monthNames[displayMonth] + "  " + displayYear
             color: Theme.fgSubtle
             font.pixelSize: Theme.scaledFont(16)
@@ -34,13 +38,18 @@ BaseCard {
     // ── day-of-week headers ──────────────────────────────────────
     GridLayout {
         Layout.fillWidth: true
+        Layout.minimumWidth: 0
         columns: 7
+        uniformCellWidths: true
         columnSpacing: 0; rowSpacing: 2
 
         Repeater {
             model: dayNames
             Text {
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                Layout.preferredWidth: 1
+                elide: Text.ElideRight
                 text: modelData
                 color: Theme.accent
                 font.pixelSize: Theme.scaledFont(13)
@@ -55,6 +64,8 @@ BaseCard {
             model: calendarModel()
             delegate: Item {
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                Layout.preferredWidth: 1
                 implicitHeight: 26
 
                 readonly property bool isToday:
@@ -104,7 +115,9 @@ BaseCard {
     component NavBtn: Rectangle {
         property string text: ""
         signal clicked()
-        width: 28; height: 28; radius: Theme.radius
+        implicitWidth: Math.max(28, navIcon.implicitHeight + 8)
+        implicitHeight: implicitWidth
+        radius: Theme.radius
         color: ma.containsMouse ? Theme.accentDim : Theme.bgPanel
         border.color: ma.containsMouse ? Theme.accent : Theme.borderSubtle
         border.width: 1
@@ -112,6 +125,7 @@ BaseCard {
         Behavior on color { ColorAnimation { duration: Theme.animFast } }
 
         Text {
+            id: navIcon
             anchors.centerIn: parent
             text: parent.text
             color: ma.containsMouse ? Theme.accent : Theme.fgSubtle

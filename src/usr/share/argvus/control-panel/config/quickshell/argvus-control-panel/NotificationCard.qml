@@ -74,19 +74,30 @@ BaseCard {
         Layout.fillWidth: true
         spacing: 10
 
-        Text {
-            text: Strings.notifDnd
-            color: Theme.fgText
-            font.pixelSize: Theme.scaledFont(14)
-            font.family: Theme.fontFamily
+        ColumnLayout {
             Layout.fillWidth: true
-        }
+            Layout.minimumWidth: 0
+            spacing: 2
 
-        Text {
-            text: dndAvailable ? (dndEnabled ? Strings.notifDndOn : Strings.notifDndOff) : Strings.notifUnavailable
-            color: dndAvailable ? (dndEnabled ? Theme.danger : Theme.accent) : Theme.fgSubtle
-            font.pixelSize: Theme.scaledFont(11)
-            font.family: Theme.fontFamily
+            Text {
+                text: Strings.notifDnd
+                color: Theme.fgText
+                font.pixelSize: Theme.scaledFont(14)
+                font.family: Theme.fontFamily
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+            }
+
+            Text {
+                text: dndAvailable ? (dndEnabled ? Strings.notifDndOn : Strings.notifDndOff) : Strings.notifUnavailable
+                color: dndAvailable ? (dndEnabled ? Theme.danger : Theme.accent) : Theme.fgSubtle
+                font.pixelSize: Theme.scaledFont(11)
+                font.family: Theme.fontFamily
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+            }
         }
 
         Rectangle {

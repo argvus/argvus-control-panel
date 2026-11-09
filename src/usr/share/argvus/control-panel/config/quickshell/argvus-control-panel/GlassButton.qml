@@ -1,11 +1,13 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 
 Rectangle {
     id: root
 
     property string iconText: ""
     property string label: ""
+    property string tooltipText: label
     property bool   active: false
     property bool   vertical: false
     property color  accentColor: Theme.accent
@@ -14,6 +16,7 @@ Rectangle {
     activeFocusOnTab: true
 
     implicitHeight: 38
+    Layout.minimumHeight: (root.vertical ? verticalContent.implicitHeight : horizontalContent.implicitHeight) + 12
     radius: Theme.radiusSmall
 
     color: {
@@ -39,8 +42,14 @@ Rectangle {
 
     Behavior on color { ColorAnimation { duration: Theme.animFast } }
 
+    ToolTip.visible: (ma.containsMouse || root.activeFocus) &&
+        (root.tooltipText !== root.label || (root.vertical ? verticalLabel.truncated : horizontalLabel.truncated))
+    ToolTip.text: root.tooltipText
+
     RowLayout {
+        id: horizontalContent
         anchors.centerIn: parent
+        width: Math.max(0, Math.min(implicitWidth, root.width - 12))
         spacing: 5
         visible: !root.vertical
 
@@ -54,6 +63,10 @@ Rectangle {
         }
 
         Text {
+            id: horizontalLabel
+            Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            elide: Text.ElideRight
             visible: label !== ""
             text: label
             color: active ? accentColor : (ma.containsMouse ? accentColor : Theme.fgSubtle)
@@ -64,7 +77,9 @@ Rectangle {
     }
 
     ColumnLayout {
+        id: verticalContent
         anchors.centerIn: parent
+        width: Math.max(0, root.width - 12)
         spacing: 2
         visible: root.vertical
 
@@ -79,6 +94,11 @@ Rectangle {
         }
 
         Text {
+            id: verticalLabel
+            Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            horizontalAlignment: Text.AlignHCenter
+            elide: Text.ElideRight
             visible: label !== ""
             text: label
             color: active ? accentColor : (ma.containsMouse ? accentColor : Theme.fgSubtle)

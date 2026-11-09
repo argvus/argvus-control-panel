@@ -163,7 +163,9 @@ BaseCard {
             color: muted ? Theme.danger : Theme.fgDim
             font.pixelSize: Theme.scaledFont(16)
             font.family: Theme.fontFamily
-            Layout.preferredWidth: 32
+            Layout.preferredWidth: Math.max(40, Math.min(implicitWidth, parent.width * 0.45))
+            Layout.minimumWidth: 0
+            elide: Text.ElideRight
             horizontalAlignment: Text.AlignRight
         }
     }

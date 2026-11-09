@@ -37,7 +37,7 @@ BaseCard {
         var parts = dateValue.split("-")
         if (parts.length !== 3) return dateValue
         var date = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]))
-        return Qt.locale().standaloneDayName(date.getDay(), Locale.ShortFormat)
+        return isNaN(date.getTime()) ? dateValue : Strings.dayNames[date.getDay()]
     }
 
     function refreshWeather() {
@@ -59,7 +59,7 @@ BaseCard {
             var newLocation = text().trim()
             if (newLocation === root.location) return
             root.location = newLocation
-            root.refreshWeather()
+            if (root.pollingActive) root.refreshWeather()
         }
     }
 
@@ -135,6 +135,8 @@ BaseCard {
     Text {
         visible: loading
         Layout.fillWidth: true
+        Layout.minimumWidth: 0
+        wrapMode: Text.WordWrap
         text: Strings.weatherLoading
         color: Theme.accent; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily
         opacity: 1; horizontalAlignment: Text.AlignHCenter
@@ -144,6 +146,8 @@ BaseCard {
     Text {
         visible: !loading && hasError
         Layout.fillWidth: true
+        Layout.minimumWidth: 0
+        wrapMode: Text.WordWrap
         text: Strings.weatherError
         color: Theme.danger; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily
         horizontalAlignment: Text.AlignHCenter
@@ -154,13 +158,19 @@ BaseCard {
         spacing: 6
         Rectangle {
             Layout.fillWidth: true
-            Layout.preferredHeight: 30
+            Layout.minimumWidth: 0
+            Layout.preferredWidth: 1
+            Layout.preferredHeight: Math.max(30, Theme.scaledFont(11) + 12)
             radius: Theme.radiusSmall
             color: root.selectedTab === 0 ? Theme.bgCard : Theme.bgPanel
             border.color: root.selectedTab === 0 ? Theme.accent : Theme.borderSubtle
             Text {
-                anchors.centerIn: parent
-                text: qsTr("Now")
+                anchors.fill: parent
+                anchors.margins: 4
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                text: Strings.weatherCurrent
                 color: root.selectedTab === 0 ? Theme.accent : Theme.fgSubtle
                 font.pixelSize: Theme.scaledFont(11)
                 font.family: Theme.fontFamily
@@ -169,13 +179,19 @@ BaseCard {
         }
         Rectangle {
             Layout.fillWidth: true
-            Layout.preferredHeight: 30
+            Layout.minimumWidth: 0
+            Layout.preferredWidth: 1
+            Layout.preferredHeight: Math.max(30, Theme.scaledFont(11) + 12)
             radius: Theme.radiusSmall
             color: root.selectedTab === 1 ? Theme.bgCard : Theme.bgPanel
             border.color: root.selectedTab === 1 ? Theme.accent : Theme.borderSubtle
             Text {
-                anchors.centerIn: parent
-                text: qsTr("Week")
+                anchors.fill: parent
+                anchors.margins: 4
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+                text: Strings.weatherForecast
                 color: root.selectedTab === 1 ? Theme.accent : Theme.fgSubtle
                 font.pixelSize: Theme.scaledFont(11)
                 font.family: Theme.fontFamily
@@ -201,6 +217,7 @@ BaseCard {
         // Icon + temperature
         RowLayout {
             Layout.fillWidth: true
+            Layout.minimumWidth: 0
             spacing: 10
 
             Text {
@@ -212,8 +229,14 @@ BaseCard {
             }
 
             ColumnLayout {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 spacing: 1
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    fontSizeMode: Text.HorizontalFit
+                    minimumPixelSize: Theme.scaledFont(18)
                     text: tempC + "°C"
                     color: Theme.fgSubtle
                     font.pixelSize: Theme.scaledFont(26)
@@ -221,6 +244,11 @@ BaseCard {
                     font.family: Theme.fontFamily
                 }
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    wrapMode: Text.Wrap
+                    maximumLineCount: 2
+                    elide: Text.ElideRight
                     text: condition
                     color: Theme.fgText
                     font.pixelSize: Theme.scaledFont(13)
@@ -236,31 +264,52 @@ BaseCard {
             color: Theme.accent; opacity: 0.10
         }
 
-        // Details: feels like, humidity, wind
+        // Labels and values occupy separate grid rows so wrapped labels keep
+        // all measurements aligned. Translated text cannot set a column minimum.
         GridLayout {
+            id: detailsGrid
             Layout.fillWidth: true
+            Layout.minimumWidth: 0
             columns: 3
-            columnSpacing: 14; rowSpacing: 8
+            uniformCellWidths: true
+            columnSpacing: 10
+            rowSpacing: 4
+            readonly property var metrics: [
+                { label: Strings.weatherFeelsLike, value: feelsLike + "°C" },
+                { label: Strings.weatherHumidity, value: humidity + "%" },
+                { label: Strings.weatherWind, value: windKmh + " km/h" }
+            ]
 
             Repeater {
-                model: [
-                    { label: Strings.weatherFeelsLike, value: feelsLike + "°C" },
-                    { label: Strings.weatherHumidity,  value: humidity  + "%"  },
-                    { label: Strings.weatherWind,      value: windKmh   + " km/h" },
-                ]
-                delegate: ColumnLayout {
+                model: detailsGrid.metrics
+                Text {
                     Layout.fillWidth: true
-                    spacing: 4
-                    Text {
-                        text: modelData.label
-                        color: Theme.accent; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily
-                        opacity: 1; Layout.alignment: Qt.AlignHCenter
-                    }
-                    Text {
-                        text: modelData.value
-                        color: Theme.fgText; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily
-                        Layout.alignment: Qt.AlignHCenter
-                    }
+                    Layout.minimumWidth: 0
+                    Layout.preferredWidth: 1
+                    text: modelData.label
+                    color: Theme.accent
+                    font.pixelSize: Theme.scaledFont(14)
+                    font.family: Theme.fontFamily
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    maximumLineCount: 2
+                    elide: Text.ElideRight
+                }
+            }
+            Repeater {
+                model: detailsGrid.metrics
+                Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    Layout.preferredWidth: 1
+                    text: modelData.value
+                    color: Theme.fgText
+                    font.pixelSize: Theme.scaledFont(16)
+                    font.family: Theme.fontFamily
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.Wrap
+                    maximumLineCount: 2
+                    elide: Text.ElideRight
                 }
             }
         }
@@ -277,22 +326,27 @@ BaseCard {
                 Layout.fillWidth: true
                 spacing: 6
                 Text {
-                    Layout.preferredWidth: 20
+                    Layout.preferredWidth: Math.max(20, implicitWidth)
                     text: root.iconForCode(modelData.weatherCode)
                     color: Theme.fgText
                     font.family: Theme.fontIcon
                     font.pixelSize: Theme.scaledFont(14)
                 }
                 Text {
-                    Layout.preferredWidth: 48
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    Layout.preferredWidth: 1
+                    elide: Text.ElideRight
                     text: root.dayLabel(modelData.date)
                     color: Theme.fgDim
                     font.pixelSize: Theme.scaledFont(12)
                     font.family: Theme.fontFamily
                 }
-                Item { Layout.fillWidth: true }
                 Text {
-                    Layout.preferredWidth: 48
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    Layout.preferredWidth: 1
+                    elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
                     text: modelData.minC + "°"
                     color: Theme.fgDim
@@ -300,7 +354,10 @@ BaseCard {
                     font.family: Theme.fontFamily
                 }
                 Text {
-                    Layout.preferredWidth: 48
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    Layout.preferredWidth: 1
+                    elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
                     text: modelData.maxC + "°C"
                     color: Theme.fgText
@@ -315,11 +372,12 @@ BaseCard {
         Layout.fillWidth: true
         spacing: 6
 
-        Item { Layout.fillWidth: true }
-
         GlassButton {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            Layout.preferredWidth: 1
             implicitWidth: 100
-            implicitHeight: 30
+            implicitHeight: Math.max(30, Theme.scaledFont(15) + 14)
             iconText: ""
             label: Strings.weatherConfigure
             active: false
@@ -329,8 +387,11 @@ BaseCard {
         }
 
         GlassButton {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            Layout.preferredWidth: 1
             implicitWidth: 92
-            implicitHeight: 30
+            implicitHeight: Math.max(30, Theme.scaledFont(15) + 14)
             iconText: "󰑓"
             label: Strings.weatherRefresh
             active: false

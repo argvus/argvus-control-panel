@@ -33,11 +33,16 @@ BaseCard {
     }
 
     ColumnLayout {
+        Layout.minimumWidth: 0
         Layout.fillWidth: true
         spacing: 8
         opacity: keepAwake ? 0.45 : 1
 
         Text {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            wrapMode: Text.Wrap
+
             text: Strings.idleLockTitle
             color: Theme.fgText
             font.pixelSize: Theme.scaledFont(11)
@@ -132,11 +137,16 @@ BaseCard {
         }
 
         ColumnLayout {
+            Layout.minimumWidth: 0
             spacing: 1
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: Strings.lockDpmsTitle
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(13)
@@ -145,6 +155,10 @@ BaseCard {
             }
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: lockDpms ? Strings.lockDpmsEnabled : Strings.lockDpmsDisabled
                 color: lockDpms ? Theme.accent : Theme.danger
                 font.pixelSize: Theme.scaledFont(13)
@@ -177,9 +191,14 @@ BaseCard {
             }
         }
         ColumnLayout {
+            Layout.minimumWidth: 0
             spacing: 1
             Layout.fillWidth: true
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: Strings.keepAwakeTitle
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(13)
@@ -187,6 +206,10 @@ BaseCard {
                 font.weight: Font.Medium
             }
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: keepAwake ? Strings.keepAwakeEnabled : Strings.keepAwakeDisabled
                 color: keepAwake ? Theme.accent : Theme.fgSubtle
                 font.pixelSize: Theme.scaledFont(13)

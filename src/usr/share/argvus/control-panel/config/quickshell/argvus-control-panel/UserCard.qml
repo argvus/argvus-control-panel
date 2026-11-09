@@ -285,9 +285,12 @@ BaseCard {
 
         ColumnLayout {
             Layout.fillWidth: true
+            Layout.minimumWidth: 0
             spacing: 2
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 text: fullName && fullName !== userName ? fullName : userName
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(15)
@@ -297,6 +300,8 @@ BaseCard {
             }
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 text: userName + "@" + hostName
                 color: Theme.fgDim
                 font.pixelSize: Theme.scaledFont(12)
@@ -355,41 +360,15 @@ BaseCard {
 
             Repeater {
                 model: tabIcons.length
-                Rectangle {
+                GlassButton {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 30
-                    radius: Theme.radiusSmall
-                    color: activeTab === index ? Theme.accentDim : Theme.bgPanel
-                    border.color: activeTab === index ? Theme.accent : Theme.borderSubtle
-                    border.width: 1
-
-                    RowLayout {
-                        anchors.centerIn: parent
-                        spacing: 4
-
-                        Text {
-                            text: tabIcons[index]
-                            font.family: Theme.fontIcon
-                            font.pixelSize: Theme.scaledFont(12)
-                            font.weight: Font.Black
-                            color: activeTab === index ? Theme.accent : Theme.fgSubtle
-                        }
-
-                        Text {
-                            text: tabLabels[index]
-                            font.pixelSize: Theme.scaledFont(11)
-                            font.family: Theme.fontFamily
-                            font.weight: Font.Bold
-                            color: activeTab === index ? Theme.accent : Theme.fgSubtle
-                        }
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: activeTab = index
-                    }
+                    Layout.minimumWidth: 0
+                    Layout.preferredWidth: 1
+                    implicitHeight: 30
+                    iconText: tabIcons[index]
+                    label: tabLabels[index]
+                    active: activeTab === index
+                    onClicked: activeTab = index
                 }
             }
         }
@@ -479,6 +458,9 @@ BaseCard {
             spacing: 8
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
                 text: Strings.user_name_label
                 color: Theme.fgDim
                 font.pixelSize: Theme.scaledFont(11)
@@ -487,7 +469,7 @@ BaseCard {
 
             Rectangle {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 32
+                Layout.preferredHeight: Math.max(32, nameInput.implicitHeight + 16)
                 radius: Theme.radiusSmall
                 color: Theme.bgPanel
                 border.color: nameInput.activeFocus ? Theme.accent : Theme.borderSubtle
@@ -551,6 +533,9 @@ BaseCard {
 
             // Current password field
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
                 text: Strings.userPasswordCurrent
                 color: Theme.fgDim
                 font.pixelSize: Theme.scaledFont(11)
@@ -559,7 +544,7 @@ BaseCard {
 
             Rectangle {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 32
+                Layout.preferredHeight: Math.max(32, oldPassField.implicitHeight + 16)
                 radius: Theme.radiusSmall
                 color: Theme.bgPanel
                 border.color: oldPassField.activeFocus ? Theme.accent : Theme.borderSubtle
@@ -581,6 +566,9 @@ BaseCard {
 
             // New password field
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
                 text: Strings.userPasswordNew
                 color: Theme.fgDim
                 font.pixelSize: Theme.scaledFont(11)
@@ -589,7 +577,7 @@ BaseCard {
 
             Rectangle {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 32
+                Layout.preferredHeight: Math.max(32, newPassField.implicitHeight + 16)
                 radius: Theme.radiusSmall
                 color: Theme.bgPanel
                 border.color: newPassField.activeFocus ? Theme.accent : Theme.borderSubtle
@@ -611,6 +599,9 @@ BaseCard {
 
             // Confirm password field
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
                 text: Strings.userPasswordConfirm
                 color: Theme.fgDim
                 font.pixelSize: Theme.scaledFont(11)
@@ -619,7 +610,7 @@ BaseCard {
 
             Rectangle {
                 Layout.fillWidth: true
-                Layout.preferredHeight: 32
+                Layout.preferredHeight: Math.max(32, confirmPassField.implicitHeight + 16)
                 radius: Theme.radiusSmall
                 color: Theme.bgPanel
                 border.color: confirmPassField.activeFocus ? Theme.accent : Theme.borderSubtle

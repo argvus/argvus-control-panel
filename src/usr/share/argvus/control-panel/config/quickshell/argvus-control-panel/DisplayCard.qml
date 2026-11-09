@@ -126,6 +126,7 @@ BaseCard {
     }
 
     ColumnLayout {
+        Layout.minimumWidth: 0
         Layout.fillWidth: true
         spacing: 10
 
@@ -135,6 +136,9 @@ BaseCard {
             spacing: 8
 
             Text {
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 Layout.fillWidth: true
                 text: Strings.displayNightLight
                 color: Theme.fgText
@@ -212,6 +216,10 @@ BaseCard {
             visible: card.brightSupported
             spacing: 6
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: Strings.displayBrightness
                 color: Theme.fgText
                 font.family: Theme.fontFamily
@@ -232,7 +240,7 @@ BaseCard {
                 color: Theme.fgText
                 font.family: Theme.fontFamily
                 font.pixelSize: Theme.scaledFont(11)
-                Layout.preferredWidth: 32
+                Layout.preferredWidth: Math.max(32, implicitWidth)
                 Layout.alignment: Qt.AlignVCenter
             }
         }
@@ -240,6 +248,7 @@ BaseCard {
         Repeater {
             model: card.monitors
             delegate: ColumnLayout {
+                Layout.minimumWidth: 0
                 Layout.fillWidth: true
                 spacing: 6
 
@@ -248,6 +257,9 @@ BaseCard {
                     Layout.fillWidth: true
                     spacing: 6
                     Text {
+                        Layout.minimumWidth: 0
+                        Layout.maximumWidth: parent.width * 0.45
+                        elide: Text.ElideRight
                         text: modelData.name
                         color: Theme.accent
                         font.family: Theme.fontFamily
@@ -255,12 +267,14 @@ BaseCard {
                         font.weight: Font.Bold
                     }
                     Text {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
+                        elide: Text.ElideRight
                         text: modelData.res
                         color: Theme.fgDim
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.scaledFont(11)
                     }
-                    Item { Layout.fillWidth: true }
                     Text {
                         text: modelData.power === "off" ? "\uf06e" : "\uf070"
                         color: modelData.power === "off" ? Theme.danger : Theme.fgSubtle
@@ -274,6 +288,10 @@ BaseCard {
                     Layout.fillWidth: true
                     spacing: 6
                     Text {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
+                        wrapMode: Text.Wrap
+
                         text: Strings.displayScale
                         color: Theme.fgText
                         font.family: Theme.fontFamily
@@ -296,7 +314,7 @@ BaseCard {
                         color: Theme.fgText
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.scaledFont(11)
-                        Layout.preferredWidth: 30
+                        Layout.preferredWidth: Math.max(30, implicitWidth)
                         Layout.alignment: Qt.AlignVCenter
                     }
                 }
@@ -306,6 +324,10 @@ BaseCard {
                     Layout.fillWidth: true
                     spacing: 6
                     Text {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
+                        wrapMode: Text.Wrap
+
                         text: Strings.displayDpi
                         color: Theme.fgText
                         font.family: Theme.fontFamily
@@ -328,7 +350,7 @@ BaseCard {
                         color: Theme.fgText
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.scaledFont(11)
-                        Layout.preferredWidth: 30
+                        Layout.preferredWidth: Math.max(30, implicitWidth)
                         Layout.alignment: Qt.AlignVCenter
                     }
                 }

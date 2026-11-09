@@ -44,6 +44,8 @@ Rectangle {
 
         // card header
         RowLayout {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 0
             spacing: 6
 
             Text {
@@ -57,14 +59,15 @@ Rectangle {
 
             Text {
                 text: root.cardTitle
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                elide: Text.ElideRight
                 color: Theme.accentLight          // teal um pouco mais claro para realçar
                 font.pixelSize: Theme.scaledFont(11)
                 font.weight: Font.Bold
                 font.letterSpacing: 1.5
                 font.family: Theme.fontFamily
             }
-
-            Item { Layout.fillWidth: true }
 
             Item {
                 visible: root.reorderEnabled
@@ -125,6 +128,7 @@ Rectangle {
         ColumnLayout {
             id: contentCol
             Layout.fillWidth: true
+            Layout.minimumWidth: 0
             spacing: 6
         }
     }

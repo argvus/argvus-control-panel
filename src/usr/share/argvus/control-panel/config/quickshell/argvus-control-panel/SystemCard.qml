@@ -102,17 +102,26 @@ BaseCard {
         property color  barColor: Theme.accent
 
         Layout.fillWidth: true
-        implicitHeight: 34
+        implicitHeight: Math.max(34, statContent.implicitHeight)
 
         ColumnLayout {
+            id: statContent
             anchors.fill: parent
             spacing: 3
 
             RowLayout {
                 Layout.fillWidth: true
-                Text { text: label; color: Theme.accent; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily; Layout.preferredWidth: 36 }
-                Item { Layout.fillWidth: true }
-                Text { text: value; color: Theme.fgDim; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily }
+                Text { text: label; color: Theme.accent; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily; Layout.preferredWidth: Math.max(36, implicitWidth) }
+                Text {
+                    text: value
+                    color: Theme.fgDim
+                    font.pixelSize: Theme.scaledFont(16)
+                    font.family: Theme.fontFamily
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
+                    wrapMode: Text.Wrap
+                    horizontalAlignment: Text.AlignRight
+                }
             }
 
             Rectangle {

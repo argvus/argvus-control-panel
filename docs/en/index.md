@@ -83,3 +83,17 @@ See [taskbar and panels](/docs/argvus-taskbar/taskbar/) for the relationship bet
 The Display card shows a Night Light on/off switch and the active temperature. Its corners and animations follow the same theme tokens as the other panel switches, including Sticky and Spaced layouts. The switch has no border and uses a pointing-hand cursor, like the other panel switches. It uses `argvus config display night-light status|toggle`, polling every two seconds while open and refetching after an action. The row is hidden when the backend is unavailable; a failed action shows an error. Scheduling and temperature are configured in **Control Center > Desktop & Input > Displays > Night Light**. A scheduled manual toggle lasts until the next transition; otherwise activation is persistent.
 
 The taskbar calendar, ARGVUS Focus, ARGVUS Clock and Control Panel are mutually exclusive: opening one closes the others.
+
+## Compact multilingual labels
+
+Weather tabs use the shared catalog (current conditions and seven days). Weather
+measurements occupy equal-width columns; labels wrap and values stay aligned.
+Calendar weekday abbreviations are locale-specific and Sunday-first, including
+forecast day labels. They are not literal translations of English abbreviations.
+
+Buttons bound their icon/label group to the available width. If a label needs
+ellipsis, hovering or focusing the button shows its full text. Power profile
+buttons also expose their descriptive text in a tooltip. Long switch descriptions
+wrap, and numeric fields and user inputs reserve enough room for the chosen font.
+The card height grows with wrapped text; use vertical scrolling to see lower cards.
+These changes preserve the selected font and the existing card actions.

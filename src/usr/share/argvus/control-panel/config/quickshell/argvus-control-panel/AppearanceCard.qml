@@ -172,11 +172,16 @@ BaseCard {
         }
 
         ColumnLayout {
+            Layout.minimumWidth: 0
             spacing: 1
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: Strings.widgetTelemetryTitle
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(13)
@@ -185,6 +190,10 @@ BaseCard {
             }
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: widgetTelemetryEnabled ? Strings.widgetTelemetryEnabled : Strings.widgetTelemetryDisabled
                 color: widgetTelemetryEnabled ? Theme.accent : Theme.danger
                 font.pixelSize: Theme.scaledFont(13)
@@ -232,10 +241,15 @@ BaseCard {
         }
 
         ColumnLayout {
+            Layout.minimumWidth: 0
             spacing: 1
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: Strings.animationsTitle
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(13)
@@ -243,6 +257,10 @@ BaseCard {
                 font.weight: Font.Medium
             }
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: animationsOn ? Strings.animationsEnabled : Strings.animationsDisabled
                 color: animationsOn ? Theme.accent : Theme.danger
                 font.pixelSize: Theme.scaledFont(13)
@@ -286,10 +304,15 @@ BaseCard {
         }
 
         ColumnLayout {
+            Layout.minimumWidth: 0
             spacing: 1
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: Strings.effectsTitle
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(13)
@@ -297,6 +320,10 @@ BaseCard {
                 font.weight: Font.Medium
             }
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: effectsOn ? Strings.effectsEnabled : Strings.effectsDisabled
                 color: effectsOn ? Theme.accent : Theme.danger
                 font.pixelSize: Theme.scaledFont(13)

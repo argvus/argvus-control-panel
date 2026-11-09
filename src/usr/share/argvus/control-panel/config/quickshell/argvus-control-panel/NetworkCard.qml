@@ -145,11 +145,16 @@ BaseCard {
         }
 
         ColumnLayout {
+            Layout.minimumWidth: 0
             spacing: 1
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: Strings.netTitle
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(13)
@@ -158,6 +163,10 @@ BaseCard {
             }
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: {
                     if (!networkingEnabled) return Strings.netDisabled
                     if (networkStatus === "limited") return Strings.netLimited
@@ -203,6 +212,8 @@ BaseCard {
         }
         Text {
             text: ip
+            Layout.minimumWidth: 0
+            wrapMode: Text.WrapAnywhere
             color: Theme.fgText
             font.pixelSize: Theme.scaledFont(16)
             font.family: Theme.fontFamily
@@ -224,19 +235,30 @@ BaseCard {
         spacing: 12
 
         RowLayout {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            Layout.preferredWidth: 1
             spacing: 4
             Text { text: "↓"; color: Theme.fgText; font.pixelSize: Theme.scaledFont(13); font.family: Theme.fontFamily }
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
                 text: downSpeed
                 color: Theme.fgText; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily
-                Layout.preferredWidth: 80
             }
         }
 
         RowLayout {
+            Layout.fillWidth: true
+            Layout.minimumWidth: 0
+            Layout.preferredWidth: 1
             spacing: 4
             Text { text: "↑"; color: Theme.fgText; font.pixelSize: Theme.scaledFont(13); font.family: Theme.fontFamily }
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
                 text: upSpeed
                 color: Theme.fgText; font.pixelSize: Theme.scaledFont(16); font.family: Theme.fontFamily
             }

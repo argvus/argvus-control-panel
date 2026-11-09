@@ -50,10 +50,13 @@ BaseCard {
             model: profiles
             delegate: GlassButton {
                 Layout.fillWidth: true
-                implicitHeight: 52
+                Layout.minimumWidth: 0
+                Layout.preferredWidth: 1
+                implicitHeight: Math.max(52, Theme.scaledFont(15) + Theme.scaledFont(11) + 24)
                 vertical: true
                 iconText: modelData.icon
                 label: modelData.label
+                tooltipText: modelData.desc
                 active: activeProfile === modelData.id
                 onClicked: setProfile(modelData.id)
             }
@@ -62,6 +65,8 @@ BaseCard {
 
     Text {
         Layout.fillWidth: true
+        Layout.minimumWidth: 0
+        wrapMode: Text.Wrap
         text: {
             var icon = "\uf0e7"
             switch(activeProfile) {

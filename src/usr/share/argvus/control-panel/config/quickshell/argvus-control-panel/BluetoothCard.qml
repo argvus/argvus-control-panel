@@ -79,11 +79,16 @@ BaseCard {
         }
 
         ColumnLayout {
+            Layout.minimumWidth: 0
             spacing: 1
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: Strings.btTitle
                 color: Theme.fgText
                 font.pixelSize: Theme.scaledFont(13)
@@ -92,6 +97,10 @@ BaseCard {
             }
 
             Text {
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                wrapMode: Text.Wrap
+
                 text: {
                     if (!available && statusName === "unavailable") return Strings.btUnavailable
                     if (!available) return Strings.btNoController

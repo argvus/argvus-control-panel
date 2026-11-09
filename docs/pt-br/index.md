@@ -83,3 +83,18 @@ Veja [taskbar e painéis](/pt/docs/argvus-taskbar/taskbar/) para a relação ent
 O cartão Display mostra uma chave liga/desliga de luz noturna e a temperatura ativa. Os cantos e as animações seguem os mesmos tokens de tema das outras chaves do painel, incluindo os modos Sticky e Spaced. A chave não tem borda e usa cursor de mão (pointer), como as outras chaves do painel. Usa `argvus config display night-light status|toggle`, consulta a cada dois segundos enquanto aberto e atualiza após uma ação. A linha fica oculta quando o backend está indisponível; falhas nas ações mostram um erro. Temperatura e programação ficam em **Central de Controle > Área de trabalho e entrada > Monitores > Luz noturna**. Com programação, o toggle manual vale até a próxima transição; sem ela, a ativação é persistente.
 
 O calendário da taskbar, ARGVUS Focus, ARGVUS Clock e Control Panel são exclusivos entre si: abrir um fecha os demais.
+
+## Rótulos multilíngues compactos
+
+As abas da meteorologia usam o catálogo compartilhado (condições atuais e sete
+dias). As medições têm colunas da mesma largura; os rótulos quebram linha e os
+valores continuam alinhados. As abreviações dos dias são próprias de cada idioma,
+com domingo primeiro, inclusive na previsão. Não são traduções literais das
+abreviações inglesas.
+
+Os botões limitam ícone e rótulo ao espaço disponível. Quando é preciso usar
+reticências, passar o ponteiro ou focar o botão mostra o texto completo. Os perfis
+de energia também oferecem a descrição em uma dica. Estados longos quebram linha,
+e os campos numéricos e de edição reservam espaço para a fonte escolhida. A altura
+dos cards acompanha o texto; use a rolagem vertical para acessar os cards abaixo.
+A fonte selecionada e as ações dos cards são preservadas.
