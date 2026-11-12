@@ -23,7 +23,7 @@ El registro actual de tarjetas incluye:
 - Volumen;
 - Brillo;
 - Red;
-- Bluetooth;
+-Bluetooth;
 - Sistema;
 - Apariencia;
 - Sesión;

@@ -1,5 +1,5 @@
 ---
-title: Control Panel
+title: Bảng điều khiển
 description: Sử dụng các thẻ bảng điều khiển Quickshell.
 ---
 
@@ -12,23 +12,23 @@ Bảng điều khiển chia sẻ cạnh thanh tác vụ với ARGVUS Focus và A
 ## Bảng điều khiển hay Trung tâm điều khiển?
 
 
-## Cards
+## Thẻ
 
 Sổ đăng ký thẻ hiện tại bao gồm:
 
-- User;
-- Notifications;
-- Calendar;
-- Weather;
-- Volume;
-- Brightness;
-- Network;
+- Người dùng;
+- Thông báo;
+- Lịch;
+- Thời tiết;
+- Khối lượng;
+- Độ sáng;
+- Mạng;
 - Bluetooth;
-- System;
-- Appearance;
-- Session;
-- Display;
-- Power.
+- Hệ thống;
+- Ngoại hình;
+- Phiên họp;
+- Hiển thị;
+- Quyền lực.
 
 Một số thẻ có điều kiện. Bluetooth bị ẩn khi tính năng Bluetooth không khả dụng. Độ sáng bị ẩn khi cả đèn nền được hỗ trợ và công cụ điều khiển màn hình đều không có sẵn. Do đó, danh sách thẻ phản ánh máy hiện tại thay vì hứa hẹn các điều khiển mà mọi máy đều có thể cung cấp.
 
@@ -61,10 +61,10 @@ Các thẻ hiển thị trạng thái trực tiếp của màn hình. Một thay
 
 | Thẻ | Nguồn gốc trạng thái | Khi nào làm mới |
 | --- | --- | --- |
-| User | `getent passwd` | every 3 s while the panel is open |
+| Người dùng | `getent passwd` | cứ sau 3 giây khi bảng điều khiển mở |
 | Âm lượng | đầu ra mặc định của PipeWire (`wpctl`) and `pactl subscribe`sự kiện | ngay lập tức trên mỗi sự kiện âm thanh; mỗi 2 giây như một biện pháp an toàn |
 | Giao diện (Dữ liệu viễn thám, Hoạt hình và Hiệu ứng) | cái`/effects`phần của`argvus config`| mỗi 2 giây trong khi bảng điều khiển mở |
-| Power | `powerprofilesctl` | every 3 s while the panel is open |
+| Quyền lực | `powerprofilesctl` | cứ sau 3 giây khi bảng điều khiển mở |
 | Thời tiết | tệp vị trí và các nhà cung cấp wttr.in/Open-Meteo | khi bảng mở và mỗi 15 phút; các tab chuyển giữa điều kiện hiện tại và dự báo hàng ngày cho bảy ngày tới |
 
 Thẻ Giao diện có hai công tắc độc lập. **Hoạt ảnh** chạy `argvus effects-toggle animations toggle` và điều khiển mọi thứ chuyển động. **Hiệu ứng** chạy `argvus effects-toggle effects toggle` và bật tắt mờ và độ trong suốt của Terminal, Launcher, Widget Telemetry, Control Panel và Taskbar cùng nhau; nó hiển thị là bật khi ít nhất một trong số chúng đang bật. **SUPER + F6** (`argvus effects-toggle toggle`) bật tắt cả hai cùng nhau. Thay đổi bất kỳ cái nào sẽ tải lại Hyprland và các thành phần giao diện ngay lập tức: Waybar đọc lại các bảng kiểu của nó, panel tải lại qua IPC và Dunst tải lại cấu hình trừ khi chế độ Không Làm Phiền đang hoạt động, trong trường hợp đó việc tải lại của nó sẽ bị hoãn cho đến khi tắt DND. Không có gì bị khởi động lại và không có màn hình tải nào xuất hiện.
@@ -73,9 +73,9 @@ Cuộn trên biểu tượng âm lượng thanh tác vụ và các phím phươn
 
 ## Hành vi phiên
 
- is started by `argvus-control-panel.service` `argvus-session` . Opening and closing the panel changes the session panel state, but does not mean that every card action is persistent configuration. Network, audio, power and display actions may be handed to their providers or to the current desktop session.
+ được bắt đầu bởi `argvus-control-panel.service` `argvus-session` . Việc mở và đóng bảng sẽ thay đổi trạng thái của bảng phiên, nhưng không có nghĩa là mọi hành động của thẻ đều là cấu hình liên tục. Các hoạt động mạng, âm thanh, nguồn và hiển thị có thể được chuyển cho nhà cung cấp của họ hoặc cho phiên máy tính để bàn hiện tại.
 
-See taskbar and panels for the relationship between the panel, taskbar margins and window layout.
+Xem thanh tác vụ và bảng để biết mối quan hệ giữa bảng, lề thanh tác vụ và bố cục cửa sổ.
 
 ## Đèn ban đêm
 
@@ -97,7 +97,7 @@ sẽ được xuống dòng, và các trường số cùng các nhập liệu c�
 Chiều cao thẻ tăng lên với văn bản xuống dòng; sử dụng cuộn theo chiều dọc để xem các thẻ phía dưới.
 Những thay đổi này giữ nguyên phông chữ đã chọn và các hành động thẻ hiện có.
 
-See  for the installed and user paths.(/docs/argvus-taskbar/taskbar/) for the installed and user paths.
+Xem đường dẫn người dùng và cài đặt.(/docs/argvus-taskbar/taskbar/) để biết đường dẫn người dùng và cài đặt.
 
 Sử dụng bảng điều khiển để xem trạng thái hiện tại và các hành động nhanh. Sử dụng [Trung tâm điều khiển](/docs/components/argvus-control-center/)khi bạn muốn thay đổi cấu hình máy tính để bàn bền vững. Ví dụ, thanh tác vụ có thể hiển thị các điều khiển về giao diện, hiển thị, mạng, âm lượng, độ sáng, thông báo, nguồn và phiên; cấu hình chi tiết về giao diện và bố cục thuộc **Trung tâm Điều khiển → Giao diện**.
 Xem[thanh tác vụ và các bảng](/docs/argvus-taskbar/taskbar/)cho mối quan hệ giữa bảng điều khiển, lề thanh tác vụ và bố cục cửa sổ.

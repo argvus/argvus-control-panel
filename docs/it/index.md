@@ -27,7 +27,7 @@ Il registro delle schede attuale include:
 - Sistema;
 - Aspetto;
 - Sessione;
-- Display;
+- Visualizzazione;
 - Alimentazione.
 
 Alcune schede sono condizionali. Il Bluetooth è nascosto quando la funzionalità Bluetooth non è disponibile. La luminosità è nascosta quando non sono disponibili né il supporto retroilluminazione né lo strumento di controllo del monitor. La lista delle schede riflette quindi la macchina attuale piuttosto che promettere controlli che ogni macchina può fornire.
@@ -76,7 +76,7 @@ Scorrere sull'icona del volume nella barra delle applicazioni e usare i tasti mu
 
 Vedi [barra delle applicazioni e pannelli](/docs/argvus-taskbar/taskbar/) per la relazione tra il pannello, i margini della barra delle applicazioni e il layout delle finestre.
 
-## Night Light
+## Luce notturna
 
 La scheda Display mostra un interruttore Notte On/Off e la temperatura attiva. I suoi angoli e le animazioni seguono gli stessi token del tema degli altri interruttori del pannello, inclusi i layout Sticky e Spaced. L'interruttore non ha bordo e utilizza un cursore a mano indicante, come gli altri interruttori del pannello. Usa `argvus config display night-light status|toggle`, interrogando ogni due secondi mentre è aperto e rifacendo la richiesta dopo un'azione. La riga è nascosta quando il backend non è disponibile; un'azione fallita mostra un errore. La pianificazione e la temperatura sono configurate in **Centro di Controllo > Desktop e Input > Display > Luce Notturna**. Un interruttore manuale programmato dura fino alla transizione successiva; altrimenti l'attivazione è persistente.
 

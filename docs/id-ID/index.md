@@ -1,5 +1,5 @@
 ---
-title: Control Panel
+title: Panel Kontrol
 description: Gunakan kartu panel kontrol Quickshell.
 ---
 
@@ -13,23 +13,23 @@ Control Panel berbagi tepi taskbar dengan ARGVUS Focus dan ARGVUS Clock. Membuka
 
 Gunakan panel untuk status saat ini dan tindakan cepat. Gunakan [Control Center](/docs/components/argvus-control-center/) ketika Anda ingin mengubah konfigurasi desktop yang persisten. Misalnya, panel dapat menampilkan kontrol tampilan, layar, jaringan, volume, kecerahan, notifikasi, daya, dan sesi; konfigurasi visual dan tata letak yang detail berada di **Control Center → Appearance**.
 
-## Cards
+## Kartu-kartu
 
 Registry kartu saat ini mencakup:
 
-- User;
-- Notifications;
-- Calendar;
-- Weather;
-- Volume;
-- Brightness;
-- Network;
+- Pengguna;
+- Pemberitahuan;
+- Kalender;
+- Cuaca;
+- Volumenya;
+- Kecerahan;
+- Jaringan;
 - Bluetooth;
-- System;
-- Appearance;
-- Session;
-- Display;
-- Power.
+- Sistem;
+- Penampilan;
+- Sesi;
+- Menampilkan;
+- Kekuatan.
 
 Beberapa kartu bersifat kondisional. Bluetooth disembunyikan ketika kemampuan Bluetooth tidak tersedia. Kecerahan disembunyikan ketika baik backlight yang didukung maupun alat kontrol monitor tidak tersedia. Oleh karena itu daftar kartu mencerminkan mesin saat ini daripada menjanjikan kontrol yang bisa disediakan setiap mesin.
 
@@ -62,10 +62,10 @@ Kartu menampilkan keadaan langsung dari desktop. Perubahan yang dilakukan di tem
 
 | Kartu | Dari mana keadaan berasal | Kapan itu diperbarui |
 | --- | --- | --- |
-| User | `getent passwd` | every 3 s while the panel is open |
+| Pengguna | `getent passwd` | setiap 3 detik saat panel terbuka |
 | Volume | saluran default PipeWire (`wpctl`) and `pactl subscribe`acara | segera pada setiap acara audio; setiap 2 detik sebagai jaring pengaman |
 | Penampilan (Telemetri, Animasi, dan Efek) | itu `/effects`bagian dari`argvus config`| setiap 2 detik saat panel terbuka |
-| Power | `powerprofilesctl` | every 3 s while the panel is open |
+| Kekuatan | `powerprofilesctl` | setiap 3 detik saat panel terbuka |
 | Cuaca | file lokasi dan penyedia wttr.in/Open-Meteo | saat panel dibuka dan setiap 15 menit; tab berganti antara kondisi saat ini dan prakiraan harian untuk tujuh hari ke depan |
 
 Kartu Tampilan memiliki dua saklar independen. **Animasi** menjalankan `argvus effects-toggle animations toggle` dan mengontrol semua yang bergerak. **Efek** menjalankan `argvus effects-toggle effects toggle` dan mengubah blur serta transparansi Terminal, Launcher, Widget Telemetry, Panel Kontrol, dan Taskbar secara bersamaan; akan terlihat aktif ketika setidaknya salah satu dari mereka aktif. **SUPER + F6** (`argvus effects-toggle toggle`) mengubah keduanya secara bersamaan. Mengubah salah satunya akan memuat ulang Hyprland dan konsumen tema secara langsung: Waybar membaca ulang stylesheet-nya, panel memuat ulang melalui IPC, dan Dunst memuat ulang konfigurasinya kecuali mode Jangan Ganggu aktif, dalam hal ini pemuat ulang ditunda hingga DND dimatikan. Tidak ada yang dimulai ulang dan tidak ada layar pemuatan yang muncul.
@@ -80,9 +80,9 @@ Lihat [taskbar dan panel](/docs/argvus-taskbar/taskbar/) untuk hubungan antara p
 
 ## Cahaya Malam
 
-The Display card shows a Night Light on/off switch and the active temperature. Its corners and animations follow the same theme tokens as the other panel switches, including Sticky and Spaced layouts. The switch has no border and uses a pointing-hand cursor, like the other panel switches. It uses 
+Kartu Tampilan menunjukkan tombol nyala/mati Lampu Malam dan suhu aktif. Sudut dan animasinya mengikuti token tema yang sama dengan sakelar panel lainnya, termasuk tata letak Sticky dan Spaced. Sakelar tidak memiliki batas dan menggunakan kursor penunjuk, seperti sakelar panel lainnya. Ini menggunakan
 
-, polling every two seconds while open and refetching after an action. The row is hidden when the backend is unavailable; a failed action shows an error. Scheduling and temperature are configured in **Control Center > Desktop & Input > Displays > Night Light**. A scheduled manual toggle lasts until the next transition; otherwise activation is persistent.
+, melakukan polling setiap dua detik saat terbuka dan mengambil kembali setelah suatu tindakan. Baris disembunyikan ketika backend tidak tersedia; tindakan yang gagal menunjukkan kesalahan. Penjadwalan dan suhu dikonfigurasi di **Pusat Kontrol > Desktop & Input > Tampilan > Lampu Malam**. Pengalihan manual terjadwal berlangsung hingga transisi berikutnya; jika tidak, aktivasi akan terus-menerus.
 
 Kalender bilah tugas, ARGVUS Focus, ARGVUS Clock, dan Panel Kontrol saling eksklusif: membuka salah satunya menutup yang lain.
 

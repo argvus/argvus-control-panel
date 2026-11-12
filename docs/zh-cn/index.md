@@ -10,7 +10,7 @@ description: 使用 Quickshell 控制面板卡。
 
 ## 控制面板还是控制中心？
 
-使用面板查看当前状态和快速操作。当您想更改持久的桌面配置时，请使用 [控制中心](/docs/components/argvus-control-center/)]。例如，面板可以显示外观、显示、网络、音量、亮度、通知、电源和会话控制；详细的视觉和布局配置在 **控制中心 → 外观** 中进行。
+使用面板查看当前状态和快速操作。当您想更改持久的桌面配置时，请使用 [控制中心](/docs/components/argvus-control-center/)。例如，面板可以显示外观、显示、网络、音量、亮度、通知、电源和会话控制；详细的视觉和布局配置在 **控制中心 → 外观** 中进行。
 
 ## 卡片
 
@@ -74,7 +74,7 @@ cards-config.sh move <card> <index>
 
 `argvus-control-panel.service` 由 `argvus-session` 启动。打开和关闭面板会改变会话面板状态，但这并不意味着每个卡动作都是持久配置。网络、音频、电源和显示操作可能会交给它们的提供者或当前桌面会话。
 
-请参阅 [taskbar and panels](/docs/argvus-taskbar/taskbar/)] 了解面板、任务栏边距和窗口布局之间的关系。
+请参阅 [taskbar and panels](/docs/argvus-taskbar/taskbar/) 了解面板、任务栏边距和窗口布局之间的关系。
 
 ## 夜间灯光
 

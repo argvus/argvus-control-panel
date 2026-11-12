@@ -1,5 +1,5 @@
 ---
-title: Control Panel
+title: Painel de controlo
 description: Use os cards do painel Quickshell.
 ---
 
@@ -19,7 +19,7 @@ Ao abrir o painel, use **↑/↓** para rolar o conteúdo. **Tab** avança entre
 
 Use o painel para status atual e ações rápidas. Use o [Control Center](/pt/docs/components/argvus-control-center/) quando quiser alterar uma configuração persistente do desktop. Por exemplo, o painel pode oferecer controles de aparência, display, rede, volume, brilho, notificações, energia e sessão; a configuração visual e de layout detalhada fica em **Control Center → Aparência**.
 
-## Cards
+## Cartões
 
 O registro atual de cards inclui:
 

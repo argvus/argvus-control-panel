@@ -10,7 +10,7 @@ description: Quickshell 제어판 카드를 사용하세요.
 
 ## 제어판 또는 제어 센터?
 
-현재 상태와 빠른 작업을 위해 패널을 사용하세요. 지속적인 데스크톱 구성을 변경하고 싶을 때는 [Control Center](/docs/components/argvus-control-center/)]를 사용하세요. 예를 들어, 패널은 외관, 디스플레이, 네트워크, 볼륨, 밝기, 알림, 전원 및 세션 제어를 표시할 수 있습니다; 세부적인 시각 및 레이아웃 구성은 **Control Center → Appearance**에 속합니다.
+현재 상태와 빠른 작업을 위해 패널을 사용하세요. 지속적인 데스크톱 구성을 변경하고 싶을 때는 [Control Center](/docs/components/argvus-control-center/)를 사용하세요. 예를 들어, 패널은 외관, 디스플레이, 네트워크, 볼륨, 밝기, 알림, 전원 및 세션 제어를 표시할 수 있습니다; 세부적인 시각 및 레이아웃 구성은 **Control Center → Appearance**에 속합니다.
 
 ## 카드
 
@@ -74,7 +74,7 @@ cards-config.sh move <card> <index>
 
 `argvus-control-panel.service`는 `argvus-session`에 의해 시작됩니다. 패널을 열고 닫으면 세션 패널 상태가 변경되지만, 이는 모든 카드 동작이 영구 구성이라는 의미는 아닙니다. 네트워크, 오디오, 전원 및 디스플레이 동작은 제공자 또는 현재 데스크탑 세션에 전달될 수 있습니다.
 
-패널, 작업 표시줄 여백 및 창 레이아웃 간의 관계에 대해서는 [taskbar and panels](/docs/argvus-taskbar/taskbar/)]를 참조하십시오.
+패널, 작업 표시줄 여백 및 창 레이아웃 간의 관계에 대해서는 [taskbar and panels](/docs/argvus-taskbar/taskbar/)를 참조하십시오.
 
 ## 나이트 라이트
 

@@ -1,5 +1,5 @@
 ---
-title: Control Panel
+title: Kontrol Paneli
 description: Quickshell kontrol paneli kartlarını kullanın.
 ---
 
@@ -13,23 +13,23 @@ Kontrol Paneli, görev çubuğu kenarını ARGVUS Focus ve ARGVUS Clock ile payl
 
 Mevcut durumu ve hızlı işlemleri görmek için paneli kullanın. Kalıcı masaüstü yapılandırmasını değiştirmek istediğinizde [Denetim Merkezi](/docs/components/argvus-control-center/) kullanın. Örneğin, panel görünüm, ekran, ağ, ses, parlaklık, bildirim, güç ve oturum kontrollerini gösterebilir; detaylı görsel ve düzen yapılandırması **Denetim Merkezi → Görünüm** içinde yer alır.
 
-## Cards
+## Kartlar
 
 Mevcut kart kaydı şunları içerir:
 
-- User;
-- Notifications;
-- Calendar;
-- Weather;
-- Volume;
-- Brightness;
-- Network;
+- Kullanıcı;
+- Bildirimler;
+- Takvim;
+- Hava durumu;
+- Hacim;
+- Parlaklık;
+- Ağ;
 - Bluetooth;
-- System;
-- Appearance;
-- Session;
-- Display;
-- Power.
+- Sistem;
+- Dış görünüş;
+- Oturum;
+- Görüntülemek;
+- Güç.
 
 Bazı kartlar koşulludur. Bluetooth özelliği mevcut olmadığında Bluetooth gizlenir. Ne desteklenen arka ışık ne de monitör kontrol aracı mevcut olduğunda Parlaklık gizlenir. Bu nedenle, kart listesi her makinenin sağlayabileceği kontrolleri garanti etmek yerine mevcut makineyi yansıtır.
 
@@ -62,21 +62,21 @@ Kartlar masaüstünün canlı durumunu gösterir. Başka bir yerde yapılan bir 
 
 | Kart | Durumun kaynağı | Ne zaman yenilenir |
 | --- | --- | --- |
-| User | `getent passwd` | every 3 s while the panel is open |
+| Kullanıcı | `getent passwd` | panel açıkken her 3 saniyede bir |
 | Ses Düzeyi | PipeWire varsayılan çıkışı (`wpctl`) and `pactl subscribe`olaylar | her ses olayında hemen; güvenlik ağı olarak her 2 s |
 | Görünüm (Telemetri, Animasyonlar ve Efektler) | the `/effects`bölümü`argvus config`| panel açıkken her 2 saniyede bir |
-| Power | `powerprofilesctl` | every 3 s while the panel is open |
+| Güç | `powerprofilesctl` | panel açıkken her 3 saniyede bir |
 | Hava Durumu | konum dosyası ve wttr.in/Open-Meteo sağlayıcıları | panel açıldığında ve her 15 dakikada bir; sekmeler mevcut koşullar ile önümüzdeki yedi gün için günlük tahmin arasında geçiş yapar |
 
 Görünüm kartının iki bağımsız anahtarı vardır. **Animasyonlar** `argvus effects-toggle animations toggle` çalıştırır ve hareket eden her şeyi kontrol eder. **Efektler** `argvus effects-toggle effects toggle` çalıştırır ve Terminal, Başlatıcı, Widget Telemetri, Denetim Masası ve Görev Çubuğu’nun bulanıklığını ve şeffaflığını birlikte değiştirir; bunlardan en az biri açıksa açık olarak görünür. **SUPER + F6** (`argvus effects-toggle toggle`) ikisini birden değiştirir. Herhangi birini değiştirmek, Hyprland’i ve tema tüketicilerini yerinde yeniden yükler: Waybar stillerini yeniden okur, panel IPC üzerinden yeniden yüklenir ve Dunst, Rahatsız Etmeyin aktif değilse yapılandırmasını yeniden yükler; aktifse, yeniden yükleme DND kapatılana kadar ertelenir. Hiçbir şey yeniden başlatılmaz ve hiçbir yükleme ekranı görünmez.
 
-Scrolling on the taskbar volume icon and the media keys use 
+Görev çubuğu ses simgesinde kaydırma ve medya tuşları kullanımı
 
-, which applies the change to PipeWire and also records the volume in `argvus config audio`. A configuration reload therefore does not restore an old volume.
+, bu değişiklik PipeWire'a uygulanır ve aynı zamanda `argvus config audio` içindeki ses düzeyini de kaydeder. Bu nedenle yapılandırmanın yeniden yüklenmesi eski birimi geri yüklemez.
 
 ## Oturum davranışı
 
- is started by `/audio` argvus-session  `argvus-control-panel.service` . Opening and closing the panel changes the session panel state, but does not mean that every card action is persistent configuration. Network, audio, power and display actions may be handed to their providers or to the current desktop session.
+`/audio` argvus-session `argvus-control-panel.service` tarafından başlatıldı. Panelin açılıp kapanması oturum panelinin durumunu değiştirir ancak her kart eyleminin kalıcı yapılandırma olduğu anlamına gelmez. Ağ, ses, güç ve görüntüleme eylemleri sağlayıcılarına veya mevcut masaüstü oturumuna devredilebilir.
 
 Panel, görev çubuğu kenar boşlukları ve pencere düzeni arasındaki ilişki için [görev çubuğu ve panellere](/docs/argvus-taskbar/taskbar/) bakın.
 
