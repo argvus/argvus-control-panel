@@ -4,7 +4,7 @@ description: Usa las tarjetas del panel de control Quickshell.
 ---
 El Panel de Control es la superficie de Quickshell de acceso rápido para la sesión activa. Es el lugar para inspeccionar el estado o realizar una acción frecuente sin abrir la aplicación completa de configuración.
 
-El panel utiliza los catálogos compartidos `argvus-i18n`. Cuando se aplica un idioma diferente en **Centro de Control → Configuración regional y de idioma**, el servicio del Panel de Control se reinicia automáticamente para cargar el catálogo seleccionado.
+El panel utiliza el compartido `argvus-i18n` catálogos. Cuando se selecciona un idioma de interfaz diferente en **Centro de control → Preferencias → Idioma & Region → Idioma**, el servicio del panel de control se reinicia automáticamente para cargar el catálogo seleccionado. Esta preferencia es independiente de `LANG`, que sigue siendo el local regional para el formato y aplicaciones de terceros. El árabe y el urdu utilizan el diseño derecho a izquierda.
 
 El Panel de Control comparte el borde de la barra de tareas con ARGVUS Focus y ARGVUS Clock. Abrir el panel cierra primero ambos pop-ups; abrir Focus o Clock cierra el panel.
 

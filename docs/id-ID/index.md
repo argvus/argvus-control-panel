@@ -5,7 +5,9 @@ description: Gunakan kartu panel kontrol Quickshell.
 
 Panel Kontrol adalah permukaan Quickshell akses cepat untuk sesi aktif. Ini adalah tempat untuk memeriksa status atau melakukan tindakan yang sering dilakukan tanpa membuka aplikasi pengaturan penuh.
 
-Panel menggunakan katalog bersama `argvus-i18n`. Ketika bahasa yang berbeda diterapkan di **Control Center → Locale & Region**, layanan Control Panel akan dimulai ulang secara otomatis sehingga dapat memuat katalog yang dipilih.
+Panel menggunakan bersama `argvus-i18n` katalog. Ketika bahasa antar muka yang berbeda dipilih dalam * * Control Center Averence Language & Resection Language * *, layanan Control Panel dijalankan kembali secara otomatis sehingga ia memuat katalog yang dipilih. Pilihan ini independen `LANG`, yang tetap menjadi lokal regional untuk memformat dan aplikasi pihak ketiga. Arab dan Urdu gunakan tata letak kanan ke kiri.
+
+Panel menggunakan katalog bersama. Ketika bahasa antar muka yang berbeda dipilih dalam * * Control Center Averence Language & Resection Language * *, layanan Control Panel dijalankan kembali secara otomatis sehingga ia memuat katalog yang dipilih. Pilihan ini independen dari `LANG`, yang tetap menjadi lokal regional untuk memformat dan aplikasi pihak ketiga. Arab dan Urdu gunakan tata letak kanan ke kiri.
 
 Control Panel berbagi tepi taskbar dengan ARGVUS Focus dan ARGVUS Clock. Membuka panel akan menutup kedua popup terlebih dahulu; membuka Focus atau Clock akan menutup panel.
 

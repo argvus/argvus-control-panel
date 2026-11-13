@@ -5,7 +5,7 @@ description: Quickshell kontrol paneli kartlarını kullanın.
 
 Kontrol Paneli, aktif oturum için hızlı erişim Quickshell yüzeyidir. Durumu incelemek veya sık yapılan bir işlemi tam ayarlar uygulamasını açmadan gerçekleştirmek için kullanılan yerdir.
 
-Panel, paylaşılan `argvus-i18n` kataloglarını kullanır. **Kontrol Merkezi → Bölge ve Dil** bölümünde farklı bir dil uygulandığında, Kontrol Paneli servisi otomatik olarak yeniden başlatılır, böylece seçilen katalog yüklenir.
+Panel paylaşılanları kullanır `argvus-i18n` kataloglar. Farklı bir arayüz dili **Control Center → Tercihler → Dil & Bölge → Dil**, Kontrol Panel servisi otomatik olarak yeniden başlatılır, böylece seçilen kataloğu yükler. Bu tercih bağımsızdır `LANG`Ancak bu, bölgesel yerelleri formatlama ve üçüncü parti uygulamaları için kalır. Arapça ve Urdu doğru sol düzeni kullanır.
 
 Kontrol Paneli, görev çubuğu kenarını ARGVUS Focus ve ARGVUS Clock ile paylaşır. Panel açıldığında her iki açılır pencere önce kapatılır; Focus veya Clock açıldığında panel kapanır.
 

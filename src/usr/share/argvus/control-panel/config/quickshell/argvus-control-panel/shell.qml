@@ -111,5 +111,6 @@ ShellRoot {
 
     SidebarWindow {
         id: sidebarWin
+        rightToLeft: root.selectedLocale === "ar" || root.selectedLocale === "ur-PK"
     }
 }

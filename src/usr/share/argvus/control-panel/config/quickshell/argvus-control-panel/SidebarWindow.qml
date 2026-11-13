@@ -9,6 +9,7 @@ PanelWindow {
     id: root
 
     property bool sidebarVisible: false
+    property bool rightToLeft: false
     readonly property string cardsConfigScript: Theme.systemConfig + "/control-panel/sh/cards-config.sh"
     property var cards: []
     property var allCards: []
@@ -258,6 +259,8 @@ PanelWindow {
 
     Item {
         id: panel
+        LayoutMirroring.enabled: root.rightToLeft
+        LayoutMirroring.childrenInherit: true
         // Janela = caixa: x:0, ocupa tudo
         x: 0
         y: 0

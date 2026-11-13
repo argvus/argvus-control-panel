@@ -5,7 +5,7 @@ description: Use the Quickshell control panel cards.
 
 The Control Panel is the quick-access Quickshell surface for the active session. It is the place to inspect status or perform a frequent action without opening the full settings application.
 
-The panel uses the shared `argvus-i18n` catalogs. When a different language is applied in **Control Center → Locale & Region**, the Control Panel service is restarted automatically so it loads the selected catalog.
+The panel uses the shared `argvus-i18n` catalogs. When a different interface language is selected in **Control Center → Preferences → Language & Region → Language**, the Control Panel service is restarted automatically so it loads the selected catalog. This preference is independent of `LANG`, which remains the regional locale for formatting and third-party applications. Arabic and Urdu use right-to-left layout.
 
 The Control Panel shares the taskbar edge with ARGVUS Focus and ARGVUS Clock. Opening the panel closes both popups first; opening Focus or Clock closes the panel.
 

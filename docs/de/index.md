@@ -4,7 +4,7 @@ description: Verwenden Sie die Quickshell-Steuerfeldkarten.
 ---
 Die Systemsteuerung ist die Schnellzugriffs-Quickshell-Oberfläche für die aktive Sitzung. Sie ist der Ort, um den Status zu prüfen oder eine häufige Aktion auszuführen, ohne die vollständige Einstellungsanwendung zu öffnen.
 
-Das Panel verwendet die gemeinsamen `argvus-i18n`-Kataloge. Wenn eine andere Sprache in **Systemsteuerung → Gebietsschema & Region** angewendet wird, wird der Systemsteuerungsdienst automatisch neu gestartet, damit der ausgewählte Katalog geladen wird.
+Das Panel nutzt das Shared `argvus-i18n` Kataloge. Wenn in **Control Center → Preferences → Language & Region → Language** eine andere Schnittstellensprache ausgewählt wird, wird der Systemsteuerungsdienst automatisch neu gestartet, sodass der ausgewählte Katalog geladen wird. Diese Präferenz ist unabhängig von `LANG`, die das regionale Gebietsschema für Formatierungs- und Drittanbieteranwendungen bleibt. Arabisch und Urdu verwenden rechts nach links Layout.
 
 Die Systemsteuerung teilt den Taskleistenrand mit ARGVUS Focus und ARGVUS Clock. Das Öffnen des Panels schließt zunächst beide Popups; das Öffnen von Focus oder Clock schließt das Panel.
 

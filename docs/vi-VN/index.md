@@ -5,7 +5,7 @@ description: Sử dụng các thẻ bảng điều khiển Quickshell.
 
 Bảng Điều Khiển là giao diện Quickshell truy cập nhanh cho phiên làm việc đang hoạt động. Đây là nơi để kiểm tra trạng thái hoặc thực hiện một hành động thường xuyên mà không cần mở toàn bộ ứng dụng cài đặt.
 
-Bảng điều khiển sử dụng các danh mục `argvus-i18n` chia sẻ. Khi ngôn ngữ khác được áp dụng trong **Trung tâm điều khiển → Ngôn ngữ & Vùng**, dịch vụ Bảng điều khiển sẽ tự động khởi động lại để tải danh mục được chọn.
+Bảng điều khiển dùng chia sẻ `argvus-i18n` Danh mục. Khi một ngôn ngữ giao diện khác được chọn trong **Graft Center Guft Language &  domains  areas, dịch vụ bảng điều khiển sẽ tự động khởi chạy lại, vì thế nó nạp danh mục đã chọn. Tùy thích này là độc lập với `LANG`Vẫn là khu vực của các đơn vị định dạng và các ứng dụng bên thứ ba. Ả Rập và Urdu sử dụng bố trí phải sang trái.
 
 Bảng điều khiển chia sẻ cạnh thanh tác vụ với ARGVUS Focus và ARGVUS Clock. Mở bảng điều khiển sẽ đóng cả hai cửa sổ bật lên trước; mở Focus hoặc Clock sẽ đóng bảng điều khiển.
 

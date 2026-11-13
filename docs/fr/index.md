@@ -4,7 +4,7 @@ description: Utilisez les cartes du panneau de contrôle Quickshell.
 ---
 Le Panneau de configuration est la surface Quickshell à accès rapide pour la session active. C'est l'endroit pour vérifier le statut ou effectuer une action fréquente sans ouvrir l'application de paramètres complète.
 
-Le panneau utilise les catalogues partagés `argvus-i18n`. Lorsqu'une langue différente est appliquée dans **Centre de contrôle → Langue et région**, le service du Panneau de configuration est redémarré automatiquement afin de charger le catalogue sélectionné.
+Le panneau utilise le partage `argvus-i18n` catalogues. Lorsqu'un langage d'interface différent est sélectionné dans **Control Center → Préférences → Langue et région → Langue**, le service de panneau de configuration est redémarré automatiquement pour charger le catalogue sélectionné. Cette préférence est indépendante de `LANG`, qui reste le local régional pour le formatage et les applications tierces. Arabe et Urdu utilisent la disposition de droite à gauche.
 
 Le Panneau de configuration partage le bord de la barre des tâches avec ARGVUS Focus et ARGVUS Clock. L'ouverture du panneau ferme d'abord les deux fenêtres contextuelles ; l'ouverture de Focus ou Clock ferme le panneau.
 

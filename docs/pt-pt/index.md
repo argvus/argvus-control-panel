@@ -5,7 +5,7 @@ description: Use os cards do painel Quickshell.
 
 O Control Panel é a superfície Quickshell de acesso rápido da sessão ativa. É o lugar para consultar status ou executar uma ação frequente sem abrir a aplicação completa de definições.
 
-Os textos do painel usam os catálogos compartilhados do `argvus-i18n`. Ao aplicar outro idioma em **Control Center → Localidade e região**, o serviço do Control Panel é reiniciado automaticamente para carregar o catálogo selecionado.
+O painel usa o compartilhado `argvus-i18n` catálogos. Quando uma linguagem de interface diferente é selecionada em **Control Center → Preferências → Idioma & Região → Idioma**, o serviço do Painel de Controle é reiniciado automaticamente para que ele carregue o catálogo selecionado. Esta preferência é independente de `LANG`, que continua a ser o local regional para a formatação e aplicações de terceiros. Árabe e Urdu usam layout da direita para a esquerda.
 
 O Control Panel compartilha a lateral da taskbar com ARGVUS Focus e ARGVUS Clock. Ao abrir o painel, os dois popups são fechados primeiro; ao abrir Focus ou Clock, o painel é fechado.
 

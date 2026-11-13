@@ -4,7 +4,7 @@ description: Usa le schede del pannello di controllo Quickshell.
 ---
 Il Pannello di Controllo è la superficie Quickshell ad accesso rapido per la sessione attiva. È il luogo dove controllare lo stato o eseguire un'azione frequente senza aprire l'applicazione completa delle impostazioni.
 
-Il pannello utilizza i cataloghi condivisi `argvus-i18n`. Quando viene applicata una lingua diversa in **Centro di Controllo → Località e Regione**, il servizio del Pannello di Controllo viene riavviato automaticamente in modo da caricare il catalogo selezionato.
+Il pannello utilizza il condiviso `argvus-i18n` cataloghi. Quando una lingua di interfaccia diversa viene selezionata in **Control Center → Preferenze → Lingua & Regione → Lingua**, il servizio Pannello di controllo viene riavviato automaticamente in modo da caricare il catalogo selezionato. Questa preferenza è indipendente `LANG`, che rimane il locale regionale per la formattazione e applicazioni di terze parti. Arabo e Urdu usano il layout di destra a sinistra.
 
 Il Pannello di Controllo condivide il bordo della barra delle applicazioni con ARGVUS Focus e ARGVUS Clock. Aprire il pannello chiude prima entrambi i popup; aprire Focus o Clock chiude il pannello.
 
