@@ -54,7 +54,7 @@ Cuando se abre el panel, utiliza **↑/↓** para desplazarte por su contenido. 
 
 ## Mantenerse sincronizado con el resto del escritorio
 
-La tarjeta de Notificaciones oculta su historial mientras No Molestar está activo. Las notificaciones recibidas durante ese tiempo permanecen en Dunst y vuelven a aparecer en la tarjeta después de que se desactive No Molestar.
+El historial permanece visible con No molestar. Las notificaciones se agrupan por aplicación, contraídas inicialmente con la vista previa más reciente. Expanda un grupo y seleccione un título para leer el texto completo. Puede borrar un grupo o todo el historial. Las actualizaciones conservan los grupos abiertos. Los avisos tienen 200–340 px de ancho y altura dinámica hasta 100 px; pueden aparecer dos junto al indicador de avisos adicionales. La recarga del tema sigue aplazada con No molestar.
 
 Las tarjetas muestran el estado en vivo del escritorio. Un cambio realizado en otro lugar (Centro de Control, la barra de tareas, un atajo de teclado o la línea de comandos `argvus`) aparece en el panel sin necesidad de reiniciarlo:
 
@@ -87,3 +87,5 @@ El calendario de la barra de tareas, ARGVUS Focus, ARGVUS Clock y el Panel de co
 Las pestañas del clima usan el catálogo compartido (condiciones actuales y siete días). Las mediciones del clima ocupan columnas de ancho igual; las etiquetas se ajustan y los valores permanecen alineados. Las abreviaturas de los días de la semana en el calendario son específicas de la localidad y comienzan en domingo, incluyendo las etiquetas de los días del pronóstico. No son traducciones literales de las abreviaturas en inglés.
 
 Los botones vinculan su grupo de ícono/etiqueta al ancho disponible. Si una etiqueta necesita puntos suspensivos, al pasar el cursor o enfocar el botón se muestra su texto completo. Los botones del perfil de energía también muestran su texto descriptivo en una información sobre herramientas. Las descripciones largas de interruptores se ajustan, y los campos numéricos y entradas del usuario reservan espacio suficiente para la fuente elegida. La altura de la tarjeta crece con el texto ajustado; usa el desplazamiento vertical para ver las tarjetas inferiores. Estos cambios preservan la fuente seleccionada y las acciones existentes de la tarjeta.
+
+La acción de borrar cada grupo es un icono con ayuda emergente; el botón general conserva su etiqueta.

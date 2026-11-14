@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell.Io
 
@@ -7,23 +8,80 @@ BaseCard {
     cardIcon:  "»"
 
     property var notifications: []
-    property int unreadCount: 0
-    property int currentPage: 0
+    property int historyCount: 0
+    property real clockOffset: 0
+    property var expandedGroups: ({})
+    property var expandedItems: ({})
+    property var removalQueue: []
     property bool dndEnabled: false
     property bool dndAvailable: false
     property bool dndBusy: false
     property string dndError: ""
 
-    readonly property int pageSize: 3
-    readonly property var visibleNotifications: dndAvailable && !dndEnabled ? notifications : []
-    readonly property int pageCount: Math.ceil(visibleNotifications.length / pageSize)
-    readonly property var pageNotifications: visibleNotifications.slice(currentPage * pageSize, (currentPage + 1) * pageSize)
+    readonly property var groups: {
+        var result = []
+        for (var i = 0; i < notifications.length; i++) {
+            var item = notifications[i]
+            var group = result.find(function(g) { return g.app === item.app })
+            if (!group) {
+                group = {app: item.app, items: []}
+                result.push(group)
+            }
+            group.items.push(item)
+        }
+        return result
+    }
 
-    onNotificationsChanged: currentPage = 0
+    function toggleExpanded(key, isGroup) {
+        var state = Object.assign({}, isGroup ? expandedGroups : expandedItems)
+        state[key] = !state[key]
+        if (isGroup) expandedGroups = state
+        else expandedItems = state
+    }
+
+    function removeGroup(items) {
+        if (removeProc.running || removalQueue.length) return
+        removalQueue = items.filter(function(item) { return item.id !== null }).map(function(item) { return item.id })
+        removeNext()
+    }
+
+    function removeNext() {
+        if (!removalQueue.length) {
+            historyProc.running = true
+            return
+        }
+        var id = removalQueue[0]
+        removalQueue = removalQueue.slice(1)
+        removeProc.command = ["dunstctl", "history-rm", String(id)]
+        removeProc.running = true
+    }
+
+    Process {
+        id: clockProc
+        command: ["cat", "/proc/uptime"]
+        running: pollingActive
+        stdout: StdioCollector {
+            onStreamFinished: {
+                var uptime = Number(this.text.trim().split(" ")[0])
+                if (Number.isFinite(uptime)) clockOffset = Date.now() - uptime * 1000
+            }
+        }
+    }
+
+    Process {
+        id: removeProc
+        onExited: function(code) {
+            if (code !== 0) {
+                removalQueue = []
+                dndError = Strings.notifChangeFailed
+                historyProc.running = true
+            } else removeNext()
+        }
+    }
 
     Timer {
         interval: 3000; running: pollingActive; repeat: true; triggeredOnStart: true
-        onTriggered: if (dndAvailable && !dndEnabled && !historyProc.running) historyProc.running = true
+        onTriggered: if (dndAvailable && !historyProc.running) historyProc.running = true
     }
 
     Timer {
@@ -40,6 +98,7 @@ BaseCard {
                 if (value.indexOf("dnd=true") === 0) {
                     dndAvailable = true
                     dndEnabled = true
+                    if (!historyProc.running) historyProc.running = true
                     dndError = ""
                 } else if (value.indexOf("dnd=false") === 0) {
                     dndAvailable = true
@@ -144,19 +203,23 @@ BaseCard {
                     var data = JSON.parse(this.text)
                     var items = []
                     var entries = data.data[0] || []
-                    for (var i = 0; i < entries.length && i < 9; i++) {
+                    for (var i = 0; i < entries.length; i++) {
                         var n = entries[i]
                         items.push({
+                            id: n.id ? n.id.data : null,
+                            icon: n.icon_path ? n.icon_path.data : "",
+                            timestamp: n.timestamp ? Number(n.timestamp.data) : 0,
                             app:     n.appname  ? n.appname.data  : Strings.notifAppUnknown,
                             summary: n.summary  ? n.summary.data  : "",
                             body:    n.body     ? n.body.data     : ""
                         })
                     }
-                    notifications = items
-                    unreadCount   = items.length
+                    items.sort(function(a, b) { return b.timestamp - a.timestamp })
+                    if (JSON.stringify(items) !== JSON.stringify(notifications)) notifications = items
+                    historyCount   = items.length
                 } catch(e) {
                     notifications = []
-                    unreadCount   = 0
+                    historyCount   = 0
                 }
             }
         }
@@ -168,158 +231,166 @@ BaseCard {
         onExited: function(code) {
             if (code === 0) {
                 notifications = []
-                unreadCount   = 0
+                historyCount   = 0
             }
         }
     }
 
-    // Header: count + nav + clear button
     RowLayout {
         Layout.fillWidth: true
-
-        RowLayout {
+        Text {
+            text: String(historyCount)
+            color: Theme.fgSubtle
+            font.family: Theme.fontFamily
+            font.pixelSize: Theme.scaledFont(12)
             Layout.fillWidth: true
-            visible: pageCount > 1
-            spacing: 2
-
-            NavBtn {
-                text: "\uf053"
-                enabled: currentPage > 0
-                onClicked: currentPage--
-            }
-
-            Text {
-                text: (currentPage + 1) + "/" + pageCount
-                color: Theme.accent
-                font.pixelSize: Theme.scaledFont(13)
-                font.family: Theme.fontFamily
-                horizontalAlignment: Text.AlignHCenter
-                Layout.preferredWidth: 28
-            }
-
-            NavBtn {
-                text: "\uf054"
-                enabled: currentPage < pageCount - 1
-                onClicked: currentPage++
-            }
         }
-
         GlassButton {
-            visible: unreadCount > 0
+            visible: historyCount > 0
             implicitWidth: 70
-            implicitHeight: 22
-            iconText: ""
             label: Strings.notifClear
-            active: false
-            radius: 3
+            iconText: ""
+            enabled: !removeProc.running && removalQueue.length === 0
             onClicked: clearProc.running = true
         }
     }
 
-    // List of notifications (current page)
     Repeater {
-        model: pageNotifications
-        delegate: Rectangle {
+        model: groups
+        delegate: ColumnLayout {
+            id: groupDelegate
+            required property var modelData
+            readonly property bool expanded: expandedGroups[modelData.app] === true
             Layout.fillWidth: true
-            implicitHeight: notifCol.implicitHeight + 12
-            radius: 4
-            color: Theme.bgPanel
-            border.color: Theme.borderSubtle
-            border.width: 1
+            spacing: 4
 
-            ColumnLayout {
-                id: notifCol
-                anchors { fill: parent; margins: 8 }
-                spacing: 2
-
-                RowLayout {
+            RowLayout {
+                Layout.fillWidth: true
+                Image {
+                    source: groupDelegate.modelData.items[0].icon
+                    visible: status === Image.Ready
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                    sourceSize.width: 20
+                    sourceSize.height: 20
+                    fillMode: Image.PreserveAspectFit
+                }
+                Button {
                     Layout.fillWidth: true
-                    spacing: 4
-                    Text {
-                        text: "\uf192"
-                        font.family: Theme.fontIcon
-                        font.pixelSize: Theme.scaledFont(16)
-                        font.weight: Font.Black
+                    Layout.minimumWidth: 0
+                    text: (groupDelegate.expanded ? "▾ " : "▸ ") + groupDelegate.modelData.app + " · " + groupDelegate.modelData.items.length
+                    Accessible.name: groupDelegate.modelData.app
+                    onClicked: toggleExpanded(groupDelegate.modelData.app, true)
+                    contentItem: Text {
+                        text: parent.text
                         color: Theme.accent
-                        opacity: 1
-                    }
-                    Text {
-                        text: modelData.app
-                        color: Theme.accent
-                        font.pixelSize: Theme.scaledFont(13)
                         font.family: Theme.fontFamily
-                        opacity: 1
-                        Layout.fillWidth: true
+                        font.pixelSize: Theme.scaledFont(13)
                         elide: Text.ElideRight
                     }
+                    background: Rectangle {
+                        color: parent.visualFocus || parent.hovered ? Theme.accentDim : "transparent"
+                        radius: Theme.radius
+                    }
                 }
-
                 Text {
-                    Layout.fillWidth: true
-                    text: modelData.summary
-                    color: Theme.fgText
-                    font.pixelSize: Theme.scaledFont(16)
+                    visible: clockOffset > 0 && groupDelegate.modelData.items[0].timestamp > 0
+                    text: visible ? Qt.formatTime(new Date(clockOffset + groupDelegate.modelData.items[0].timestamp / 1000), Qt.DefaultLocaleShortDate) : ""
+                    color: Theme.fgSubtle
                     font.family: Theme.fontFamily
-                    font.weight: Font.Medium
-                    wrapMode: Text.WordWrap
-                    visible: modelData.summary !== ""
+                    font.pixelSize: Theme.scaledFont(11)
                 }
+                Button {
+                    id: dismissGroup
+                    Layout.preferredWidth: 28
+                    Layout.preferredHeight: 28
+                    padding: 4
+                    enabled: !removeProc.running && removalQueue.length === 0
+                    Accessible.name: Strings.notifClear + " · " + groupDelegate.modelData.app
+                    ToolTip.visible: hovered || visualFocus
+                    ToolTip.text: Accessible.name
+                    onClicked: removeGroup(groupDelegate.modelData.items)
+                    contentItem: Text {
+                        text: ""
+                        font.family: Theme.fontIcon
+                        font.pixelSize: Theme.scaledFont(14)
+                        color: dismissGroup.hovered || dismissGroup.visualFocus ? Theme.danger : Theme.fgSubtle
+                        opacity: dismissGroup.enabled ? 1 : 0.4
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    background: Rectangle {
+                        radius: Theme.radius
+                        color: dismissGroup.hovered || dismissGroup.visualFocus ? Theme.accentDim : "transparent"
+                        border.width: dismissGroup.visualFocus ? 1 : 0
+                        border.color: Theme.accent
+                    }
+                }
+            }
 
-                Text {
+            Repeater {
+                model: groupDelegate.expanded ? groupDelegate.modelData.items : groupDelegate.modelData.items.slice(0, 1)
+                delegate: ColumnLayout {
+                    id: entry
+                    required property var modelData
+                    readonly property bool expanded: groupDelegate.expanded && expandedItems[String(modelData.id)] === true
                     Layout.fillWidth: true
-                    text: modelData.body
-                    color: Theme.fgText
-                    font.pixelSize: Theme.scaledFont(13)
-                    font.family: Theme.fontFamily
-                    wrapMode: Text.WordWrap
-                    visible: modelData.body !== ""
-                    maximumLineCount: 2
-                    elide: Text.ElideRight
+                    spacing: 2
+                    Button {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
+                        text: entry.modelData.summary || entry.modelData.app
+                        onClicked: {
+                            if (!groupDelegate.expanded) toggleExpanded(groupDelegate.modelData.app, true)
+                            toggleExpanded(String(entry.modelData.id), false)
+                        }
+                        contentItem: Text {
+                            text: parent.text
+                            textFormat: Text.PlainText
+                            color: Theme.fgText
+                            font.family: Theme.fontFamily
+                            font.pixelSize: Theme.scaledFont(13)
+                            wrapMode: Text.Wrap
+                            maximumLineCount: entry.expanded ? 2147483647 : 1
+                            elide: Text.ElideRight
+                        }
+                        background: Rectangle {
+                            color: parent.visualFocus || parent.hovered ? Theme.accentDim : "transparent"
+                            radius: Theme.radius
+                        }
+                    }
+                    TextEdit {
+                        id: bodyDocument
+                        visible: false
+                        readOnly: true
+                        textFormat: TextEdit.RichText
+                        text: entry.modelData.body.replace(/<img\b[^>]*>/gi, "")
+                    }
+                    Text {
+                        Layout.fillWidth: true
+                        Layout.leftMargin: 6
+                        Layout.rightMargin: 6
+                        text: bodyDocument.getText(0, bodyDocument.length)
+                        textFormat: Text.PlainText
+                        visible: text !== ""
+                        color: Theme.fgSubtle
+                        font.family: Theme.fontFamily
+                        font.pixelSize: Theme.scaledFont(12)
+                        wrapMode: Text.Wrap
+                        maximumLineCount: entry.expanded ? 2147483647 : 2
+                        elide: Text.ElideRight
+                    }
                 }
             }
         }
     }
 
-    // Empty state
-    RowLayout {
+    Text {
         visible: notifications.length === 0
+        text: Strings.notifNone
+        color: Theme.fgSubtle
+        font.family: Theme.fontFamily
+        font.pixelSize: Theme.scaledFont(13)
         Layout.fillWidth: true
-        spacing: 0
-        Text {
-            text: Strings.notifNone
-            font.pixelSize: Theme.scaledFont(13)
-            font.family: Theme.fontFamily
-            color: Theme.fgSubtle
-        }
-    }
-
-    component NavBtn: Rectangle {
-        property string text: ""
-        signal clicked()
-
-        width: 22; height: 22; radius: 4
-        color: ma.containsMouse ? Theme.accentDim : "transparent"
-        border.color: ma.containsMouse ? Theme.accent : "transparent"
-        border.width: 1
-
-        Behavior on color { ColorAnimation { duration: Theme.animFast } }
-
-        Text {
-            anchors.centerIn: parent
-            text: parent.text
-            color: parent.enabled ? (ma.containsMouse ? Theme.accent : Theme.fgSubtle) : Theme.borderSubtle
-            font.family: Theme.fontIcon
-            font.pixelSize: Theme.scaledFont(16)
-            font.weight: Font.Black
-        }
-
-        MouseArea {
-            id: ma
-            anchors.fill: parent
-            hoverEnabled: true
-            enabled: parent.enabled
-            cursorShape: Qt.PointingHandCursor
-            onClicked: parent.clicked()
-        }
     }
 }

@@ -54,7 +54,7 @@ Wenn das Panel geöffnet wird, verwenden Sie **↑/↓**, um seinen Inhalt zu sc
 
 ## Synchronisation mit dem Rest des Desktops
 
-Die Benachrichtigungskarte blendet ihre Historie aus, während der Modus "Nicht stören" aktiv ist. Benachrichtigungen, die in dieser Zeit empfangen werden, bleiben in Dunst und erscheinen in der Karte wieder, nachdem "Nicht stören" deaktiviert wurde.
+Der Verlauf bleibt bei „Nicht stören“ sichtbar. Benachrichtigungen werden nach Anwendung gruppiert und zunächst mit der neuesten Vorschau eingeklappt. Eine Gruppe aufklappen und einen Titel auswählen, um den vollständigen Text zu lesen. Einzelne Gruppen oder den gesamten Verlauf löschen. Aktualisierungen erhalten geöffnete Gruppen. Pop-ups sind 200–340 px breit und dynamisch bis zu 100 px hoch; zwei Meldungen können neben der Überlaufanzeige erscheinen. Das Neuladen des Designs wird bei „Nicht stören“ weiterhin verschoben.
 
 Die Karten zeigen den aktuellen Zustand des Desktops. Eine Änderung, die anderswo vorgenommen wird (Systemsteuerung, Taskleiste, Tastenkombination oder der `argvus`-Kommandozeilenbefehl), wird im Panel angezeigt, ohne dass es neu gestartet werden muss:
 
@@ -87,3 +87,5 @@ Die Kalenderleiste, ARGVUS Focus, ARGVUS Clock und das Kontrollpanel schließen 
 Wetter-Tabs verwenden den gemeinsamen Katalog (aktuelle Bedingungen und sieben Tage). Wettermessungen belegen Spalten gleicher Breite; Beschriftungen umbrechen und Werte bleiben ausgerichtet. Kalender-Wochentag-Abkürzungen sind sprachspezifisch und beginnen mit Sonntag, einschließlich der Vorhersagetags-Beschriftungen. Sie sind keine wörtlichen Übersetzungen der englischen Abkürzungen.
 
 Schaltflächen binden ihre Icon/Label-Gruppe an die verfügbare Breite. Wenn eine Beschriftung gekürzt werden muss, zeigt ein Hover oder Fokus auf die Schaltfläche den vollständigen Text an. Schaltflächen für das Energieprofil zeigen ihren Beschreibungstext ebenfalls in einem Tooltip. Lange Schaltflächenbeschreibungen umbrechen, und numerische Felder sowie Benutzereingaben reservieren genügend Platz für die gewählte Schriftart. Die Kartenhöhe wächst mit umgebrochenem Text; verwenden Sie vertikales Scrollen, um die unteren Karten zu sehen. Diese Änderungen bewahren die gewählte Schriftart und die vorhandenen Kartenaktionen.
+
+Das Löschen einer Gruppe erfolgt über ein Symbol mit Tooltip; die globale Schaltfläche behält ihre Beschriftung.

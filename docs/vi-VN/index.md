@@ -55,7 +55,7 @@ Khi bảng mở ra, sử dụng **↑/↓** để cuộn nội dung của nó. *
 
 ## Giữ đồng bộ với phần còn lại của desktop
 
-Thẻ Thông báo ẩn lịch sử của nó khi chế độ Không làm phiền đang hoạt động. Các thông báo nhận được trong thời gian đó vẫn nằm trong Dunst và xuất hiện trở lại trên thẻ sau khi chế độ Không làm phiền được tắt.
+Lịch sử vẫn hiển thị khi bật Không làm phiền. Thông báo được nhóm theo ứng dụng, ban đầu thu gọn với bản xem trước mới nhất. Mở nhóm rồi chọn tiêu đề để đọc toàn bộ nội dung. Có thể xóa một nhóm hoặc toàn bộ lịch sử. Cập nhật giữ nguyên các nhóm đang mở. Cửa sổ rộng 200–340 px, chiều cao linh hoạt tối đa 100 px; hai thông báo có thể xuất hiện cùng chỉ báo số thông báo còn lại. Việc tải lại giao diện vẫn được hoãn khi bật Không làm phiền.
 
 Các thẻ hiển thị trạng thái trực tiếp của màn hình. Một thay đổi được thực hiện ở nơi khác (Trung tâm điều khiển, thanh tác vụ, phím tắt bàn phím hoặc dòng lệnh `argvus`) sẽ hiển thị trong bảng mà không cần khởi động lại nó:
 
@@ -101,3 +101,5 @@ Xem đường dẫn người dùng và cài đặt.(/docs/argvus-taskbar/taskbar
 
 Sử dụng bảng điều khiển để xem trạng thái hiện tại và các hành động nhanh. Sử dụng [Trung tâm điều khiển](/docs/components/argvus-control-center/)khi bạn muốn thay đổi cấu hình máy tính để bàn bền vững. Ví dụ, thanh tác vụ có thể hiển thị các điều khiển về giao diện, hiển thị, mạng, âm lượng, độ sáng, thông báo, nguồn và phiên; cấu hình chi tiết về giao diện và bố cục thuộc **Trung tâm Điều khiển → Giao diện**.
 Xem[thanh tác vụ và các bảng](/docs/argvus-taskbar/taskbar/)cho mối quan hệ giữa bảng điều khiển, lề thanh tác vụ và bố cục cửa sổ.
+
+Thao tác xóa nhóm dùng biểu tượng có chú giải; nút xóa chung giữ nhãn.

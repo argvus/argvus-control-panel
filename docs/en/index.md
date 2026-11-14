@@ -56,7 +56,7 @@ When the panel opens, use **↑/↓** to scroll its content. **Tab** moves forwa
 
 ## Staying in sync with the rest of the desktop
 
-The Notifications card hides its history while Do Not Disturb is active. Notifications received during that time remain in Dunst and appear in the card again after Do Not Disturb is turned off.
+Notification history remains visible during Do Not Disturb. Entries are grouped by application and collapsed initially, with the latest preview. Expand a group to browse its messages, then select a title to read the full text. Clear one group or the entire history. Updates preserve expanded groups. Pop-ups use a width of 200–340 px and dynamic height up to 100 px; two notifications can appear alongside the overflow indicator. Theme reload remains deferred during Do Not Disturb.
 
 The cards show the live state of the desktop. A change made elsewhere (Control Center, the taskbar, a keyboard shortcut or the `argvus` command line) shows up in the panel without restarting it:
 
@@ -97,3 +97,5 @@ buttons also expose their descriptive text in a tooltip. Long switch description
 wrap, and numeric fields and user inputs reserve enough room for the chosen font.
 The card height grows with wrapped text; use vertical scrolling to see lower cards.
 These changes preserve the selected font and the existing card actions.
+
+The group clear action is an icon with a tooltip; the global Clear button keeps its label.

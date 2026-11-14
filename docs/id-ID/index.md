@@ -58,7 +58,7 @@ Saat panel terbuka, gunakan **↑/↓** untuk menggulir isinya. **Tab** bergerak
 
 ## Tetap selaras dengan sisa desktop
 
-Kartu Notifikasi menyembunyikan riwayatnya saat mode Jangan Ganggu aktif. Notifikasi yang diterima selama waktu itu tetap berada di Dunst dan akan muncul kembali di kartu setelah mode Jangan Ganggu dimatikan.
+Riwayat tetap terlihat saat Jangan Ganggu aktif. Notifikasi dikelompokkan per aplikasi, awalnya diciutkan dengan pratinjau terbaru. Buka grup lalu pilih judul untuk membaca teks lengkap. Hapus satu grup atau seluruh riwayat. Pembaruan mempertahankan grup terbuka. Lebar pop-up 200–340 px dan tinggi dinamis hingga 100 px; dua notifikasi dapat tampil bersama indikator kelebihan. Pemuatan ulang tema tetap ditunda selama Jangan Ganggu.
 
 Kartu menampilkan keadaan langsung dari desktop. Perubahan yang dilakukan di tempat lain (Control Center, bilah tugas, pintasan keyboard, atau baris perintah `argvus`) akan muncul di panel tanpa perlu memulainya kembali:
 
@@ -101,3 +101,5 @@ tombol juga menampilkan teks deskriptif mereka dalam tooltip. Deskripsi saklar p
 dibungkus, dan bidang numerik serta input pengguna menyediakan cukup ruang untuk font yang dipilih.
 Tinggi kartu bertambah dengan teks yang dibungkus; gunakan gulir vertikal untuk melihat kartu di bawah.
 Perubahan ini mempertahankan font yang dipilih dan tindakan kartu yang ada.
+
+Tindakan hapus grup berupa ikon dengan petunjuk; tombol global tetap berlabel.

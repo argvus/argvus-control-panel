@@ -56,7 +56,7 @@ Panel açıldığında, içeriği kaydırmak için **↑/↓** kullanın. **Tab*
 
 ## Masaüstünün geri kalanı ile senkronize kalmak
 
-Bildirimler kartı, Rahatsız Etmeyin etkin olduğunda geçmişini gizler. Bu süre zarfında alınan bildirimler Dunst'ta kalır ve Rahatsız Etmeyin kapatıldıktan sonra kartta tekrar görünür.
+Geçmiş, Rahatsız Etmeyin açıkken de görünür. Bildirimler uygulamaya göre gruplanır ve başlangıçta son önizlemeyle daraltılır. Grubu genişletip başlığı seçerek tam metni okuyabilirsiniz. Bir grubu veya tüm geçmişi temizleyebilirsiniz. Güncellemeler açık grupları korur. Açılır bildirimler 200–340 px genişliğinde ve dinamik olarak en fazla 100 px yüksekliğindedir; taşma göstergesiyle iki bildirim görünebilir. Tema yeniden yüklemesi Rahatsız Etmeyin sırasında ertelenir.
 
 Kartlar masaüstünün canlı durumunu gösterir. Başka bir yerde yapılan bir değişiklik (Kontrol Merkezi, görev çubuğu, bir klavye kısayolu veya `argvus` komut satırı) paneli yeniden başlatmadan gösterir:
 
@@ -99,3 +99,5 @@ düğmeler ayrıca açıklayıcı metinlerini bir araç ipucunda gösterir. Uzun
 Satır kaydırma ve sayısal alanlar ile kullanıcı girdileri, seçilen font için yeterli alan ayırır.
 Kart yüksekliği sarılmış metinle artar; alt kartları görmek için dikey kaydırmayı kullanın.
 Bu değişiklikler seçili yazı tipini ve mevcut kart eylemlerini korur.
+
+Grup temizleme işlemi ipuçlu bir simgedir; genel düğmenin metni korunur.

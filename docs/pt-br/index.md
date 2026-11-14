@@ -56,7 +56,7 @@ Desativar um card apenas o oculta do painel; não desinstala o provider por trá
 
 ## Sincronização com o resto do desktop
 
-O card **Notificações** oculta o histórico enquanto o Não Perturbe está ativo. O Dunst mantém as notificações recebidas nesse período, e elas voltam a aparecer no card depois que o Não Perturbe é desativado.
+O histórico permanece visível durante o Não Perturbe. As notificações são agrupadas por aplicativo, inicialmente recolhidas, com a prévia mais recente. Expanda um grupo para consultar suas mensagens e selecione um título para ler o texto completo. Limpe um grupo ou todo o histórico. As atualizações preservam os grupos abertos. Os avisos usam largura de 200–340 px e altura dinâmica de até 100 px; duas notificações podem aparecer junto ao indicador de excedentes. A recarga do tema continua adiada durante o Não Perturbe.
 
 Os cards mostram o estado atual do desktop. Uma mudança feita em outro lugar (Control Center, taskbar, atalho de teclado ou linha de comando `argvus`) aparece no painel sem reiniciá-lo:
 
@@ -98,3 +98,5 @@ de energia também oferecem a descrição em uma dica. Estados longos quebram li
 e os campos numéricos e de edição reservam espaço para a fonte escolhida. A altura
 dos cards acompanha o texto; use a rolagem vertical para acessar os cards abaixo.
 A fonte selecionada e as ações dos cards são preservadas.
+
+A ação de limpar cada grupo é um ícone com dica ao passar o mouse ou focar pelo teclado; o botão geral mantém o texto.

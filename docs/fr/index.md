@@ -54,7 +54,7 @@ Lorsque le panneau s'ouvre, utilisez **↑/↓** pour faire défiler son contenu
 
 ## Rester synchronisé avec le reste du bureau
 
-La carte des Notifications cache son historique pendant que Ne Pas Déranger est actif. Les notifications reçues pendant ce temps restent dans Dunst et réapparaissent dans la carte après que Ne Pas Déranger est désactivé.
+L’historique reste visible en mode Ne pas déranger. Les notifications sont regroupées par application, repliées initialement avec le dernier aperçu. Dépliez un groupe puis sélectionnez un titre pour lire le texte complet. Effacez un groupe ou tout l’historique. Les actualisations conservent les groupes ouverts. Les fenêtres mesurent 200–340 px de large et jusqu’à 100 px de haut, avec une hauteur dynamique ; deux notifications peuvent accompagner l’indicateur de dépassement. Le rechargement du thème reste différé en mode Ne pas déranger.
 
 Les cartes montrent l'état en direct du bureau. Un changement effectué ailleurs (Centre de Contrôle, la barre des tâches, un raccourci clavier ou la ligne de commande `argvus`) apparaît dans le panneau sans le redémarrer :
 
@@ -87,3 +87,5 @@ Le calendrier de la barre des tâches, ARGVUS Focus, ARGVUS Clock et le Panneau 
 Les onglets météo utilisent le catalogue partagé (conditions actuelles et sept jours). Les mesures météorologiques occupent des colonnes de largeur égale ; les étiquettes se renvoient à la ligne et les valeurs restent alignées. Les abréviations des jours de la semaine du calendrier sont spécifiques à la langue locale et commencent par dimanche, y compris les étiquettes des jours de prévision. Ce ne sont pas des traductions littérales des abréviations anglaises.
 
 Les boutons lient leur groupe icône/étiquette à la largeur disponible. Si une étiquette nécessite des points de suspension, passer la souris dessus ou sélectionner le bouton affiche son texte complet. Les boutons de profil d'alimentation exposent également leur texte descriptif dans une info-bulle. Les longues descriptions de commutateur se renvoient à la ligne, et les champs numériques ainsi que les entrées utilisateur réservent suffisamment de place pour la police choisie. La hauteur de la carte augmente avec le texte renvoyé à la ligne ; utilisez le défilement vertical pour voir les cartes inférieures. Ces changements préservent la police sélectionnée et les actions existantes de la carte.
+
+La suppression d’un groupe utilise une icône avec infobulle ; le bouton global conserve son libellé.

@@ -54,7 +54,7 @@ Quando il pannello si apre, usa **↑/↓** per scorrere il suo contenuto. **Tab
 
 ## Sincronizzazione con il resto del desktop
 
-La scheda Notifiche nasconde la sua cronologia mentre Non disturbare è attivo. Le notifiche ricevute in quel periodo restano in Dunst e appaiono nuovamente nella scheda dopo che Non disturbare viene disattivato.
+La cronologia resta visibile con Non disturbare. Le notifiche sono raggruppate per applicazione, inizialmente chiuse con l’anteprima più recente. Espandere un gruppo e selezionare un titolo per leggere il testo completo. È possibile cancellare un gruppo o tutta la cronologia. Gli aggiornamenti mantengono i gruppi aperti. Gli avvisi sono larghi 200–340 px e alti fino a 100 px, con altezza dinamica; due notifiche possono affiancare l’indicatore di eccedenza. Il tema viene ancora ricaricato dopo Non disturbare.
 
 Le schede mostrano lo stato live del desktop. Una modifica effettuata altrove (Centro di Controllo, la barra delle applicazioni, una scorciatoia da tastiera o la linea di comando `argvus`) appare nel pannello senza bisogno di riavviarlo:
 
@@ -87,3 +87,5 @@ Il calendario della barra delle applicazioni, ARGVUS Focus, ARGVUS Clock e il Pa
 Le schede del meteo utilizzano il catalogo condiviso (condizioni attuali e sette giorni). Le misurazioni meteorologiche occupano colonne a larghezza uguale; le etichette vanno a capo e i valori restano allineati. Le abbreviazioni dei giorni della settimana del calendario sono specifiche della località e con domenica come primo giorno, comprese le etichette dei giorni delle previsioni. Non sono traduzioni letterali delle abbreviazioni inglesi.
 
 I pulsanti legano il loro gruppo icona/etichetta alla larghezza disponibile. Se un'etichetta necessita di ellissi, passando il mouse o concentrandosi sul pulsante viene mostrato il testo completo. I pulsanti del profilo energetico mostrano anche il testo descrittivo in un tooltip. Le descrizioni lunghe degli interruttori vanno a capo, e i campi numerici e gli input dell'utente riservano spazio sufficiente per il font scelto. L'altezza della scheda aumenta con il testo a capo; usa lo scorrimento verticale per vedere le schede inferiori. Queste modifiche preservano il font selezionato e le azioni esistenti della scheda.
+
+La cancellazione del gruppo usa un’icona con suggerimento; il pulsante globale mantiene il testo.
