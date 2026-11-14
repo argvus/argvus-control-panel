@@ -54,7 +54,7 @@ Quando il pannello si apre, usa **↑/↓** per scorrere il suo contenuto. **Tab
 
 ## Sincronizzazione con il resto del desktop
 
-La cronologia resta visibile con Non disturbare. Le notifiche sono raggruppate per applicazione, inizialmente chiuse con l’anteprima più recente. Espandere un gruppo e selezionare un titolo per leggere il testo completo. È possibile cancellare un gruppo o tutta la cronologia. Gli aggiornamenti mantengono i gruppi aperti. Gli avvisi sono larghi 200–340 px e alti fino a 100 px, con altezza dinamica; due notifiche possono affiancare l’indicatore di eccedenza. Il tema viene ancora ricaricato dopo Non disturbare.
+I gruppi chiusi mostrano solo l’intestazione dell’applicazione, senza conteggi né anteprime. Il corpo appare espandendo il titolo.
 
 Le schede mostrano lo stato live del desktop. Una modifica effettuata altrove (Centro di Controllo, la barra delle applicazioni, una scorciatoia da tastiera o la linea di comando `argvus`) appare nel pannello senza bisogno di riavviarlo:
 

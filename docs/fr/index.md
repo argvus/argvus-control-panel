@@ -54,7 +54,7 @@ Lorsque le panneau s'ouvre, utilisez **↑/↓** pour faire défiler son contenu
 
 ## Rester synchronisé avec le reste du bureau
 
-L’historique reste visible en mode Ne pas déranger. Les notifications sont regroupées par application, repliées initialement avec le dernier aperçu. Dépliez un groupe puis sélectionnez un titre pour lire le texte complet. Effacez un groupe ou tout l’historique. Les actualisations conservent les groupes ouverts. Les fenêtres mesurent 200–340 px de large et jusqu’à 100 px de haut, avec une hauteur dynamique ; deux notifications peuvent accompagner l’indicateur de dépassement. Le rechargement du thème reste différé en mode Ne pas déranger.
+Les groupes repliés affichent uniquement l’en-tête de l’application, sans compteur ni aperçu. Le corps apparaît en dépliant son titre.
 
 Les cartes montrent l'état en direct du bureau. Un changement effectué ailleurs (Centre de Contrôle, la barre des tâches, un raccourci clavier ou la ligne de commande `argvus`) apparaît dans le panneau sans le redémarrer :
 

@@ -54,7 +54,7 @@ Cuando se abre el panel, utiliza **↑/↓** para desplazarte por su contenido. 
 
 ## Mantenerse sincronizado con el resto del escritorio
 
-El historial permanece visible con No molestar. Las notificaciones se agrupan por aplicación, contraídas inicialmente con la vista previa más reciente. Expanda un grupo y seleccione un título para leer el texto completo. Puede borrar un grupo o todo el historial. Las actualizaciones conservan los grupos abiertos. Los avisos tienen 200–340 px de ancho y altura dinámica hasta 100 px; pueden aparecer dos junto al indicador de avisos adicionales. La recarga del tema sigue aplazada con No molestar.
+Los grupos contraídos muestran solo la cabecera de la aplicación, sin contadores ni vistas previas. El cuerpo aparece al expandir su título.
 
 Las tarjetas muestran el estado en vivo del escritorio. Un cambio realizado en otro lugar (Centro de Control, la barra de tareas, un atajo de teclado o la línea de comandos `argvus`) aparece en el panel sin necesidad de reiniciarlo:
 

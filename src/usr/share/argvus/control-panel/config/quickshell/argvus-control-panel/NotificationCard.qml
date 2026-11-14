@@ -238,13 +238,7 @@ BaseCard {
 
     RowLayout {
         Layout.fillWidth: true
-        Text {
-            text: String(historyCount)
-            color: Theme.fgSubtle
-            font.family: Theme.fontFamily
-            font.pixelSize: Theme.scaledFont(12)
-            Layout.fillWidth: true
-        }
+        Item { Layout.fillWidth: true }
         GlassButton {
             visible: historyCount > 0
             implicitWidth: 70
@@ -278,7 +272,7 @@ BaseCard {
                 Button {
                     Layout.fillWidth: true
                     Layout.minimumWidth: 0
-                    text: (groupDelegate.expanded ? "▾ " : "▸ ") + groupDelegate.modelData.app + " · " + groupDelegate.modelData.items.length
+                    text: (groupDelegate.expanded ? "▾ " : "▸ ") + groupDelegate.modelData.app
                     Accessible.name: groupDelegate.modelData.app
                     onClicked: toggleExpanded(groupDelegate.modelData.app, true)
                     contentItem: Text {
@@ -329,7 +323,7 @@ BaseCard {
             }
 
             Repeater {
-                model: groupDelegate.expanded ? groupDelegate.modelData.items : groupDelegate.modelData.items.slice(0, 1)
+                model: groupDelegate.expanded ? groupDelegate.modelData.items : []
                 delegate: ColumnLayout {
                     id: entry
                     required property var modelData
@@ -372,7 +366,7 @@ BaseCard {
                         Layout.rightMargin: 6
                         text: bodyDocument.getText(0, bodyDocument.length)
                         textFormat: Text.PlainText
-                        visible: text !== ""
+                        visible: entry.expanded && text !== ""
                         color: Theme.fgSubtle
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.scaledFont(12)

@@ -56,7 +56,7 @@ Panel açıldığında, içeriği kaydırmak için **↑/↓** kullanın. **Tab*
 
 ## Masaüstünün geri kalanı ile senkronize kalmak
 
-Geçmiş, Rahatsız Etmeyin açıkken de görünür. Bildirimler uygulamaya göre gruplanır ve başlangıçta son önizlemeyle daraltılır. Grubu genişletip başlığı seçerek tam metni okuyabilirsiniz. Bir grubu veya tüm geçmişi temizleyebilirsiniz. Güncellemeler açık grupları korur. Açılır bildirimler 200–340 px genişliğinde ve dinamik olarak en fazla 100 px yüksekliğindedir; taşma göstergesiyle iki bildirim görünebilir. Tema yeniden yüklemesi Rahatsız Etmeyin sırasında ertelenir.
+Daraltılmış gruplar yalnızca uygulama başlığını gösterir; sayaç ve önizleme gösterilmez. Mesaj gövdesi başlık genişletilince görünür.
 
 Kartlar masaüstünün canlı durumunu gösterir. Başka bir yerde yapılan bir değişiklik (Kontrol Merkezi, görev çubuğu, bir klavye kısayolu veya `argvus` komut satırı) paneli yeniden başlatmadan gösterir:
 

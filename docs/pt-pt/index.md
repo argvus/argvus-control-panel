@@ -56,7 +56,7 @@ Desativar um card apenas o oculta do painel; não desinstala o provider por trá
 
 ## Sincronização com o resto do desktop
 
-O histórico permanece visível durante o Não Perturbe. As notificações são agrupadas por aplicação, inicialmente recolhidas, com a pré-visualização mais recente. Expanda um grupo para consultar as mensagens e selecione um título para ler o texto completo. Limpe um grupo ou todo o histórico. As atualizações preservam os grupos abertos. Os avisos usam largura de 200–340 px e altura dinâmica até 100 px; duas notificações podem aparecer junto ao indicador de excedentes. A recarga do tema continua adiada durante o Não Perturbe.
+Os grupos recolhidos mostram apenas o cabeçalho da aplicação, sem contagens nem pré-visualizações. O corpo da mensagem aparece apenas ao expandir o título.
 
 Os cards mostram o estado atual do desktop. Uma mudança feita em outro lugar (Control Center, taskbar, atalho de teclado ou linha de comando `argvus`) aparece no painel sem reiniciá-lo:
 

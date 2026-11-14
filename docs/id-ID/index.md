@@ -58,7 +58,7 @@ Saat panel terbuka, gunakan **↑/↓** untuk menggulir isinya. **Tab** bergerak
 
 ## Tetap selaras dengan sisa desktop
 
-Riwayat tetap terlihat saat Jangan Ganggu aktif. Notifikasi dikelompokkan per aplikasi, awalnya diciutkan dengan pratinjau terbaru. Buka grup lalu pilih judul untuk membaca teks lengkap. Hapus satu grup atau seluruh riwayat. Pembaruan mempertahankan grup terbuka. Lebar pop-up 200–340 px dan tinggi dinamis hingga 100 px; dua notifikasi dapat tampil bersama indikator kelebihan. Pemuatan ulang tema tetap ditunda selama Jangan Ganggu.
+Grup yang diciutkan hanya menampilkan kepala aplikasi, tanpa jumlah atau pratinjau. Isi pesan muncul setelah judul dibuka.
 
 Kartu menampilkan keadaan langsung dari desktop. Perubahan yang dilakukan di tempat lain (Control Center, bilah tugas, pintasan keyboard, atau baris perintah `argvus`) akan muncul di panel tanpa perlu memulainya kembali:
 

@@ -54,7 +54,7 @@ Wenn das Panel geöffnet wird, verwenden Sie **↑/↓**, um seinen Inhalt zu sc
 
 ## Synchronisation mit dem Rest des Desktops
 
-Der Verlauf bleibt bei „Nicht stören“ sichtbar. Benachrichtigungen werden nach Anwendung gruppiert und zunächst mit der neuesten Vorschau eingeklappt. Eine Gruppe aufklappen und einen Titel auswählen, um den vollständigen Text zu lesen. Einzelne Gruppen oder den gesamten Verlauf löschen. Aktualisierungen erhalten geöffnete Gruppen. Pop-ups sind 200–340 px breit und dynamisch bis zu 100 px hoch; zwei Meldungen können neben der Überlaufanzeige erscheinen. Das Neuladen des Designs wird bei „Nicht stören“ weiterhin verschoben.
+Eingeklappte Gruppen zeigen nur den Anwendungskopf, ohne Anzahl oder Vorschau. Nachrichtentexte erscheinen erst beim Aufklappen ihres Titels.
 
 Die Karten zeigen den aktuellen Zustand des Desktops. Eine Änderung, die anderswo vorgenommen wird (Systemsteuerung, Taskleiste, Tastenkombination oder der `argvus`-Kommandozeilenbefehl), wird im Panel angezeigt, ohne dass es neu gestartet werden muss:
 

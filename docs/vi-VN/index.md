@@ -55,7 +55,7 @@ Khi bảng mở ra, sử dụng **↑/↓** để cuộn nội dung của nó. *
 
 ## Giữ đồng bộ với phần còn lại của desktop
 
-Lịch sử vẫn hiển thị khi bật Không làm phiền. Thông báo được nhóm theo ứng dụng, ban đầu thu gọn với bản xem trước mới nhất. Mở nhóm rồi chọn tiêu đề để đọc toàn bộ nội dung. Có thể xóa một nhóm hoặc toàn bộ lịch sử. Cập nhật giữ nguyên các nhóm đang mở. Cửa sổ rộng 200–340 px, chiều cao linh hoạt tối đa 100 px; hai thông báo có thể xuất hiện cùng chỉ báo số thông báo còn lại. Việc tải lại giao diện vẫn được hoãn khi bật Không làm phiền.
+Nhóm thu gọn chỉ hiện tiêu đề ứng dụng, không có số lượng hay xem trước. Nội dung chỉ hiện khi mở rộng tiêu đề tin nhắn.
 
 Các thẻ hiển thị trạng thái trực tiếp của màn hình. Một thay đổi được thực hiện ở nơi khác (Trung tâm điều khiển, thanh tác vụ, phím tắt bàn phím hoặc dòng lệnh `argvus`) sẽ hiển thị trong bảng mà không cần khởi động lại nó:
 
