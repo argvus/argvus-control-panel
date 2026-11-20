@@ -112,8 +112,8 @@ cards-config.sh move <card> <index>
 
 **APPEARANCE → اللون الراقص** → **ARGVUS اللون الراقص** (`argvus config accent`).
 
-**ARGVUS الطقس** · `argvus weather-location` · `Super + Shift + W` · `/` بحث · `A` Automatic (by IP) · `Delete` مسح المواقع الأخيرة · `Esc` إغلاق
+**ARGVUS الطقس** · `argvus weather-location` · `Super + Shift + W` · `Tab` · `↑` `↓` · `Enter` · `/` بحث · `A` Automatic (by IP) · `Delete` مسح المواقع الأخيرة · `Esc` إغلاق
 
-**وحدة درجة الحرارة** · °C / °F
+**الإجراءات** → **وحدة درجة الحرارة** · `Enter` · °C ↔ °F
 
 يعرض قسم الطقس في لوحة التحكم الموقع الذي تختاره من زر الموقع أو من الاختصار.

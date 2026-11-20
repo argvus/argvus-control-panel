@@ -103,8 +103,8 @@ A ação de limpar cada grupo é um ícone com dica ao passar o mouse ou focar p
 
 **APARÊNCIA → Destaque** → **ARGVUS Cor de destaque** (`argvus config accent`).
 
-**ARGVUS Clima** · `argvus weather-location` · `Super + Shift + W` · `/` Buscar · `A` Automático (por IP) · `Delete` Limpar recentes · `Esc` Fechar
+**ARGVUS Clima** · `argvus weather-location` · `Super + Shift + W` · `Tab` · `↑` `↓` · `Enter` · `/` Buscar · `A` Automático (por IP) · `Delete` Limpar recentes · `Esc` Fechar
 
-**Unidade de temperatura** · °C / °F
+**Ações** → **Unidade de temperatura** · `Enter` · °C ↔ °F
 
 O card de clima mostra a cidade escolhida pelo botão Localização ou pelo atalho de teclado.

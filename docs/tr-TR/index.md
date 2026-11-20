@@ -104,8 +104,8 @@ Grup temizleme işlemi ipuçlu bir simgedir; genel düğmenin metni korunur.
 
 **APPEARANCE → Acent renk** → **ARGVUS Acent renk** (`argvus config accent`).
 
-**ARGVUS Hava** · `argvus weather-location` · `Super + Shift + W` · `/` Ara · `A` Otomatik (by IP) · `Delete` Son konumları temizle · `Esc` Kapat
+**ARGVUS Hava** · `argvus weather-location` · `Super + Shift + W` · `Tab` · `↑` `↓` · `Enter` · `/` Ara · `A` Otomatik (by IP) · `Delete` Son konumları temizle · `Esc` Kapat
 
-**Sıcaklık birimi** · °C / °F
+**Eylemler** → **Sıcaklık birimi** · `Enter` · °C ↔ °F
 
 Hava durumu kartı, konum düğmesi veya klavye kısayoluyla seçtiğiniz şehri gösterir.

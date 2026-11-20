@@ -92,8 +92,8 @@ cards-config.sh move <card> <index>
 
 **外观 → 强调色** → **ARGVUS 强调色** (`argvus config accent`).
 
-**ARGVUS 天气** · `argvus weather-location` · `Super + Shift + W` · `/` 搜索 · `A` 自动（通过 IP） · `Delete` 清除最近位置 · `Esc` 关闭
+**ARGVUS 天气** · `argvus weather-location` · `Super + Shift + W` · `Tab` · `↑` `↓` · `Enter` · `/` 搜索 · `A` 自动（通过 IP） · `Delete` 清除最近位置 · `Esc` 关闭
 
-**温度单位** · °C / °F
+**操作** → **温度单位** · `Enter` · °C ↔ °F
 
 天气卡片会显示通过位置按钮或键盘快捷键选中的城市。

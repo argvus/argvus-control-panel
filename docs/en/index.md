@@ -102,8 +102,8 @@ The group clear action is an icon with a tooltip; the global Clear button keeps 
 
 **APPEARANCE → Accent color** → **ARGVUS Accent Color** (`argvus config accent`).
 
-**ARGVUS Weather** · `argvus weather-location` · `Super + Shift + W` · `/` Search · `A` Automatic (by IP) · `Delete` Clear recent · `Esc` Close
+**ARGVUS Weather** · `argvus weather-location` · `Super + Shift + W` · `Tab` · `↑` `↓` · `Enter` · `/` Search · `A` Automatic (by IP) · `Delete` Clear recent · `Esc` Close
 
-**Temperature unit** · °C / °F
+**Actions** → **Temperature unit** · `Enter` · °C ↔ °F
 
 The Weather card updates to the city you select through the Location button or the keyboard shortcut.

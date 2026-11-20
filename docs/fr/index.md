@@ -92,8 +92,8 @@ La suppression d’un groupe utilise une icône avec infobulle ; le bouton globa
 
 **APPARENCE → Accent** → **ARGVUS Couleur d'accentuation** (`argvus config accent`).
 
-**ARGVUS Météo** · `argvus weather-location` · `Super + Shift + W` · `/` Rechercher · `A` Automatique (par IP) · `Delete` Effacer les lieux récents · `Esc` Fermer
+**ARGVUS Météo** · `argvus weather-location` · `Super + Shift + W` · `Tab` · `↑` `↓` · `Enter` · `/` Rechercher · `A` Automatique (par IP) · `Delete` Effacer les lieux récents · `Esc` Fermer
 
-**Unité de température** · °C / °F
+**Actions** → **Unité de température** · `Enter` · °C ↔ °F
 
 La carte météo affiche la ville choisie via le bouton de localisation ou le raccourci clavier.

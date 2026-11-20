@@ -92,8 +92,8 @@ cards-config.sh move <card> <index>
 
 **모양 → 강조색** → **ARGVUS 악센트 색상** (`argvus config accent`).
 
-**ARGVUS 날씨** · `argvus weather-location` · `Super + Shift + W` · `/` 검색 · `A` 자동(IP별) · `Delete` 최근 기록 지우기 · `Esc` 닫기
+**ARGVUS 날씨** · `argvus weather-location` · `Super + Shift + W` · `Tab` · `↑` `↓` · `Enter` · `/` 검색 · `A` 자동(IP별) · `Delete` 최근 기록 지우기 · `Esc` 닫기
 
-**온도 단위** · °C / °F
+**작업** → **온도 단위** · `Enter` · °C ↔ °F
 
 위치 버튼이나 키보드 단축키로 선택한 도시가 날씨 카드에 표시됩니다.

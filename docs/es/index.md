@@ -92,8 +92,8 @@ La acción de borrar cada grupo es un icono con ayuda emergente; el botón gener
 
 **APARIENCIA → Color de acento** → **ARGVUS Color de acento** (`argvus config accent`).
 
-**ARGVUS Clima** · `argvus weather-location` · `Super + Shift + W` · `/` Buscar · `A` Automático (por IP) · `Delete` Borrar recientes · `Esc` Cerrar
+**ARGVUS Clima** · `argvus weather-location` · `Super + Shift + W` · `Tab` · `↑` `↓` · `Enter` · `/` Buscar · `A` Automático (por IP) · `Delete` Borrar recientes · `Esc` Cerrar
 
-**Unidad de temperatura** · °C / °F
+**Acciones** → **Unidad de temperatura** · `Enter` · °C ↔ °F
 
 La tarjeta del tiempo se actualiza con la ciudad que selecciones mediante el botón de ubicación o el atajo de teclado.
