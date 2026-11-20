@@ -88,7 +88,7 @@ $_place
 EOF
 
   curl -4 -fsSL --connect-timeout 8 --max-time 12 \
-    "https://api.open-meteo.com/v1/forecast?latitude=${_latitude}&longitude=${_longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&forecast_days=7&timezone=auto" \
+    "https://api.open-meteo.com/v1/forecast?latitude=${_latitude}&longitude=${_longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&wind_speed_unit=kmh&forecast_days=7&timezone=auto" \
     -o "$TMP_DIR/forecast.json" 2>/dev/null || return 1
 
   jq -e '.current' "$TMP_DIR/forecast.json" >/dev/null 2>&1 || return 1
@@ -120,7 +120,7 @@ EOF
         temp_C: (.current.temperature_2m | tostring),
         FeelsLikeC: (.current.apparent_temperature | tostring),
         humidity: (.current.relative_humidity_2m | tostring),
-        windspeedKmph: ((.current.wind_speed_10m * 3.6) | round | tostring),
+        windspeedKmph: (.current.wind_speed_10m | round | tostring),
         weatherCode: (.current.weather_code | tostring),
         weatherDesc: [{value: (.current.weather_code | description)}]
       }],
