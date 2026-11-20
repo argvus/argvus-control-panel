@@ -7,6 +7,7 @@ BaseCard {
     cardTitle: Strings.cardTitleWeather
     cardIcon:  "»"
 
+    property bool fahrenheit: false
     property string location: ""
     property string locationName: ""
     property int locationRevision: 0
@@ -23,6 +24,23 @@ BaseCard {
     property bool   hasError:    false
     property bool   hasData:     false
     property bool   refreshPending: false
+
+    function formatTemperature(value) {
+        const raw = value === null || value === undefined ? "" : String(value).trim()
+        const celsius = raw === "" ? NaN : Number(raw)
+        if (!isFinite(celsius)) return "—"
+        return fahrenheit ? Math.round(celsius * 9 / 5 + 32) + "°F" : raw + "°C"
+    }
+
+    FileView {
+        id: temperatureUnitFile
+        path: Theme.dataConfig + "/.weather-temperature-unit"
+        watchChanges: true
+        printErrors: false
+        onFileChanged: reload()
+        onTextChanged: root.fahrenheit = text().trim() === "fahrenheit"
+        onLoadFailed: root.fahrenheit = false
+    }
 
     function iconForCode(value) {
         var code = parseInt(value)
@@ -86,7 +104,10 @@ BaseCard {
 
     Timer {
         interval: 2000; running: pollingActive; repeat: true
-        onTriggered: locationFile.reload()
+        onTriggered: {
+            locationFile.reload()
+            temperatureUnitFile.reload()
+        }
     }
 
     Timer {
@@ -143,7 +164,10 @@ BaseCard {
     Process {
         id: configureProc
         command: ["argvus", "weather-location"]
-        onExited: locationFile.reload()
+        onExited: {
+            locationFile.reload()
+            temperatureUnitFile.reload()
+        }
     }
 
     // Estado: loading
@@ -252,7 +276,7 @@ BaseCard {
                     Layout.minimumWidth: 0
                     fontSizeMode: Text.HorizontalFit
                     minimumPixelSize: Theme.scaledFont(18)
-                    text: tempC + "°C"
+                    text: root.formatTemperature(tempC)
                     color: Theme.fgSubtle
                     font.pixelSize: Theme.scaledFont(26)
                     font.weight: Font.Light
@@ -290,7 +314,7 @@ BaseCard {
             columnSpacing: 10
             rowSpacing: 4
             readonly property var metrics: [
-                { label: Strings.weatherFeelsLike, value: feelsLike + "°C" },
+                { label: Strings.weatherFeelsLike, value: root.formatTemperature(feelsLike) },
                 { label: Strings.weatherHumidity, value: humidity + "%" },
                 { label: Strings.weatherWind, value: windKmh + " km/h" }
             ]
@@ -363,7 +387,7 @@ BaseCard {
                     Layout.preferredWidth: 1
                     elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
-                    text: modelData.minC + "°"
+                    text: root.formatTemperature(modelData.minC)
                     color: Theme.fgDim
                     font.pixelSize: Theme.scaledFont(12)
                     font.family: Theme.fontFamily
@@ -374,7 +398,7 @@ BaseCard {
                     Layout.preferredWidth: 1
                     elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
-                    text: modelData.maxC + "°C"
+                    text: root.formatTemperature(modelData.maxC)
                     color: Theme.fgText
                     font.pixelSize: Theme.scaledFont(12)
                     font.family: Theme.fontFamily

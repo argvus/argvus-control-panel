@@ -110,4 +110,6 @@ See  for the installed and user paths.(/docs/argvus-taskbar/taskbar/)           
 
 **ARGVUS موسم** · `argvus weather-location` · `Super + Shift + W` · `/` تلاش کریں · `A` خودکار (جی پی ایچ000) · `Delete` حالیہ مقامات صاف کریں · `Esc` بند کریں
 
+**درجہ حرارت کی اکائی** · °C / °F
+
 مقام کے بٹن یا کی بورڈ شارٹ کٹ سے منتخب کردہ شہر موسم کے کارڈ میں دکھائی دیتا ہے۔

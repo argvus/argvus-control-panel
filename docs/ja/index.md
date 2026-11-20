@@ -94,4 +94,6 @@ cards-config.sh move <card> <index>
 
 **ARGVUS 天気** · `argvus weather-location` · `Super + Shift + W` · `/` 検索 · `A` 自動（IPによる） · `Delete` 履歴を消去 · `Esc` 閉じる
 
+**温度の単位** · °C / °F
+
 場所ボタンまたはキーボードショートカットで選択した都市が天気カードに表示されます。

@@ -94,4 +94,6 @@ cards-config.sh move <card> <index>
 
 **ARGVUS 날씨** · `argvus weather-location` · `Super + Shift + W` · `/` 검색 · `A` 자동(IP별) · `Delete` 최근 기록 지우기 · `Esc` 닫기
 
+**온도 단위** · °C / °F
+
 위치 버튼이나 키보드 단축키로 선택한 도시가 날씨 카드에 표시됩니다.

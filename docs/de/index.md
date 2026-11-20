@@ -94,4 +94,6 @@ Das Löschen einer Gruppe erfolgt über ein Symbol mit Tooltip; die globale Scha
 
 **ARGVUS Wetter** · `argvus weather-location` · `Super + Shift + W` · `/` Suchen · `A` Automatisch (nach IP) · `Delete` Letzte Orte löschen · `Esc` Schließen
 
+**Temperatureinheit** · °C / °F
+
 Die Wetterkarte im Control Panel zeigt den Ort an, den du über die Schaltfläche oder das Tastenkürzel auswählst.

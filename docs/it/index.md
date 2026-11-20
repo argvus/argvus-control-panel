@@ -94,4 +94,6 @@ La cancellazione del gruppo usa un’icona con suggerimento; il pulsante globale
 
 **ARGVUS Tempo atmosferico** · `argvus weather-location` · `Super + Shift + W` · `/` Cerca · `A` Automatico (tramite IP) · `Delete` Cancella recenti · `Esc` Chiudi
 
+**Unità di temperatura** · °C / °F
+
 La scheda Meteo mostra la città scelta tramite il pulsante della posizione o la scorciatoia da tastiera.

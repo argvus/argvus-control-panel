@@ -108,4 +108,6 @@ Thao tác xóa nhóm dùng biểu tượng có chú giải; nút xóa chung gi�
 
 **ARGVUS Comment** · `argvus weather-location` · `Super + Shift + W` · `/` Tìm kiếm · `A` Tự động · `Delete` Xóa vị trí gần đây · `Esc` Đóng
 
+**Đơn vị nhiệt độ** · °C / °F
+
 Thẻ Thời tiết hiển thị thành phố bạn chọn qua nút Vị trí hoặc phím tắt.

@@ -106,4 +106,6 @@ cards-config.sh move <card> <index>
 
 **ARGVUS मौसम** · `argvus weather-location` · `Super + Shift + W` · `/` खोजें · `A` स्वचालित (IP द्वारा) · `Delete` हाल की जगहें मिटाएँ · `Esc` बंद करें
 
+**तापमान की इकाई** · °C / °F
+
 स्थान बटन या कीबोर्ड शॉर्टकट से चुना गया शहर मौसम कार्ड में दिखता है।

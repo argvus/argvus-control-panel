@@ -114,4 +114,6 @@ cards-config.sh move <card> <index>
 
 **ARGVUS الطقس** · `argvus weather-location` · `Super + Shift + W` · `/` بحث · `A` Automatic (by IP) · `Delete` مسح المواقع الأخيرة · `Esc` إغلاق
 
+**وحدة درجة الحرارة** · °C / °F
+
 يعرض قسم الطقس في لوحة التحكم الموقع الذي تختاره من زر الموقع أو من الاختصار.

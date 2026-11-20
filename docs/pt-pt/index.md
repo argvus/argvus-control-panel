@@ -105,4 +105,6 @@ A ação de limpar cada grupo é um ícone com dica ao passar o rato ou focar pe
 
 **ARGVUS Tempo** · `argvus weather-location` · `Super + Shift + W` · `/` Pesquisar · `A` Automático (por IP) · `Delete` Limpar recentes · `Esc` Fechar
 
+**Unidade de temperatura** · °C / °F
+
 O cartão de meteorologia mostra a cidade escolhida através do botão Localização ou do atalho de teclado.
