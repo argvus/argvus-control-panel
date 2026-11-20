@@ -91,3 +91,7 @@ Schaltflächen binden ihre Icon/Label-Gruppe an die verfügbare Breite. Wenn ein
 Das Löschen einer Gruppe erfolgt über ein Symbol mit Tooltip; die globale Schaltfläche behält ihre Beschriftung.
 
 **AUSSEHEN → Akzentfarbe** → **ARGVUS Akzentfarbe** (`argvus config accent`).
+
+**ARGVUS Wetter** · `argvus weather-location` · `Super + Shift + W` · `/` Suchen · `A` Automatisch (nach IP) · `Delete` Letzte Orte löschen · `Esc` Schließen
+
+Die Wetterkarte im Control Panel zeigt den Ort an, den du über die Schaltfläche oder das Tastenkürzel auswählst.

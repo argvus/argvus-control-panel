@@ -103,3 +103,7 @@ cards-config.sh move <card> <index>
 समूह मिटाने की कार्रवाई संकेत वाले आइकन से दिखाई जाती है; सामान्य बटन का पाठ बना रहता है।
 
 **APPEARANCE → रंग** → **ARGVUS रंग** (`argvus config accent`).
+
+**ARGVUS मौसम** · `argvus weather-location` · `Super + Shift + W` · `/` खोजें · `A` स्वचालित (IP द्वारा) · `Delete` हाल की जगहें मिटाएँ · `Esc` बंद करें
+
+स्थान बटन या कीबोर्ड शॉर्टकट से चुना गया शहर मौसम कार्ड में दिखता है।

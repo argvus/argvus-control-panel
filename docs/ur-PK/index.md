@@ -107,3 +107,7 @@ See  for the installed and user paths.(/docs/argvus-taskbar/taskbar/)           
 گروپ صاف کرنے کے لیے اشارے والا آئیکن ہے؛ عمومی بٹن کا متن برقرار رہتا ہے۔
 
 **اِس شمارے میں → رنگ** → **ARGVUS رنگ** (`argvus config accent`).
+
+**ARGVUS موسم** · `argvus weather-location` · `Super + Shift + W` · `/` تلاش کریں · `A` خودکار (جی پی ایچ000) · `Delete` حالیہ مقامات صاف کریں · `Esc` بند کریں
+
+مقام کے بٹن یا کی بورڈ شارٹ کٹ سے منتخب کردہ شہر موسم کے کارڈ میں دکھائی دیتا ہے۔

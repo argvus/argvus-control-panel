@@ -91,3 +91,7 @@ Les boutons lient leur groupe icône/étiquette à la largeur disponible. Si une
 La suppression d’un groupe utilise une icône avec infobulle ; le bouton global conserve son libellé.
 
 **APPARENCE → Accent** → **ARGVUS Couleur d'accentuation** (`argvus config accent`).
+
+**ARGVUS Météo** · `argvus weather-location` · `Super + Shift + W` · `/` Rechercher · `A` Automatique (par IP) · `Delete` Effacer les lieux récents · `Esc` Fermer
+
+La carte météo affiche la ville choisie via le bouton de localisation ou le raccourci clavier.

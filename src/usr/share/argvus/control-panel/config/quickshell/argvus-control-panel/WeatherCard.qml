@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import QtCore
 import Quickshell.Io
 
 BaseCard {
@@ -9,6 +8,8 @@ BaseCard {
     cardIcon:  "»"
 
     property string location: ""
+    property string locationName: ""
+    property int locationRevision: 0
     property string cityName:    "—"
     property string condition:   "—"
     property string tempC:       "—"
@@ -46,19 +47,29 @@ BaseCard {
             return
         }
         refreshPending = false
+        fetchProc.requestLocation = location
+        fetchProc.requestRevision = locationRevision
         fetchProc.running = true
     }
 
     FileView {
         id: locationFile
-        path: StandardPaths.writableLocation(StandardPaths.HomeLocation) +
-              "/.config/argvus/data/.weather-location"
+        path: Theme.dataConfig + "/.weather-location"
+        watchChanges: true
+        onFileChanged: reload()
         // Absent until the user picks a location; the default is used meanwhile.
         printErrors: false
         onTextChanged: {
-            var newLocation = text().trim()
-            if (newLocation === root.location) return
+            const lines = text().split("\n")
+            const newLocation = lines[0].trim()
+            const newName = newLocation && lines.length > 1 ? lines[1].trim() : ""
+            if (newLocation === root.location && newName === root.locationName) return
             root.location = newLocation
+            root.locationName = newName
+            root.locationRevision++
+            root.hasData = false
+            root.hasError = false
+            root.loading = true
             if (root.pollingActive) root.refreshWeather()
         }
     }
@@ -74,6 +85,11 @@ BaseCard {
     }
 
     Timer {
+        interval: 2000; running: pollingActive; repeat: true
+        onTriggered: locationFile.reload()
+    }
+
+    Timer {
         id: deferredRefresh
         interval: 1
         repeat: false
@@ -82,20 +98,20 @@ BaseCard {
 
     Process {
         id: fetchProc
-        property string url: root.location !== ""
-            ? "https://wttr.in/" + encodeURIComponent(root.location) + "?format=j1"
-            : "https://wttr.in/?format=j1"
-        command: ["sh", "-c", "\"${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/control-panel/sh/weather-fetch.sh\" \"$1\"", "argvus-weather", root.location]
+        property string requestLocation: ""
+        property int requestRevision: -1
+        command: [Theme.systemConfig + "/control-panel/sh/weather-fetch.sh", requestLocation]
         onStarted: { if (!hasData) loading = true; hasError = false }
         stdout: StdioCollector {
             onStreamFinished: {
+                if (fetchProc.requestRevision !== root.locationRevision) return
                 loading = false
                 try {
                     var d    = JSON.parse(this.text)
                     var cur  = d.current_condition[0]
                     var area = d.nearest_area[0]
 
-                    cityName  = area.areaName[0].value + ", " + area.country[0].value
+                    cityName  = root.locationName || [area.areaName[0].value, area.country[0].value].filter(Boolean).join(", ")
                     tempC     = cur.temp_C
                     feelsLike = cur.FeelsLikeC
                     humidity  = cur.humidity
@@ -113,8 +129,10 @@ BaseCard {
             }
         }
         onExited: function(code) {
-            loading = false
-            if (code !== 0 && !hasData) hasError = true
+            if (requestRevision === root.locationRevision) {
+                loading = false
+                if (code !== 0 && !hasData) hasError = true
+            }
             if (root.refreshPending) {
                 root.refreshPending = false
                 deferredRefresh.restart()
@@ -124,11 +142,8 @@ BaseCard {
 
     Process {
         id: configureProc
-        command: ["sh", "-c", "${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/control-panel/sh/weather-location.sh"]
-        onExited: {
-            locationFile.reload()
-            root.refreshWeather()
-        }
+        command: ["argvus", "weather-location"]
+        onExited: locationFile.reload()
     }
 
     // Estado: loading
@@ -202,7 +217,7 @@ BaseCard {
 
     // Current conditions stay compact; the weekly forecast is shown on demand.
     ColumnLayout {
-        visible: !loading && !hasError && root.selectedTab === 0
+        visible: !loading && root.hasData && root.selectedTab === 0
         Layout.fillWidth: true
         spacing: 6
 
@@ -317,7 +332,7 @@ BaseCard {
     }
 
     ColumnLayout {
-        visible: !loading && !hasError && root.selectedTab === 1
+        visible: !loading && root.hasData && root.selectedTab === 1
         Layout.fillWidth: true
         spacing: 6
         Repeater {

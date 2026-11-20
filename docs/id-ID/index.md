@@ -105,3 +105,7 @@ Perubahan ini mempertahankan font yang dipilih dan tindakan kartu yang ada.
 Tindakan hapus grup berupa ikon dengan petunjuk; tombol global tetap berlabel.
 
 **[PH000] → Warna aksen** → **ARGVUS Warna aksen** (`argvus config accent`).
+
+**ARGVUS Cuaca** · `argvus weather-location` · `Super + Shift + W` · `/` Cari · `A` Otomatis (oleh IP) · `Delete` Hapus lokasi terbaru · `Esc` Tutup
+
+Kartu Cuaca menampilkan kota yang dipilih melalui tombol Lokasi atau pintasan papan ketik.

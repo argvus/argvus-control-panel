@@ -111,3 +111,7 @@ cards-config.sh move <card> <index>
 يستخدم مسح المجموعة أيقونة مع تلميح؛ ويحتفظ زر المسح العام بتسميته.
 
 **APPEARANCE → اللون الراقص** → **ARGVUS اللون الراقص** (`argvus config accent`).
+
+**ARGVUS الطقس** · `argvus weather-location` · `Super + Shift + W` · `/` بحث · `A` Automatic (by IP) · `Delete` مسح المواقع الأخيرة · `Esc` إغلاق
+
+يعرض قسم الطقس في لوحة التحكم الموقع الذي تختاره من زر الموقع أو من الاختصار.

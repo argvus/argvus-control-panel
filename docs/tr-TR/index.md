@@ -103,3 +103,7 @@ Bu değişiklikler seçili yazı tipini ve mevcut kart eylemlerini korur.
 Grup temizleme işlemi ipuçlu bir simgedir; genel düğmenin metni korunur.
 
 **APPEARANCE → Acent renk** → **ARGVUS Acent renk** (`argvus config accent`).
+
+**ARGVUS Hava** · `argvus weather-location` · `Super + Shift + W` · `/` Ara · `A` Otomatik (by IP) · `Delete` Son konumları temizle · `Esc` Kapat
+
+Hava durumu kartı, konum düğmesi veya klavye kısayoluyla seçtiğiniz şehri gösterir.

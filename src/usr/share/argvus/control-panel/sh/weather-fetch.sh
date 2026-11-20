@@ -5,7 +5,7 @@
 set -eu
 
 ARGVUS_BOOTSTRAP="${ARGVUS_BOOTSTRAP:-${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/session/sh/bootstrap.sh}"
-# shellcheck disable=SC1091
+# shellcheck disable=SC1090,SC1091
 . "$ARGVUS_BOOTSTRAP"
 
 WEATHER_CLEAR_SKY="$(argvus_tr control-panel weather.condition.clear_sky)"
@@ -72,7 +72,12 @@ locate_by_ip() {
 }
 
 fetch_open_meteo() {
-  if [ -n "$LOCATION" ]; then
+  if [ -n "$LOCATION" ] && jq -en --arg point "$LOCATION" '
+    ($point | split(",") | map(tonumber? // null)) as $p |
+    ($p | length) == 2 and ($p | all(type == "number")) and $p[0] >= -90 and $p[0] <= 90 and $p[1] >= -180 and $p[1] <= 180
+  ' >/dev/null; then
+    _place="$(jq -nr --arg point "$LOCATION" '($point | split(",")) + [$point, ""] | @tsv')"
+  elif [ -n "$LOCATION" ]; then
     _place="$(geocode_location)" || return 1
   else
     _place="$(locate_by_ip)" || return 1

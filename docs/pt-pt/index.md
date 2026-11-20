@@ -102,3 +102,7 @@ A fonte selecionada e as ações dos cards são preservadas.
 A ação de limpar cada grupo é um ícone com dica ao passar o rato ou focar pelo teclado; o botão geral mantém o texto.
 
 **APPEARANCE → Cor do sotaque** → **ARGVUS Cor do sotaque** (`argvus config accent`).
+
+**ARGVUS Tempo** · `argvus weather-location` · `Super + Shift + W` · `/` Pesquisar · `A` Automático (por IP) · `Delete` Limpar recentes · `Esc` Fechar
+
+O cartão de meteorologia mostra a cidade escolhida através do botão Localização ou do atalho de teclado.

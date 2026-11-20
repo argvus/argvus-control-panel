@@ -91,3 +91,7 @@ cards-config.sh move <card> <index>
 清除分组使用带工具提示的图标；全局清除按钮保留文字。
 
 **外观 → 强调色** → **ARGVUS 强调色** (`argvus config accent`).
+
+**ARGVUS 天气** · `argvus weather-location` · `Super + Shift + W` · `/` 搜索 · `A` 自动（通过 IP） · `Delete` 清除最近位置 · `Esc` 关闭
+
+天气卡片会显示通过位置按钮或键盘快捷键选中的城市。

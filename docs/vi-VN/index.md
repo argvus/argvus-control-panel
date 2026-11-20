@@ -105,3 +105,7 @@ Xem[thanh tác vụ và các bảng](/docs/argvus-taskbar/taskbar/)cho mối qua
 Thao tác xóa nhóm dùng biểu tượng có chú giải; nút xóa chung giữ nhãn.
 
 **ĐƯỢC RỒI → Màu triều đại** → **ARGVUS Màu triều đại** (`argvus config accent`).
+
+**ARGVUS Comment** · `argvus weather-location` · `Super + Shift + W` · `/` Tìm kiếm · `A` Tự động · `Delete` Xóa vị trí gần đây · `Esc` Đóng
+
+Thẻ Thời tiết hiển thị thành phố bạn chọn qua nút Vị trí hoặc phím tắt.

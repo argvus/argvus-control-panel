@@ -102,3 +102,7 @@ A fonte selecionada e as ações dos cards são preservadas.
 A ação de limpar cada grupo é um ícone com dica ao passar o mouse ou focar pelo teclado; o botão geral mantém o texto.
 
 **APARÊNCIA → Destaque** → **ARGVUS Cor de destaque** (`argvus config accent`).
+
+**ARGVUS Clima** · `argvus weather-location` · `Super + Shift + W` · `/` Buscar · `A` Automático (por IP) · `Delete` Limpar recentes · `Esc` Fechar
+
+O card de clima mostra a cidade escolhida pelo botão Localização ou pelo atalho de teclado.

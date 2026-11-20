@@ -91,3 +91,7 @@ I pulsanti legano il loro gruppo icona/etichetta alla larghezza disponibile. Se 
 La cancellazione del gruppo usa un’icona con suggerimento; il pulsante globale mantiene il testo.
 
 **ASPETTO → Colore accento** → **ARGVUS Colore accento** (`argvus config accent`).
+
+**ARGVUS Tempo atmosferico** · `argvus weather-location` · `Super + Shift + W` · `/` Cerca · `A` Automatico (tramite IP) · `Delete` Cancella recenti · `Esc` Chiudi
+
+La scheda Meteo mostra la città scelta tramite il pulsante della posizione o la scorciatoia da tastiera.

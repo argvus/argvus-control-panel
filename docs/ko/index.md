@@ -91,3 +91,7 @@ cards-config.sh move <card> <index>
 그룹 삭제는 도구 설명이 있는 아이콘으로 표시하며 전체 삭제 버튼은 글자를 유지합니다.
 
 **모양 → 강조색** → **ARGVUS 악센트 색상** (`argvus config accent`).
+
+**ARGVUS 날씨** · `argvus weather-location` · `Super + Shift + W` · `/` 검색 · `A` 자동(IP별) · `Delete` 최근 기록 지우기 · `Esc` 닫기
+
+위치 버튼이나 키보드 단축키로 선택한 도시가 날씨 카드에 표시됩니다.
