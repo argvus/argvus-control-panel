@@ -103,3 +103,5 @@ Sử dụng bảng điều khiển để xem trạng thái hiện tại và các
 Xem[thanh tác vụ và các bảng](/docs/argvus-taskbar/taskbar/)cho mối quan hệ giữa bảng điều khiển, lề thanh tác vụ và bố cục cửa sổ.
 
 Thao tác xóa nhóm dùng biểu tượng có chú giải; nút xóa chung giữ nhãn.
+
+**ĐƯỢC RỒI → Màu triều đại** → **ARGVUS Màu triều đại** (`argvus config accent`).

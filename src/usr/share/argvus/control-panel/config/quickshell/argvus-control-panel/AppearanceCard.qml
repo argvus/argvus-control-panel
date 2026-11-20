@@ -1,5 +1,4 @@
 import QtQuick
-import QtQuick.Dialogs
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
@@ -14,13 +13,13 @@ BaseCard {
     property bool telemetryRequested: false
     property bool animationsRequested: false
     property bool effectsRequested: false
+    property bool accentPending: false
     readonly property bool widgetTelemetryEnabled: toggleProc.running ? telemetryRequested : Theme.widgetTelemetryEnabled
     // ANIMATIONS is the master switch for motion; EFFECTS is the master switch for
     // blur and transparency. They are independent, as `argvus effects-toggle
     // animations|effects` are.
     readonly property bool animationsOn: animationsToggleProc.running ? animationsRequested : Theme.animationsState !== "disabled"
     readonly property bool effectsOn: effectsToggleProc.running ? effectsRequested : Theme.effectsEnabled
-    property string draftHex: ""
 
     // Changing the `effects` section makes argvus-config restart this panel,
     // which would kill a child process half way. Run the command as a transient
@@ -30,55 +29,6 @@ BaseCard {
             "--setenv=ARGVUS_CONFIG_HOME=" + Theme.configHome,
             "--setenv=ARGVUS_SYSTEM_CONFIG=" + Theme.systemConfig, "--"].concat(words)
     }
-
-    function validHex(value) {
-        return /^#?[0-9a-fA-F]{6}$/.test(value)
-    }
-
-    function normalizeHex(value) {
-        var raw = value.charAt(0) === "#" ? value.substring(1) : value
-        return "#" + raw.toUpperCase()
-    }
-
-    function colorToHex(color) {
-        return "#" + [color.r, color.g, color.b].map(function (channel) {
-            return Math.round(channel * 255).toString(16).padStart(2, "0")
-        }).join("").toUpperCase()
-    }
-
-    // A user-selected highlight color is a canonical decision, not a runtime
-    // detail. Persist `/appearance/accent` and `/appearance/accent_custom`
-    // before the adapters run, otherwise the compositor keeps the per-theme
-    // border color (hyprland.lua only honors the accent marker when the
-    // canonical custom flag is set) and the next config projection would
-    // re-derive the theme default.
-    function accentPatch(color, isCustom) {
-        var patch = { "/appearance/accent_custom": isCustom }
-        if (color !== "") patch["/appearance/accent"] = color
-        return JSON.stringify(patch)
-    }
-
-    function applyAccent() {
-        if (accentProc.running || !validHex(draftHex)) return
-        accentProc.command = accentApplyCommand(normalizeHex(draftHex), true)
-        accentProc.running = true
-    }
-
-    // Persist first, then apply. `argvus-config patch` does not reproject, so
-    // the ordering keeps the canonical document and the generated accent in
-    // agreement. An empty color only clears the custom flag.
-    function accentApplyCommand(color, isCustom) {
-        var accentArgument = isCustom ? color : "--theme-default"
-        return ["bash", "-c",
-            "argvus config patch " + shellQuote(accentPatch(color, isCustom)) +
-            " && exec argvus config accent " + shellQuote(accentArgument)]
-    }
-
-    function shellQuote(value) {
-        return "'" + String(value).replace(/'/g, "'\\''") + "'"
-    }
-
-    Component.onCompleted: draftHex = colorToHex(Theme.accent)
 
     RowLayout {
         Layout.fillWidth: true
@@ -109,27 +59,11 @@ BaseCard {
         iconText: ""
         label: Strings.btnAccent
         accentColor: Theme.accent
+        enabled: !accentPending
         onClicked: {
-            accentDialog.selectedColor = Qt.color(draftHex)
-            accentDialog.open()
-        }
-    }
-
-    ColorDialog {
-        id: accentDialog
-        title: Strings.btnAccent
-        selectedColor: Qt.color(Theme.accent)
-
-        onAccepted: {
-            draftHex = colorToHex(selectedColor)
-            applyAccent()
-        }
-    }
-
-    Connections {
-        target: Theme
-        function onThemeObjChanged() {
-            draftHex = colorToHex(Theme.accent)
+            if (accentPending) return
+            accentPending = true
+            accentProc.running = true
         }
     }
 
@@ -354,11 +288,11 @@ BaseCard {
 
     Process {
         id: accentProc
-        // The real command is always assigned by applyAccent() before the
-        // process is started. This default is the reversible theme-default
-        // path so an unexpected start cannot damage other state.
-        command: accentApplyCommand("", false)
-        onExited: Theme.reloadAccent()
+        command: detachedCommand(["argvus", "config", "accent"])
+        onExited: {
+            accentPending = false
+            Theme.reloadAccent()
+        }
     }
 
     Process {

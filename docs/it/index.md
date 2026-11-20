@@ -89,3 +89,5 @@ Le schede del meteo utilizzano il catalogo condiviso (condizioni attuali e sette
 I pulsanti legano il loro gruppo icona/etichetta alla larghezza disponibile. Se un'etichetta necessita di ellissi, passando il mouse o concentrandosi sul pulsante viene mostrato il testo completo. I pulsanti del profilo energetico mostrano anche il testo descrittivo in un tooltip. Le descrizioni lunghe degli interruttori vanno a capo, e i campi numerici e gli input dell'utente riservano spazio sufficiente per il font scelto. L'altezza della scheda aumenta con il testo a capo; usa lo scorrimento verticale per vedere le schede inferiori. Queste modifiche preservano il font selezionato e le azioni esistenti della scheda.
 
 La cancellazione del gruppo usa un’icona con suggerimento; il pulsante globale mantiene il testo.
+
+**ASPETTO → Colore accento** → **ARGVUS Colore accento** (`argvus config accent`).

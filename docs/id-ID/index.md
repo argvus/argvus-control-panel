@@ -103,3 +103,5 @@ Tinggi kartu bertambah dengan teks yang dibungkus; gunakan gulir vertikal untuk 
 Perubahan ini mempertahankan font yang dipilih dan tindakan kartu yang ada.
 
 Tindakan hapus grup berupa ikon dengan petunjuk; tombol global tetap berlabel.
+
+**[PH000] → Warna aksen** → **ARGVUS Warna aksen** (`argvus config accent`).

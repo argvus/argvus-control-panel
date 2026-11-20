@@ -89,3 +89,5 @@ Les onglets météo utilisent le catalogue partagé (conditions actuelles et sep
 Les boutons lient leur groupe icône/étiquette à la largeur disponible. Si une étiquette nécessite des points de suspension, passer la souris dessus ou sélectionner le bouton affiche son texte complet. Les boutons de profil d'alimentation exposent également leur texte descriptif dans une info-bulle. Les longues descriptions de commutateur se renvoient à la ligne, et les champs numériques ainsi que les entrées utilisateur réservent suffisamment de place pour la police choisie. La hauteur de la carte augmente avec le texte renvoyé à la ligne ; utilisez le défilement vertical pour voir les cartes inférieures. Ces changements préservent la police sélectionnée et les actions existantes de la carte.
 
 La suppression d’un groupe utilise une icône avec infobulle ; le bouton global conserve son libellé.
+
+**APPARENCE → Accent** → **ARGVUS Couleur d'accentuation** (`argvus config accent`).

@@ -89,3 +89,5 @@ Las pestañas del clima usan el catálogo compartido (condiciones actuales y sie
 Los botones vinculan su grupo de ícono/etiqueta al ancho disponible. Si una etiqueta necesita puntos suspensivos, al pasar el cursor o enfocar el botón se muestra su texto completo. Los botones del perfil de energía también muestran su texto descriptivo en una información sobre herramientas. Las descripciones largas de interruptores se ajustan, y los campos numéricos y entradas del usuario reservan espacio suficiente para la fuente elegida. La altura de la tarjeta crece con el texto ajustado; usa el desplazamiento vertical para ver las tarjetas inferiores. Estos cambios preservan la fuente seleccionada y las acciones existentes de la tarjeta.
 
 La acción de borrar cada grupo es un icono con ayuda emergente; el botón general conserva su etiqueta.
+
+**APARIENCIA → Color de acento** → **ARGVUS Color de acento** (`argvus config accent`).

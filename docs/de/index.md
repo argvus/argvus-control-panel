@@ -89,3 +89,5 @@ Wetter-Tabs verwenden den gemeinsamen Katalog (aktuelle Bedingungen und sieben T
 Schaltflächen binden ihre Icon/Label-Gruppe an die verfügbare Breite. Wenn eine Beschriftung gekürzt werden muss, zeigt ein Hover oder Fokus auf die Schaltfläche den vollständigen Text an. Schaltflächen für das Energieprofil zeigen ihren Beschreibungstext ebenfalls in einem Tooltip. Lange Schaltflächenbeschreibungen umbrechen, und numerische Felder sowie Benutzereingaben reservieren genügend Platz für die gewählte Schriftart. Die Kartenhöhe wächst mit umgebrochenem Text; verwenden Sie vertikales Scrollen, um die unteren Karten zu sehen. Diese Änderungen bewahren die gewählte Schriftart und die vorhandenen Kartenaktionen.
 
 Das Löschen einer Gruppe erfolgt über ein Symbol mit Tooltip; die globale Schaltfläche behält ihre Beschriftung.
+
+**AUSSEHEN → Akzentfarbe** → **ARGVUS Akzentfarbe** (`argvus config accent`).

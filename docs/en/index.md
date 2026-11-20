@@ -99,3 +99,5 @@ The card height grows with wrapped text; use vertical scrolling to see lower car
 These changes preserve the selected font and the existing card actions.
 
 The group clear action is an icon with a tooltip; the global Clear button keeps its label.
+
+**APPEARANCE → Accent color** → **ARGVUS Accent Color** (`argvus config accent`).

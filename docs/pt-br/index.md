@@ -100,3 +100,5 @@ dos cards acompanha o texto; use a rolagem vertical para acessar os cards abaixo
 A fonte selecionada e as ações dos cards são preservadas.
 
 A ação de limpar cada grupo é um ícone com dica ao passar o mouse ou focar pelo teclado; o botão geral mantém o texto.
+
+**APARÊNCIA → Destaque** → **ARGVUS Cor de destaque** (`argvus config accent`).

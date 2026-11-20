@@ -101,3 +101,5 @@ Kart yüksekliği sarılmış metinle artar; alt kartları görmek için dikey k
 Bu değişiklikler seçili yazı tipini ve mevcut kart eylemlerini korur.
 
 Grup temizleme işlemi ipuçlu bir simgedir; genel düğmenin metni korunur.
+
+**APPEARANCE → Acent renk** → **ARGVUS Acent renk** (`argvus config accent`).
