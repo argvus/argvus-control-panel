@@ -32,7 +32,7 @@ depends=(
   'wireplumber'
   'xdg-user-dirs'
 )
-optdepends=('argvus-taskbar: Waybar top panel aligned with the control panel' 'argvus-widget-telemetry: optional widget telemetry panel' 'kdialog: avatar image picker from the user card' 'nvidia-utils: NVIDIA GPU readout in the system card')
+optdepends=('argvus-taskbar: Quickshell taskbar aligned with the control panel' 'argvus-widget-telemetry: optional widget telemetry panel' 'kdialog: avatar image picker from the user card' 'nvidia-utils: NVIDIA GPU readout in the system card')
 options=('!debug')
 source=("${pkgname}-${pkgver}.tar.gz::${url}/archive/refs/tags/v${pkgver}.tar.gz")
 sha256sums=()

@@ -20,6 +20,16 @@ Singleton {
     property bool bordersRounded: false
     property int bordersRounding: 0
     property bool widgetTelemetryEnabled: true
+    readonly property bool widgetTelemetrySurfaceActive:
+        widgetTelemetryEnabled && telemetryActivation.text() === "enabled\n"
+
+    FileView {
+        id: telemetryActivation
+        path: Quickshell.env("XDG_RUNTIME_DIR") + "/argvus/bars/widget-telemetry.active"
+        watchChanges: true
+        printErrors: false
+        onFileChanged: reload()
+    }
     // True when blur or any effect surface transparency is on, which is what
     // `argvus effects-toggle effects status` reports. Animations are separate.
     property bool effectsEnabled: true

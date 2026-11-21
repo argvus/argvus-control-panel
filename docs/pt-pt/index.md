@@ -108,3 +108,5 @@ A ação de limpar cada grupo é um ícone com dica ao passar o rato ou focar pe
 **Ações** → **Unidade de temperatura** · `Enter` · °C ↔ °F
 
 O cartão de meteorologia mostra a cidade escolhida através do botão Localização ou do atalho de teclado.
+
+O controlo de telemetria acompanha a superfície ativa do Widget Telemetry no shell partilhado das barras. Abrir ou fechar a barra lateral atualiza o indicador da barra de tarefas sem mudar o processo.

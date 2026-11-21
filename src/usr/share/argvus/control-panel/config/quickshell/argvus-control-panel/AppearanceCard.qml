@@ -14,7 +14,7 @@ BaseCard {
     property bool animationsRequested: false
     property bool effectsRequested: false
     property bool accentPending: false
-    readonly property bool widgetTelemetryEnabled: toggleProc.running ? telemetryRequested : Theme.widgetTelemetryEnabled
+    readonly property bool widgetTelemetryEnabled: toggleProc.running ? telemetryRequested : Theme.widgetTelemetrySurfaceActive
     // ANIMATIONS is the master switch for motion; EFFECTS is the master switch for
     // blur and transparency. They are independent, as `argvus effects-toggle
     // animations|effects` are.

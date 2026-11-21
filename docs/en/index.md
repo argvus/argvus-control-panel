@@ -107,3 +107,5 @@ The group clear action is an icon with a tooltip; the global Clear button keeps 
 **Actions** → **Temperature unit** · `Enter` · °C ↔ °F
 
 The Weather card updates to the city you select through the Location button or the keyboard shortcut.
+
+The telemetry switch follows the active Widget Telemetry surface in the shared bars shell. Opening or closing the sidebar changes the taskbar indicator without changing its process.

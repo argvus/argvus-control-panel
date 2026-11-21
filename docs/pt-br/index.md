@@ -108,3 +108,5 @@ A ação de limpar cada grupo é um ícone com dica ao passar o mouse ou focar p
 **Ações** → **Unidade de temperatura** · `Enter` · °C ↔ °F
 
 O card de clima mostra a cidade escolhida pelo botão Localização ou pelo atalho de teclado.
+
+O controle de telemetria acompanha a superfície ativa do Widget Telemetry no shell compartilhado das barras. Abrir ou fechar a barra lateral atualiza o indicador da taskbar sem trocar seu processo.
