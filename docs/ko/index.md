@@ -66,7 +66,7 @@ cards-config.sh move <card> <index>
 | 전원 | `powerprofilesctl` | 패널이 열려 있을 때 3초마다 |
 | 날씨 | 위치 파일 및 wttr.in/Open-Meteo 제공자 | 패널이 열릴 때 및 15분마다; 탭은 현재 상태와 향후 7일간의 일일 예보로 전환 |
 
-외관(Appearance) 카드에는 두 개의 독립적인 스위치가 있습니다. **애니메이션(Animations)**은 `argvus effects-toggle animations toggle`를 실행하며 움직이는 모든 것을 제어합니다. **효과(Effects)**는 `argvus effects-toggle effects toggle`를 실행하며 터미널(Terminal), 실행기(Launcher), 위젯 텔레메트리(Widget Telemetry), 제어판(Control Panel), 작업 표시줄(Taskbar)의 블러 및 투명도를 함께 전환하며, 최소 하나가 켜져 있을 때 켜짐으로 표시됩니다. **SUPER + F6**(`argvus effects-toggle toggle`)는 둘 다 함께 전환합니다. 어느 하나를 변경해도 Hyprland와 테마 소비자들이 즉시 다시 로드됩니다: Waybar는 스타일시트를 다시 읽고, 패널은 IPC를 통해 다시 로드되며, Dunst는 방해 금지(Do Not Disturb)가 활성화되지 않은 경우 구성 파일을 다시 로드합니다. 방해 금지가 활성화되어 있는 경우에는 DND가 꺼질 때까지 다시 로드가 연기됩니다. 어떤 것도 재시작되지 않으며 로딩 화면도 나타나지 않습니다.
+외관(Appearance) 카드에는 두 개의 독립적인 스위치가 있습니다. **애니메이션(Animations)**은 `argvus effects-toggle animations toggle`를 실행하며 움직이는 모든 것을 제어합니다. **효과(Effects)**는 `argvus effects-toggle effects toggle`를 실행하며 터미널(Terminal), 실행기(Launcher), 위젯 텔레메트리(Widget Telemetry), 제어판(Control Panel), 작업 표시줄(Taskbar)의 블러 및 투명도를 함께 전환하며, 최소 하나가 켜져 있을 때 켜짐으로 표시됩니다. **SUPER + F6**(`argvus effects-toggle toggle`)는 둘 다 함께 전환합니다. 어느 하나를 변경해도 Hyprland와 테마 소비자들이 즉시 다시 로드됩니다: Taskbar는 스타일시트를 다시 읽고, 패널은 IPC를 통해 다시 로드되며, Dunst는 방해 금지(Do Not Disturb)가 활성화되지 않은 경우 구성 파일을 다시 로드합니다. 방해 금지가 활성화되어 있는 경우에는 DND가 꺼질 때까지 다시 로드가 연기됩니다. 어떤 것도 재시작되지 않으며 로딩 화면도 나타나지 않습니다.
 
 작업 표시줄 볼륨 아이콘과 미디어 키에서 스크롤하면 `argvus config audio`가 사용되며, 이 변경 사항은 PipeWire에 적용되고 볼륨이 `/audio`에도 기록됩니다. 따라서 구성 다시 로드는 이전 볼륨을 복원하지 않습니다.
 

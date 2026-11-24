@@ -12,9 +12,9 @@ cp -r argvus-control-panel ~/.config/quickshell/argvus-control-panel
 qs -c argvus-control-panel
 ```
 
-## Waybar integration
+## Taskbar integration
 
-Add a button to your `~/.config/waybar/config`:
+Add a button to your `~/.config/taskbar/config`:
 
 ```json
 "custom/sidebar": {

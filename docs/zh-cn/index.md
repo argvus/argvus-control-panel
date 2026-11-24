@@ -66,7 +66,7 @@ cards-config.sh move <card> <index>
 | 电源 | `powerprofilesctl` | 面板打开时每 3 秒更新一次 |
 | 天气 | 位置文件及 wttr.in/Open-Meteo 提供的天气数据 | 面板打开时以及每 15 分钟更新一次；标签在当前状况与未来七天天气预报之间切换 |
 
-外观卡有两个独立的开关。**动画** 运行 `argvus effects-toggle animations toggle` 并控制所有移动的元素。**效果** 运行 `argvus effects-toggle effects toggle`，同时切换终端、启动器、小部件遥测、控制面板和任务栏的模糊和透明度；当至少其中一个开启时，它显示为开启状态。**SUPER + F6** (`argvus effects-toggle toggle`) 同时切换两者。更改任意一个会在原地重新加载 Hyprland 和主题使用者：Waybar 会重新读取其样式表，面板通过 IPC 重新加载，Dunst 会重新加载其配置，除非“请勿打扰”处于激活状态，在这种情况下，重新加载会推迟到关闭 DND 后。没有任何程序被重启，也不会出现加载屏幕。
+外观卡有两个独立的开关。**动画** 运行 `argvus effects-toggle animations toggle` 并控制所有移动的元素。**效果** 运行 `argvus effects-toggle effects toggle`，同时切换终端、启动器、小部件遥测、控制面板和任务栏的模糊和透明度；当至少其中一个开启时，它显示为开启状态。**SUPER + F6** (`argvus effects-toggle toggle`) 同时切换两者。更改任意一个会在原地重新加载 Hyprland 和主题使用者：Taskbar 会重新读取其样式表，面板通过 IPC 重新加载，Dunst 会重新加载其配置，除非“请勿打扰”处于激活状态，在这种情况下，重新加载会推迟到关闭 DND 后。没有任何程序被重启，也不会出现加载屏幕。
 
 在任务栏音量图标上滚动以及使用多媒体按键会使用 `argvus config audio`，这会将更改应用到 PipeWire 并且还会在 `/audio` 中记录音量。因此，重新加载配置不会恢复旧音量。
 

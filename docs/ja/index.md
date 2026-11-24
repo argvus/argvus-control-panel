@@ -66,7 +66,7 @@ cards-config.sh move <card> <index>
 | 電源 |  `argvus config` `powerprofilesctl` | パネルが開いている間は3秒ごと |
 | 天気 | ロケーションファイルおよびwttr.in/Open-Meteoプロバイダー | パネルが開いた時と15分ごと；タブは現在の天気と今後7日間の天気予報を切り替え
 
-外観カードには2つの独立したスイッチがあります。**Animations** は `argvus effects-toggle animations toggle` を実行し、動くすべてのものを制御します。**Effects** は `argvus effects-toggle effects toggle` を実行し、ターミナル、ランチャー、ウィジェットテレメトリ、コントロールパネル、タスクバーのぼかしと透明度を一緒に切り替えます；少なくとも1つがオンのとき、オンとして表示されます。**SUPER + F6** (`argvus effects-toggle toggle`) は両方を一緒に切り替えます。どちらかを変更すると、Hyprland とテーマコンシューマーがその場で再読み込みされます：Waybar はスタイルシートを再読み込みし、パネルは IPC を介して再読み込みされ、Dunst は通知オフが有効でない場合に設定を再読み込みします。有効の場合、再読み込みは DND がオフになるまで延期されます。再起動は行われず、読み込み画面も表示されません。
+外観カードには2つの独立したスイッチがあります。**Animations** は `argvus effects-toggle animations toggle` を実行し、動くすべてのものを制御します。**Effects** は `argvus effects-toggle effects toggle` を実行し、ターミナル、ランチャー、ウィジェットテレメトリ、コントロールパネル、タスクバーのぼかしと透明度を一緒に切り替えます；少なくとも1つがオンのとき、オンとして表示されます。**SUPER + F6** (`argvus effects-toggle toggle`) は両方を一緒に切り替えます。どちらかを変更すると、Hyprland とテーマコンシューマーがその場で再読み込みされます：Taskbar はスタイルシートを再読み込みし、パネルは IPC を介して再読み込みされ、Dunst は通知オフが有効でない場合に設定を再読み込みします。有効の場合、再読み込みは DND がオフになるまで延期されます。再起動は行われず、読み込み画面も表示されません。
 
 タスクバーの音量アイコンやメディアキーをスクロールすると、`argvus config audio` が使用され、変更が PipeWire に適用されると同時に、音量が `/audio` に記録されます。そのため、設定のリロードによって古い音量が復元されることはありません。
 

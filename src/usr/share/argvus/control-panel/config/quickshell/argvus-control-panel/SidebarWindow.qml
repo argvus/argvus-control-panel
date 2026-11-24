@@ -236,7 +236,7 @@ PanelWindow {
         // Process command can still contain the previous value while a
         // property-change handler is running.
         stateProc.command = ["bash", "-c",
-            "state_dir=\"${XDG_CACHE_HOME:-$HOME/.cache}/argvus/waybar\"; mkdir -p \"$state_dir\"; state_file=\"$state_dir/control-panel-state\"; state_tmp=\"$state_file.$$\"; printf '%s\\n' \"$1\" > \"$state_tmp\" && mv -f \"$state_tmp\" \"$state_file\"",
+            "state_dir=\"${XDG_CACHE_HOME:-$HOME/.cache}/argvus/taskbar\"; mkdir -p \"$state_dir\"; state_file=\"$state_dir/control-panel-state\"; state_tmp=\"$state_file.$$\"; printf '%s\\n' \"$1\" > \"$state_tmp\" && mv -f \"$state_tmp\" \"$state_file\"",
             "argvus-control-panel-state",
             sidebarVisible ? "open" : "close"
         ]
