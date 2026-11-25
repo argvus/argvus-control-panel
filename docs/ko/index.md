@@ -97,3 +97,5 @@ cards-config.sh move <card> <index>
 **작업** → **온도 단위** · `Enter` · °C ↔ °F
 
 위치 버튼이나 키보드 단축키로 선택한 도시가 날씨 카드에 표시됩니다.
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

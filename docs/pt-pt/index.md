@@ -110,3 +110,5 @@ A ação de limpar cada grupo é um ícone com dica ao passar o rato ou focar pe
 O cartão de meteorologia mostra a cidade escolhida através do botão Localização ou do atalho de teclado.
 
 O controlo de telemetria acompanha a superfície ativa do Widget Telemetry no shell partilhado das barras. Abrir ou fechar a barra lateral atualiza o indicador da barra de tarefas sem mudar o processo.
+
+O botão Control Panel da barra, o atalho e o comando IPC abrem o painel Morphing interativo no processo da barra; Esc ou clicar fora fecha o painel.

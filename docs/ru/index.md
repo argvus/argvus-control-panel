@@ -97,3 +97,5 @@ cards-config.sh move <card> <index>
 **Действия** → **Единица измерения температуры** · `Enter` · °C ↔ °F
 
 Карточка погоды показывает город, выбранный через кнопку местоположения или сочетание клавиш.
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

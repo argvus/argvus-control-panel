@@ -113,3 +113,5 @@ See  for the installed and user paths.(/docs/argvus-taskbar/taskbar/)           
 **کارروائیاں** → **درجہ حرارت کی اکائی** · `Enter` · °C ↔ °F
 
 مقام کے بٹن یا کی بورڈ شارٹ کٹ سے منتخب کردہ شہر موسم کے کارڈ میں دکھائی دیتا ہے۔
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

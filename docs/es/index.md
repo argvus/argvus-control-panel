@@ -97,3 +97,5 @@ La acción de borrar cada grupo es un icono con ayuda emergente; el botón gener
 **Acciones** → **Unidad de temperatura** · `Enter` · °C ↔ °F
 
 La tarjeta del tiempo se actualiza con la ciudad que selecciones mediante el botón de ubicación o el atajo de teclado.
+
+El botón Control Panel de la barra, el atajo y el comando IPC abren el panel Morphing interactivo en el proceso de la barra; Esc o hacer clic fuera lo cierra.

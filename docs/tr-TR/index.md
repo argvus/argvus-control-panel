@@ -109,3 +109,5 @@ Grup temizleme işlemi ipuçlu bir simgedir; genel düğmenin metni korunur.
 **Eylemler** → **Sıcaklık birimi** · `Enter` · °C ↔ °F
 
 Hava durumu kartı, konum düğmesi veya klavye kısayoluyla seçtiğiniz şehri gösterir.
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

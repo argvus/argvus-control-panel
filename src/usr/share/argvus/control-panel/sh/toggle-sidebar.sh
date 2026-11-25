@@ -15,15 +15,17 @@ ARGVUS_BOOTSTRAP="${ARGVUS_BOOTSTRAP:-${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}
 # shellcheck disable=SC1091
 . "$ARGVUS_BOOTSTRAP"
 
-CONFIG="argvus-control-panel"
+BARS_SHELL="$(paths_config taskbar/quickshell/shell.qml)"
 
-if qs -c "$CONFIG" ipc call sidebar toggle >/dev/null 2>&1; then
+if qs -p "$BARS_SHELL" ipc call sidebar toggle >/dev/null 2>&1; then
   exit 0
 fi
 
-command -v systemctl >/dev/null 2>&1 || exit 0
-systemctl --user start argvus-control-panel.service >/dev/null 2>&1 || exit 0
-sleep 0.3
-qs -c "$CONFIG" ipc call sidebar toggle >/dev/null 2>&1 || true
+if command -v systemctl >/dev/null 2>&1; then
+  if systemctl --user start argvus-taskbar.service >/dev/null 2>&1; then
+    sleep 0.3
+    qs -p "$BARS_SHELL" ipc call sidebar toggle >/dev/null 2>&1 || true
+  fi
+fi
 
 exit 0

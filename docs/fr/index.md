@@ -97,3 +97,5 @@ La suppression d’un groupe utilise une icône avec infobulle ; le bouton globa
 **Actions** → **Unité de température** · `Enter` · °C ↔ °F
 
 La carte météo affiche la ville choisie via le bouton de localisation ou le raccourci clavier.
+
+Le bouton Control Panel de la barre, le raccourci et la commande IPC ouvrent le panneau Morphing interactif dans le processus de la barre ; Échap ou un clic à l'extérieur le ferme.

@@ -19,3 +19,5 @@ AppearanceCard    1.0 AppearanceCard.qml
 SessionCard       1.0 SessionCard.qml
 DisplayCard       1.0 DisplayCard.qml
 SidebarWindow     1.0 SidebarWindow.qml
+PanelContent      1.0 PanelContent.qml
+EmbeddedPanel     1.0 EmbeddedPanel.qml

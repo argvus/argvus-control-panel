@@ -109,3 +109,5 @@ Appearance কার্ডে দুটি স্বাধীন সুইচ �
 **কার্যক্রম** → **তাপমাত্রার একক** · `Enter` · °C ↔ °F
 
 লোকেশন বোতাম বা কিবোর্ড শর্টকাট দিয়ে বেছে নেওয়া স্থান কন্ট্রোল প্যানেলের আবহাওয়া কার্ডে দেখানো হয়।
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

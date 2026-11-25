@@ -97,3 +97,5 @@ La cancellazione del gruppo usa un’icona con suggerimento; il pulsante globale
 **Azioni** → **Unità di temperatura** · `Enter` · °C ↔ °F
 
 La scheda Meteo mostra la città scelta tramite il pulsante della posizione o la scorciatoia da tastiera.
+
+Il pulsante Control Panel della barra, la scorciatoia e il comando IPC aprono il pannello Morphing interattivo nel processo della barra; Esc o un clic esterno lo chiude.

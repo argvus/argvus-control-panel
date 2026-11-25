@@ -111,3 +111,5 @@ Tindakan hapus grup berupa ikon dengan petunjuk; tombol global tetap berlabel.
 **Tindakan** → **Satuan suhu** · `Enter` · °C ↔ °F
 
 Kartu Cuaca menampilkan kota yang dipilih melalui tombol Lokasi atau pintasan papan ketik.
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

@@ -8,7 +8,7 @@ reload_stage = "build"
 # The panel re-reads its Theme.qml from the build.
 [reload]
 kind = "command"
-argv = ["qs", "-c", "argvus-control-panel", "ipc", "call", "theme", "reload"]
+argv = ["qs", "-p", "/usr/share/argvus/taskbar/quickshell/shell.qml", "ipc", "call", "theme", "reload"]
 
 # Defaults for the tokens the template reads; a theme that defines one wins.
 [palette]

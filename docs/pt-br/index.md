@@ -110,3 +110,5 @@ A ação de limpar cada grupo é um ícone com dica ao passar o mouse ou focar p
 O card de clima mostra a cidade escolhida pelo botão Localização ou pelo atalho de teclado.
 
 O controle de telemetria acompanha a superfície ativa do Widget Telemetry no shell compartilhado das barras. Abrir ou fechar a barra lateral atualiza o indicador da taskbar sem trocar seu processo.
+
+O botão Control Panel da barra, o atalho e o comando IPC abrem o painel Morphing interativo no processo da barra; Esc ou clicar fora fecha o painel.

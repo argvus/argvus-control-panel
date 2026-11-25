@@ -117,3 +117,5 @@ cards-config.sh move <card> <index>
 **الإجراءات** → **وحدة درجة الحرارة** · `Enter` · °C ↔ °F
 
 يعرض قسم الطقس في لوحة التحكم الموقع الذي تختاره من زر الموقع أو من الاختصار.
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

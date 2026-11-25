@@ -38,8 +38,9 @@ makepkg -p packaging/arch/local/PKGBUILD --printsrcinfo
 The installed Quickshell configuration is under
 `/usr/share/argvus/control-panel/config/quickshell/argvus-control-panel/`.
 The sidebar can be started with `qs -c argvus-control-panel`; the helper
-scripts under `/usr/share/argvus/control-panel/sh/` support the taskbar and
-Hyprland integration.
+scripts under `/usr/share/argvus/control-panel/sh/` support Hyprland integration.
+The taskbar button loads `EmbeddedPanel.qml` in its own Quickshell process;
+the standalone sidebar and its existing shortcut remain available.
 
 ## Documentation
 

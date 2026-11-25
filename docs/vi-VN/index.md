@@ -111,3 +111,5 @@ Thao tác xóa nhóm dùng biểu tượng có chú giải; nút xóa chung gi�
 **Thao tác** → **Đơn vị nhiệt độ** · `Enter` · °C ↔ °F
 
 Thẻ Thời tiết hiển thị thành phố bạn chọn qua nút Vị trí hoặc phím tắt.
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

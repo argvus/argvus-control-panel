@@ -258,7 +258,7 @@ BaseCard {
                     spacing: 6
                     Text {
                         Layout.minimumWidth: 0
-                        Layout.maximumWidth: parent.width * 0.45
+                        Layout.fillWidth: true
                         elide: Text.ElideRight
                         text: modelData.name
                         color: Theme.accent

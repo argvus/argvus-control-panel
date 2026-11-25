@@ -109,3 +109,5 @@ cards-config.sh move <card> <index>
 **कार्रवाइयाँ** → **तापमान की इकाई** · `Enter` · °C ↔ °F
 
 स्थान बटन या कीबोर्ड शॉर्टकट से चुना गया शहर मौसम कार्ड में दिखता है।
+
+The taskbar Control Panel button, the shortcut, and the IPC command open the interactive Morphing panel inside the taskbar process; Esc or clicking outside closes it.

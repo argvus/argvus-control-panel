@@ -97,3 +97,5 @@ Das Löschen einer Gruppe erfolgt über ein Symbol mit Tooltip; die globale Scha
 **Aktionen** → **Temperatureinheit** · `Enter` · °C ↔ °F
 
 Die Wetterkarte im Control Panel zeigt den Ort an, den du über die Schaltfläche oder das Tastenkürzel auswählst.
+
+Die Control-Panel-Schaltfläche der Taskbar, die Tastenkombination und der IPC-Befehl öffnen das interaktive Morphing-Panel im Taskbar-Prozess; Esc oder ein Klick außerhalb schließt es.
