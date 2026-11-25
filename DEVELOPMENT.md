@@ -170,3 +170,7 @@ make build
   see the release section.
 
 See also [CONTRIBUTING.md](https://github.com/argvus/.github/blob/main/CONTRIBUTING.md) for the contribution workflow.
+
+The Session card invokes `argvus keep-awake toggle`. That command owns
+persistence and application to Hypridle. The card reads `status-json` to show
+an error if the request is pending or the unit cannot be confirmed.

@@ -3,12 +3,14 @@ import QtQuick.Layouts
 import Quickshell.Io
 
 BaseCard {
+    id: root
     cardTitle: Strings.cardTitleSession
     cardIcon:  ">"
 
     property int idleTimeout: Theme.sessionLockMinutes * 60
     property bool lockDpms: false
     property bool keepAwake: Theme.keepAwake
+    property bool keepAwakeError: false
     property var idleOptions: [
         { seconds: 60,  label: "1m" },
         { seconds: 300, label: "5m" },
@@ -210,7 +212,8 @@ BaseCard {
                 Layout.minimumWidth: 0
                 wrapMode: Text.Wrap
 
-                text: keepAwake ? Strings.keepAwakeEnabled : Strings.keepAwakeDisabled
+                text: root.keepAwakeError ? Strings.keepAwakeError
+                                     : (keepAwake ? Strings.keepAwakeEnabled : Strings.keepAwakeDisabled)
                 color: keepAwake ? Theme.accent : Theme.fgSubtle
                 font.pixelSize: Theme.scaledFont(13)
                 font.family: Theme.fontFamily
@@ -261,17 +264,39 @@ BaseCard {
 
     Process {
         id: keepAwakeToggleProc
-        command: ["sh", "-c", "next=$( [ \"$(argvus config get /power/keep_awake --effective --raw 2>/dev/null || true)\" = true ] && printf false || printf true ); argvus config set /power/keep_awake $next && systemctl --user reload argvus-config.service && ${ARGVUS_SYSTEM_CONFIG:-/usr/share/argvus}/power/sh/keep-awake.sh $([ \"$next\" = true ] && printf on || printf off)"]
+        command: ["argvus", "keep-awake", "toggle"]
+        onExited: function (exitCode) {
+            root.keepAwakeError = exitCode !== 0
+            Theme.reloadCanonicalConfig()
+            if (!keepAwakeStatusProc.running) keepAwakeStatusProc.running = true
+        }
         stdout: SplitParser {
-            onRead: data => { keepAwake = data.trim() === "enabled"; Theme.reloadCanonicalConfig() }
+            onRead: data => root.keepAwake = data.trim() === "enabled"
         }
     }
 
     Process {
         id: keepAwakeStatusProc
-        command: ["sh", "-c", "value=$(argvus config get /power/keep_awake --effective --raw 2>/dev/null || true); [ \"$value\" = true ] && printf enabled || printf disabled"]
+        command: ["sh", "-c", "argvus keep-awake status-json 2>/dev/null || exec argvus keep-awake status"]
+        onExited: function (exitCode) {
+            if (exitCode !== 0) root.keepAwakeError = true
+        }
         stdout: SplitParser {
-            onRead: data => keepAwake = data.trim() === "enabled"
+            onRead: data => {
+                const line = data.trim()
+                if (line === "enabled" || line === "disabled") {
+                    root.keepAwake = line === "enabled"
+                    root.keepAwakeError = false
+                    return
+                }
+                try {
+                    const snapshot = JSON.parse(line)
+                    root.keepAwake = snapshot.requested === "enabled"
+                    root.keepAwakeError = snapshot.state !== "applied"
+                } catch (error) {
+                    root.keepAwakeError = true
+                }
+            }
         }
     }
 }
