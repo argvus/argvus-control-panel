@@ -6,6 +6,14 @@ PanelContent {
     id: root
     embedded: true
     rightToLeft: selectedLocale === "ar" || selectedLocale === "ur-PK"
+    // The Morphing host uses this color in its existing outline. Use the
+    // Control Panel palette so its cards and text match the backdrop.
+    readonly property color morphingFill: {
+        const background = Theme.bgPanel
+        const coverage = Theme.controlPanelTransparencyState === "disabled" ? 1
+            : Math.min(0.96, Math.max(0.90, 0.96 - Theme.controlPanelTransparency * 0.0006))
+        return Qt.alpha(background, coverage)
+    }
     property string selectedLocale: "en-US"
     readonly property string catalogRoot: "/usr/share/argvus/i18n"
 
