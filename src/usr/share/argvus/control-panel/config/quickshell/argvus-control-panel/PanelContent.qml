@@ -24,7 +24,7 @@ FocusScope {
     property bool brightnessCapabilityReady: false
     property bool hardwareCapabilitiesReady: false
     property bool cardsStatusReady: false
-    readonly property bool cardsLoading: !cardsStatusReady || !hardwareCapabilitiesReady
+    readonly property bool cardsLoading: !cardsStatusReady
     // Keeps the shared Theme state fresh only while the sidebar is on screen.
     Binding { target: Theme; property: "active"; value: root.sidebarVisible }
     ListModel { id: cardsModel }
@@ -45,14 +45,13 @@ FocusScope {
     })
 
     function cardCapabilityAvailable(id) {
+        if (!hardwareCapabilitiesReady) return true
         if (id === "bluetooth") return bluetoothAvailable
         if (id === "brightness") return brightnessAvailable
         return true
     }
 
     function rebuildCards() {
-        if (!hardwareCapabilitiesReady)
-            return
         var enabledCards = []
         for (var index = 0; index < allCards.length; index++) {
             var card = allCards[index]

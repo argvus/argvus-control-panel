@@ -4,9 +4,20 @@ set -euo pipefail
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 SCRIPT="$ROOT_DIR/src/usr/share/argvus/control-panel/sh/cards-config.sh"
+PANEL_QML="${PANEL_QML:-$ROOT_DIR/src/usr/share/argvus/control-panel/config/quickshell/argvus-control-panel/PanelContent.qml}"
 TEMP_DIR="$(mktemp -d)"
 trap 'rm -rf "$TEMP_DIR"' EXIT
 export ARGVUS_CONFIG_HOME="$TEMP_DIR/config"
+
+# Hardware probes may finish later than the card preference read. They must
+# filter only their dependent cards, never cover or block the whole panel.
+cards_loading="$(sed -n '/property bool cardsStatusReady:/,/property var cardDefinitions:/p' "$PANEL_QML" \
+  | sed -n '/cardsLoading:/p')"
+[[ "$cards_loading" == *'!cardsStatusReady'* && "$cards_loading" != *'hardwareCapabilitiesReady'* ]]
+capability_check="$(sed -n '/function cardCapabilityAvailable(id)/,/^    }/p' "$PANEL_QML")"
+[[ "$capability_check" == *'if (!hardwareCapabilitiesReady) return true'* ]]
+rebuild_cards="$(sed -n '/function rebuildCards()/,/^    }/p' "$PANEL_QML")"
+[[ "$rebuild_cards" != *'if (!hardwareCapabilitiesReady)'* ]]
 
 status() { bash "$SCRIPT" status; }
 
