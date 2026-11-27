@@ -18,6 +18,10 @@ capability_check="$(sed -n '/function cardCapabilityAvailable(id)/,/^    }/p' "$
 [[ "$capability_check" == *'if (!hardwareCapabilitiesReady) return true'* ]]
 rebuild_cards="$(sed -n '/function rebuildCards()/,/^    }/p' "$PANEL_QML")"
 [[ "$rebuild_cards" != *'if (!hardwareCapabilitiesReady)'* ]]
+[[ "$rebuild_cards" != *'cardsModel.clear()'* ]]
+[[ "$rebuild_cards" == *'cardsModel.move('* ]]
+[[ "$rebuild_cards" == *'cardsModel.insert('* ]]
+[[ "$rebuild_cards" == *'cardsModel.remove('* ]]
 
 status() { bash "$SCRIPT" status; }
 

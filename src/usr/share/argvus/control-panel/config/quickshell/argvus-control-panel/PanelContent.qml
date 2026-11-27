@@ -62,9 +62,30 @@ FocusScope {
             enabledCards.push({ id: card.id, source: cardDefinitions[card.id] })
         }
         cards = enabledCards
-        cardsModel.clear()
-        for (var enabledIndex = 0; enabledIndex < enabledCards.length; enabledIndex++)
-            cardsModel.append(enabledCards[enabledIndex])
+
+        // Capability checks may finish after the cards are already visible.
+        // Reconcile by ID so unchanged Loader delegates keep their instances.
+        for (var targetIndex = 0; targetIndex < enabledCards.length; targetIndex++) {
+            var targetCard = enabledCards[targetIndex]
+            if (targetIndex < cardsModel.count && cardsModel.get(targetIndex).id === targetCard.id)
+                continue
+
+            var existingIndex = -1
+            for (var currentIndex = targetIndex + 1; currentIndex < cardsModel.count; currentIndex++) {
+                if (cardsModel.get(currentIndex).id === targetCard.id) {
+                    existingIndex = currentIndex
+                    break
+                }
+            }
+
+            if (existingIndex >= 0)
+                cardsModel.move(existingIndex, targetIndex, 1)
+            else
+                cardsModel.insert(targetIndex, targetCard)
+        }
+
+        while (cardsModel.count > enabledCards.length)
+            cardsModel.remove(cardsModel.count - 1)
     }
 
     // The helper is the sole owner of defaults, persisted preferences, and
